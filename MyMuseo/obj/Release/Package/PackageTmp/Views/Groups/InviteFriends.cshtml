@@ -1,0 +1,67 @@
+﻿@model MyMuseo.Models.Group
+@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+.nav-tabs > li > a:focus, 
+.nav-tabs > li > a:hover 
+{
+    background-color: #000000;
+}
+
+.nav-tabs > .active > a {
+    background-color: #000000!important;
+}
+
+</style>
+<div class="spacer20"></div>
+<div style="background: url(/Content/images/default-group-banner.jpg) no-repeat; background-size:cover; width: 100%; height: 240px; display:block;position:relative;">
+    @Html.Partial("_GroupHeader")
+</div>
+    
+<div>
+    <div style="margin-left: 40px; margin-right: 40px;">
+        <div class="spacer20"></div>
+        <div><span class="page-header-text">Invite Friends</span></div>
+        <div><span class="text18">You can invite myMuseo member's who are following you or you are following. <br />
+            Send them a customized invitation to join @Model.Name. </span></div>
+        <div class="spacer20"></div>
+@if (Request.IsAuthenticated && (bool)ViewBag.IsGroupMember == true)
+{
+        <button class="button1" data-toggle="modal" data-target="#modal_invitation" >Invite Friends</button>
+}
+    </div>
+    <div class="spacer20"></div>
+</div>
+
+<div class="modal fade" id="modal_invitation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Invitation</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("Invitation", "Groups", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                            @Html.HiddenFor(model => model.GroupId)
+                            <div>
+                                @Html.DropDownList("CollectorId", null, "Select a friend", new { @class = "textfield1" })
+                            </div>
+                            <div class="spacer20"></div>
+                            <textarea id="message" name="message" class="textarea1" style="width: 520px !important;"></textarea>
+                            <div class="spacer20"></div>
+                            <div>
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('TheForm').submit();"> Invite</button>
+                            </div>
+                   }
+                        </div>
+            </div>
+        </div>
+    </div>
+</div>
+

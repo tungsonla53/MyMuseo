@@ -1,0 +1,128 @@
+﻿@model MyMuseo.Models.Collectible
+
+
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/ckeditor/ckeditor.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/ckeditor/adapters/jquery.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div class="container">
+    <div class="spacer20"></div>
+    <div>
+        <span style="font-size: 21px;font-weight:bold;">Add Collection Detail</span>
+    </div>
+    <div class="spacer15"></div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
+            @using (Html.BeginForm("_AddDetail", "Collectors", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+            {
+                @Html.HiddenFor(model => model.CollectionId)
+                
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Title</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Title, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.Title)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Artist</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.ArtistName, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.ArtistName)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Medium</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Medium, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.Medium)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Height</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Height, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.Height)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Width</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Width, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.Width)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Date</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.ItemDate, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.ItemDate)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Not For Sale</label>
+                    <div class="col-md-9">
+                        @Html.CheckBoxFor(model => model.NotForSale, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.NotForSale)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Allow Offers</label>
+                    <div class="col-md-9">
+                        @Html.CheckBoxFor(model => model.AllowOffers, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.AllowOffers)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Price</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Price, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.Price)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Offer</label>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.OfferPrice, new { @class = "textfield1" })
+                        @Html.ValidationMessageFor(model => model.OfferPrice)
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 text18">Description</label>
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.Description, new { @class = "textarea1" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+                <div>
+                    @Html.ValidationSummary(true)
+                </div>
+                <div class="spacer20"></div>
+                <div>
+                    <input type="submit" value="Save" class="button1" />
+                </div>
+
+            }
+        </div>
+
+    </div>
+</div>

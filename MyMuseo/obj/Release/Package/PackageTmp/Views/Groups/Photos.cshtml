@@ -1,0 +1,220 @@
+﻿@model MyMuseo.Models.Group
+@using MyMuseo.Models
+
+<link rel="stylesheet" href="~/Content/flexslider.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="~/Content/fontawesome/font-awesome.css" type="text/css" media="screen" />
+
+@{
+    ViewBag.Title = "Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+.nav-tabs > li > a:focus, 
+.nav-tabs > li > a:hover 
+{
+    background-color: #000000;
+}
+
+.nav-tabs > .active > a {
+    background-color: #000000!important;
+}
+
+</style>
+
+<style>
+    .flexslider .slides img {
+        height: 125px;
+        width: auto;
+    }
+
+    .flex-direction-nav a {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+        .flex-direction-nav a.flex-prev:before {
+            content: " ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            transform: rotate(180deg);
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -2px;
+            margin-top: -5px;
+        }
+
+        .flex-direction-nav a.flex-next:before {
+            content: "  ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -0px;
+            margin-top: -0px;
+        }
+
+    input[type="radio"][id^="cb"] {
+        display: none;
+    }
+
+    label {
+        cursor: pointer;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border: 2px solid transparent;
+        margin-bottom: 0;
+        outline: 0;
+    }
+
+    :checked + label {
+        border-color: #4783B0;
+    }
+
+    label:before {
+        content: ' ';
+        position: absolute;
+        margin-left: 100px;
+        z-index: 100;
+    }
+
+    :checked + label:before {
+        content: "\f00c";
+        display: block;
+        font-family: FontAwesome;
+        color: #FFFFFF;
+        background-color: #4783B0;
+        padding: 6px;
+    }
+</style>
+
+<div class="spacer20"></div>
+<div style="background: url(/Content/images/default-group-banner.jpg) no-repeat; background-size:cover; width: 100%; height: 240px; display:block;position:relative;">   
+    @Html.Partial("_GroupHeader")
+</div>
+<div style="margin-left: 40px; margin-right: 40px;">
+    <div class="spacer20"></div>
+    <div>
+        
+        @if ((bool)ViewBag.IsGroupMember == true)
+        {
+            <button class="button1 pull-right hidden-xs" data-toggle="modal" data-target="#add_photo"> Add an Image <span class="glyphicon glyphicon-pencil"></span></button>
+            <button class="btn btn-primary visible-xs" style="width: 100%;" data-toggle="modal" data-target="#add_photo"> Add an Image <span class="glyphicon glyphicon-pencil"></span></button>
+        }
+        <span class="page-header-text">Photos</span>
+    </div>
+    <div class="spacer20"></div>
+    <div class="row" style="margin-left: 15px; margin-right: 20px; min-height: 640px;">
+        @{
+            foreach (Collectible collectible in ViewBag.GroupCollectibles)
+            {
+                <div class="col-md-3" style="padding: 20px;">
+                    <div>
+                        <a href="~/Home/CollectibleDetail/@collectible.CollectibleId"><img src="@collectible.ThumbImage" width="250" height="250" /></a>
+                    </div>
+                    <div><span class="text18">@collectible.Title</span></div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="add_photo">
+    <div class="modal-dialog" style="width: 100%;">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Add Image</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("AddPhoto", "Groups", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                        @Html.HiddenFor(model => model.GroupId)
+                        <input type="hidden" name="PhotoId" id="PhotoId" />
+                        <div>
+
+                            <div style="width:100%">
+                                <div class="flexslider carousel" id="newcollectibles">
+                                    <ul class="slides">
+                                        @{
+                                            int item = 0;
+                                            var cbid = "";
+                                            foreach (Collectible collectible in ViewBag.CollectiblesList)
+                                            {
+                                                cbid = "cb" + item;
+                                                <li>
+                                                    <div>
+                                                        <input type="radio" name="cbgroup" id="@cbid" />
+                                                        <label for="@cbid">
+                                                            <div style="width:125px; height: 125px;overflow:hidden;">
+                                                                <img src="@collectible.ThumbImage" onclick="CheckRadioListSelectedItem('@collectible.CollectibleId')" />
+                                                            </div>
+
+                                                            <span style="font-size: 11px;">@collectible.Title</span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+
+                                                item++;
+                                            }
+                                            while (item < 15)
+                                            {
+                                                cbid = "cb" + item;
+                                                <li>
+                                                    <div>
+                                                        <input type="radio" name="cbgroup" id="@cbid" />
+                                                        <label for="@cbid">
+                                                            <div style="width:125px; height: 125px;overflow:hidden;">
+                                                                <img src="~/Content/images/place-holder.png" onclick="CheckRadioListSelectedItem('~/Content/images/place-holder.png', '0')" />
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                item++;
+                                            }
+                                        }
+                                    </ul>
+
+                                </div>
+                            </div>
+                                          
+
+                        </div>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('TheForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<script defer src="~/Scripts/jquery.flexslider.js"></script>
+<script>
+    function CheckRadioListSelectedItem(collectibleId) {
+        $("#PhotoId").val(collectibleId);
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#add_photo').on('shown.bs.modal', function () {
+            $('#newcollectibles').flexslider({
+                animation: "slide",
+                controlNav: false,
+                slideshow: false,
+                animationLoop: false,
+                itemWidth: 125,
+                itemMargin: 10,
+                minItems: 1,
+                maxItems: 10
+            });
+        });
+       
+    });
+</script>
+   

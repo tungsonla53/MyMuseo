@@ -1,0 +1,213 @@
+﻿@model MyMuseo.Models.Collection
+@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Add Collection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<link rel="stylesheet" href="~/Content/flexslider.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="~/Content/fontawesome/font-awesome.css" type="text/css" media="screen" />
+
+<style>
+    .flexslider .slides img {
+        height: 125px;
+        width: auto;
+    }
+
+    .flex-direction-nav a {
+        width: 40px !important;
+        height: 40px !important;
+        z-index: 2;
+    }
+
+    .flex-direction-nav a.flex-prev:before {
+        content: "\f053";
+        display: block;
+        font-family: FontAwesome;
+        font-size: 36px;
+        color: #444444;
+        width: 40px !important;
+        height: 40px !important;
+        margin-left: 0px;
+        margin-top: 0px;
+        opacity: 0.8;
+    }
+
+    .flex-direction-nav a.flex-next:before {
+        content: "\f054";
+        display: block;
+        font-family: FontAwesome;
+        font-size: 36px;
+        color: #444444;
+        width: 40px !important;
+        height: 40px !important;
+        margin-left: -0px;
+        margin-top: -0px;
+        opacity: 0.8;
+    }
+
+
+input[type="radio"][id^="cb"] {
+  display: none;
+}
+
+label {
+	cursor: pointer;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	border: 2px solid transparent;
+	margin-bottom: 0;
+	outline: 0;
+}
+
+:checked + label {
+	border-color: #4783B0;
+}
+
+label:before {
+  content: ' ';
+  position: absolute;
+  margin-left: 100px;
+  z-index: 100;
+}
+
+:checked+label:before {
+  content: "\f00c";
+  display: block;
+  font-family: FontAwesome;
+  color: #FFFFFF;
+  background-color: #4783B0;
+  padding: 6px;
+}
+
+</style>
+
+<div class="spacer20"></div>
+<div class="row" style="margin-left: 15px; margin-right: 15px;"><div class="col-md-4"></div><div class="col-md-4" align="center"><span class="text21bold">Create a New Collection</span></div><div class="col-md-4"></div></div>
+<div class="spacer20"></div>
+<div style="margin-left: 15px; margin-right: 15px; min-height: 660px;">
+@using (Html.BeginForm("AddCollection", "Collectors", FormMethod.Post, new { role = "form" }))
+{
+    @Html.HiddenFor(model => model.FeaturedItemId)
+    @Html.HiddenFor(model => model.ThumbImage)
+    @Html.HiddenFor(model => model.NormalImage)
+    <div class="row">
+        @Html.ValidationSummary(true)
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="text18">Collection Title</label> <span class="text-danger">*</span>
+                <div>
+                    @Html.TextBoxFor(model => model.Name, new { @class = "textfield1" })
+                </div>
+                <span class="text-danger">@Html.ValidationMessageFor(model => model.Name)</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="text18">Collection Description</label> <span class="text-danger">*</span>
+                <div>
+                    @Html.TextAreaFor(model => model.Description, new { @class = "textarea1" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Description)</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <table>
+                <tr>
+                <td>
+                    @Html.CheckBoxFor(model => model.IsDraft)
+                </td><td>
+                <label class="text18">Save as a Draft</label>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                If you save this as a draft you can come back at anytime to edit this collection and publish it.
+            </p>
+        </div>
+    </div>
+    <div class="spacer20"></div>
+    <div style="padding-left: 35px;"><span class="text18">Choose a Featured Image: </span><span class="text-danger text18">(This step is not required, you can always a featured image after creating a collection).</span></div>
+    <div style="padding-left: 15px; padding-right:15px;" width='100%'>
+        <div style="width:100%">
+            <div class="flexslider carousel" id="newcollectibles">
+                <ul class="slides">
+                    @{
+                        int item = 0;
+                        var cbid = "";
+                        foreach (Collectible collectible in ViewBag.NewCollectibles)
+                        {
+                            cbid = "cb" + item;
+                            <li>
+                                <div>
+                                    <input type="radio" name="cbgroup" id="@cbid" />
+                                    <label for="@cbid">
+                                        <div style="width:125px; height: 125px;overflow:hidden;">
+                                            <img src="@collectible.ThumbImage"  onclick="CheckRadioListSelectedItem('@collectible.NormalImage', '@collectible.CollectibleId')" />
+                                        </div>
+                                        
+                                        <span style="font-size: 11px;">@collectible.Title</span>
+                                    </label>
+                                </div>
+                            </li>
+
+                            item++;
+                        }
+                        while (item < 15)
+                        {
+                            cbid = "cb" + item;
+                            <li>
+                                <div>
+                                    <input type="radio" name="cbgroup" id="@cbid" />
+                                    <label for="@cbid">
+                                        <div style="width:125px; height: 125px;overflow:hidden;">
+                                            <img src="~/Content/images/place-holder.png" onclick="CheckRadioListSelectedItem('~/Content/images/place-holder.png', '0')" />
+                                        </div>
+                                    </label>
+                               </div>
+                            </li>
+                            item++;
+                        }
+                    }
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="spacer20"></div>
+    <div class="row" align="center">
+        <div class="form-group">
+            <input type="submit" value="Make Collection" class="button1" />
+        </div>
+    </div>
+}
+</div>
+
+
+<div class="spacer40"></div>
+<script defer src="~/Scripts/jquery.flexslider.js"></script>
+<script>
+    function CheckRadioListSelectedItem(image, collectibleId) {
+        $("#FeaturedItemId").val(collectibleId);
+        $("#ThumbImage").val(image);
+        $("#NormalImage").val(image);
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#newcollectibles').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 125,
+            itemMargin: 10,
+            minItems: 2,
+            maxItems: 10
+        });
+    });
+</script>

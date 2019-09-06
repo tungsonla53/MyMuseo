@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "My Groups";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin-left: 25px; margin-right: 25px;">
+    <div class="spacer20"></div>
+    <div class="text18 pull-right" style="margin-right: 40px;">
+        <a href="~/Uploader/AddGroup/" style="text-decoration:none; display:inline-block;">
+            <div style="width: 90px; height:90px;">
+                <img src="~/Content/images/groups/add-group.png" style="margin-left:10px;margin-top:34px; width: 80px; height: 80px;" />
+            </div>
+            Add a Group 
+        </a>
+    </div>
+    <div><span class="page-header-text">Your Groups</span></div>
+    
+    <div class="spacer20"></div>
+    <div><h3>Groups You Administer</h3></div>
+    <div class="spacer10"></div>
+    <table class="table">
+        <tbody>
+            @foreach (var admin in ViewBag.AdminGroups)
+            {
+                <tr class="text18">
+                    <td style="width: 80px;">
+                        <a href="~/Groups/Board/@admin.GroupId"><img src="@admin.Image" width="60" height="60" /></a>
+                    </td>
+                    <td style="width: 200px;">
+                        <span  class="text21" >@admin.Name</span>
+                        <p>@ViewBag.GetGroupMembersCount(admin.GroupId)</p>
+                    </td>
+                    <td>
+                        @Html.Raw(@admin.Description)
+                    </td>
+                    <td style="width: 140px;">
+                        <a data-toggle="modal" data-target="#modal_deletegroup" href="" onclick="$('#deleteId').val(@admin.GroupId);">Delete Group</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="spacer20"></div>
+    <div><h3>Groups you belong to</h3></div>
+    <div class="spacer10"></div>
+    <table class="table">
+        <tbody>
+    @foreach (var member in ViewBag.MemberGroups)
+            {
+        <tr class="text18">
+            <td style="width: 80px;">
+                <a href="~/Groups/Board/@member.GroupId"><img src="@member.Image" width="60" height="60" /></a>
+            </td>
+            <td style="width: 200px;">
+                <span class="text21">@member.Name</span>
+                <p>@ViewBag.GetGroupMembersCount(member.GroupId)</p>
+            </td>
+            <td>
+                @Html.Raw(@member.Description)
+            </td>
+            <td style="width: 140px;">
+                <a data-toggle="modal" data-target="#modal_leavegroup" href="" onclick="$('#leaveId').val(@member.GroupId);">Leave Group</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+    </table>
+</div>
+<div class="spacer40"></div>
+<div class="modal fade" id="modal_deletegroup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Delete Group</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("DeleteGroup", "Groups", FormMethod.Post, new { id = "DeleteGroupForm" }))
+                    {
+                        <input type="hidden" name="deleteId" id="deleteId" />
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td>
+                                    <span class="text21bold">This Action Cannot Be Undone.</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('DeleteGroupForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_leavegroup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Leave Group</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("LeaveMyGroup", "Groups", FormMethod.Post, new { id = "LeaveGroupForm" }))
+                    {
+                        <input type="hidden" name="leaveId" id="leaveId" />
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td>
+                                    <span class="text21bold">This Action Cannot Be Undone.</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('LeaveGroupForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

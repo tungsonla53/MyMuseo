@@ -1,0 +1,104 @@
+﻿@model MyMuseo.Models.Group
+@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+.nav-tabs > li > a:focus, 
+.nav-tabs > li > a:hover 
+{
+    background-color: #000000;
+}
+
+.nav-tabs > .active > a {
+    background-color: #000000!important;
+}
+
+</style>
+<div class="spacer20"></div>
+<div style="background: url(/Content/images/default-group-banner.jpg) no-repeat; background-size:cover; width: 100%; height: 240px; display:block;position:relative;">
+    @Html.Partial("_GroupHeader")
+</div>
+<div>
+    <div>
+        <div style="margin-left: 40px; margin-right: 40px;">
+            <div class="spacer20"></div>
+            
+
+            <div style="margin-left:60px;">
+                
+                
+            <div class="text18">
+                <div style="padding-right:140px;"><span style="font-size: 24px;">Topic : @Html.Raw(@ViewBag.Topic.DiscussionTopic)</span></div>
+                <div class="pull-right">
+                    by <a href="~/Home/CollectorDetail/@ViewBag.Topic.PostByCollectorId"><span style="font-weight: normal; color: #0098d1;"> @ViewBag.GetUserName(@ViewBag.Topic.PostByCollectorId)</span></a><br />
+                    <span style="font-weight: normal; color: #0f8ddf;">@ViewBag.Topic.CreatedDate.ToString("MMM dd, yyyy")</span>
+                </div>
+                <div style="padding-right:200px;display:block; min-height: 100px;"><img src="@ViewBag.GetUserImage(@ViewBag.Topic.PostByCollectorId)" style="width: 100px; height: 100px; float:left; margin-right: 50px;" /><p>@Html.Raw(@ViewBag.Topic.DiscussionText)</p></div>
+                
+@if (Request.IsAuthenticated)
+{
+                <div class="row" >
+                    <button type="button" class="btn btn-link text18 pull-right" data-toggle="modal" data-target="#post_reply">Reply</button>
+                </div>
+}
+                <div class="spacer10"></div>
+                <hr />
+            </div>
+            @foreach (Discussion reply in ViewBag.ReplyList)
+            {
+                <div class="spacer10"></div>
+                <div class="text18">
+                    <div class="pull-right">
+                        <span style="font-weight: normal; color: #0098d1;"><a href="~/Home/CollectorDetail/@reply.PostByCollectorId">@ViewBag.GetUserName(reply.PostByCollectorId)</a></span><span> Replied</span><br />
+                        <span style="font-weight: normal; color: #0098df;">@reply.CreatedDate.ToString("MMM dd, yyyy") </span>
+                     </div>
+                        <div style="padding-right:200px; display:block; min-height: 100px;"><img src="@ViewBag.GetUserImage(@reply.PostByCollectorId)" style="width: 100px; height: 100px; float:left; margin-right: 50px;" /><p>@Html.Raw(@reply.DiscussionText)</p></div>
+                        
+                        @if (Request.IsAuthenticated)
+                        {
+                            <div class="row">
+                                <button type="button" class="btn btn-link text18 pull-right" data-toggle="modal" data-target="#post_reply">Reply</button>
+                            </div>
+                        }
+                    </div>
+                <div class="spacer10"></div>
+            }
+                   
+
+            </div>
+
+
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="modal fade" id="post_reply">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Reply</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("ReplyDiscussion", "Groups", FormMethod.Post, new { id = "DiscussionForm" }))
+                    {
+                        @Html.HiddenFor(model => model.GroupId)
+                        <label>Message:</label>
+                        <textarea id="message" name="message" class="textarea1" style="width: 520px !important;"></textarea>
+                        <input type="hidden" name="commentid" value="@ViewBag.Topic.DiscussionId" />
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('DiscussionForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

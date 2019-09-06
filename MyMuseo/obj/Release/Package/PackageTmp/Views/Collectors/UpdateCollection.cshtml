@@ -1,0 +1,146 @@
+﻿@model MyMuseo.Models.Collection
+@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Update Collection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<link rel="stylesheet" href="~/Content/flexslider.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="~/Content/fontawesome/font-awesome.css" type="text/css" media="screen" />
+
+<style>
+    .flexslider .slides img {
+        height: 125px;
+        width: auto;
+    }
+
+    .flex-direction-nav a {
+        width: 40px !important;
+        height: 40px !important;
+        z-index: 2;
+    }
+
+    .flex-direction-nav a.flex-prev:before {
+        content: "\f053";
+        display: block;
+        font-family: FontAwesome;
+        font-size: 36px;
+        color: #444444;
+        width: 40px !important;
+        height: 40px !important;
+        margin-left: 0px;
+        margin-top: 0px;
+        opacity: 0.8;
+    }
+
+    .flex-direction-nav a.flex-next:before {
+        content: "\f054";
+        display: block;
+        font-family: FontAwesome;
+        font-size: 36px;
+        color: #444444;
+        width: 40px !important;
+        height: 40px !important;
+        margin-left: -0px;
+        margin-top: -0px;
+        opacity: 0.8;
+    }
+
+
+input[type="radio"][id^="cb"] {
+  display: none;
+}
+
+label {
+	cursor: pointer;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	border: 2px solid transparent;
+	margin-bottom: 0;
+	outline: 0;
+}
+
+:checked + label {
+	border-color: #4783B0;
+}
+
+label:before {
+  content: ' ';
+  position: absolute;
+  margin-left: 100px;
+  z-index: 100;
+}
+
+:checked+label:before {
+  content: "\f00c";
+  display: block;
+  font-family: FontAwesome;
+  color: #FFFFFF;
+  background-color: #4783B0;
+  padding: 6px;
+}
+
+</style>
+
+<div class="spacer20"></div>
+<div class="row" style="margin-left: 15px; margin-right: 15px;"><div class="col-md-4"></div><div class="col-md-4" align="center"><span class="text21bold">Update Collection</span></div><div class="col-md-4"></div></div>
+<div class="spacer20"></div>
+<div style="margin-left: 15px; margin-right: 15px; min-height: 660px;">
+@using (Html.BeginForm("UpdateCollection", "Collectors", FormMethod.Post, new { role = "form" }))
+{
+    @Html.HiddenFor(model => model.CollectionId)
+    @Html.HiddenFor(model => model.FeaturedItemId)
+    @Html.HiddenFor(model => model.ThumbImage)
+    @Html.HiddenFor(model => model.NormalImage)
+    <div class="row">
+        @Html.ValidationSummary(true)
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="text18">Collection Title</label> <span class="text-danger">*</span>
+                <div>
+                    @Html.TextBoxFor(model => model.Name, new { @class = "textfield1" })
+                </div>
+                <span class="text-danger">@Html.ValidationMessageFor(model => model.Name)</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="text18">Collection Description</label> <span class="text-danger">*</span>
+                <div>
+                    @Html.TextAreaFor(model => model.Description, new { @class = "textarea1" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Description)</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <table>
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(model => model.IsDraft)
+                        </td>
+                        <td>
+                            <label class="text18">Save as a Draft</label>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    If you save this as a draft you can come back at anytime to edit this collection and publish it.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="spacer20"></div>
+    <div class="row" align="center">
+        <div class="form-group">
+            <input type="submit" value="Update Collection" class="button1" />
+        </div>
+    </div>
+}
+</div>
+
+<div class="spacer40"></div>

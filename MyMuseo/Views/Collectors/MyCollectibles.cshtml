@@ -1,0 +1,64 @@
+﻿@model MyMuseo.Models.Collector
+@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Collectibles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="spacer20"></div>
+<div class="row" style="margin-left: 15px; margin-right: 15px;"><div class="col-md-4"><a href="~/Home/CollectorDetail/@Model.CollectorId" class="page-header-text"> @Session["FullName"]</a></div></div>
+<div class="spacer20"></div>
+@if (Request.IsAuthenticated && (ViewBag.IsMe == true))
+{
+<div class="row" style="margin-left: 15px; margin-right: 15px;">
+    <div class="col-md-4 col-xs-12" >
+        <a href="~/Collectors/MyCollections/@Model.CollectorId" style="text-decoration: none;"><div class="btn btn-default btn-block"><span class="text21bold">My Collections (@ViewBag.CollectionsCount)</span></div></a>
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <a href="~/Collectors/MyCollectibles/@Model.CollectorId" style="text-decoration: none;color: #ffffff;"><div class="btn btn-primary btn-block"><span class="text21bold">My Items (@ViewBag.CollectiblesCount)</span></div></a>
+    </div>
+    <div class="col-md-4 col-xs-12">
+        <a href="~/Collectors/MyFavorites/@Model.CollectorId" style="text-decoration: none;"><div class="btn btn-default btn-block"><span class="text21bold">My Favorites (@ViewBag.FavoritesCount)</span></div></a>
+    </div>
+ </div>
+}
+else
+{
+    <div class="row" style="margin-left: 15px; margin-right: 15px;">
+        <div class="col-md-4 col-xs-12">
+            <a href="~/Collectors/MyCollections/@Model.CollectorId" style="text-decoration: none;"><div class="btn btn-default btn-block"><span class="text21bold"> Collections (@ViewBag.CollectionsCount)</span></div></a>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <a href="~/Collectors/MyCollectibles/@Model.CollectorId" style="text-decoration: none;"><div class="btn btn-primary btn-block"><span class="text21bold"> Items (@ViewBag.CollectiblesCount)</span></div></a>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <a href="~/Collectors/MyFavorites/@Model.CollectorId" style="text-decoration: none;"><div class="btn btn-default btn-block"><span class="text21bold"> Favorites (@ViewBag.FavoritesCount)</span></div></a>
+        </div>
+    </div>
+}
+<div class="spacer20"></div>
+ <div class="row" style="margin-left: 15px; margin-right: 15px; min-height: 640px;">
+@if (Request.IsAuthenticated && (ViewBag.IsMe == true))
+{
+            <div class="col-md-3" style="padding: 20px;">
+                <div>
+                    <div>
+                        <a href="~/Uploader/AddCollectibleItem/0" style="text-decoration:none;"><div style="width: 250px; height:250px; background-color:#e3e5e4;"><img src="~/Content/images/icons/upload-icon.png" style="margin-left:110px;margin-top:90px;" /><span style="display:block; margin-top:20px;margin-left:90px;color:#444444;font-weight: bold; font-size: 11px; font-family: Arial,'Segoe UI', 'Helvetica' sans-serif;">Upload an Image</span></div></a>
+                    </div>
+                </div>
+                <div><span class="text18">Upload an Image</span></div>
+            </div>
+}
+            @{
+                foreach (Collectible collectible in ViewBag.MyCollectibles)
+                {
+                    <div class="col-md-3" style="padding: 20px;">
+                        <div style="width: 250px;">
+                            <a href="~/Home/CollectibleDetail/@collectible.CollectibleId"><img src="@collectible.ThumbImage" width="250" height="250" /></a>
+                        </div>
+                        <div style="width: 250px; height:40px;" ><span class="text18">@collectible.Title</span></div>
+                    </div>
+                }
+            }
+ </div>

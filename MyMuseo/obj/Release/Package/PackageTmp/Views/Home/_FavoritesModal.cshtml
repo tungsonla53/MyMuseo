@@ -1,0 +1,48 @@
+﻿@using MyMuseo.Models;
+
+<div class="modal fade" id="modal_favorites">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <table>
+                    <tr>
+                        <td>
+                        <img src="~/Content/images/icons/favorites.png" width="44" height="40" style="padding: 4px;" />
+                        </td><td>
+                        <h3 class="modal-title">Faved By: @ViewBag.FavoritesList.Count</h3>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-body">
+                <div class="pre-scrollable" style="max-height: 420px;">
+                    <table width="100%">
+                        @if (ViewBag.FavoritesList != null)
+                        {
+                            foreach (Collector collector in ViewBag.FavoritesList)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="~/Home/CollectorDetail/@collector.CollectorId"><img src="@collector.ProfileImage" width="80" height="80" /></a>
+                                    </td>
+                                    <td>
+                                        <span class="text18">@collector.FirstName @collector.LastName</span>
+                                    </td>
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                    <td>
+                                        <form class="form" role="form" method="post" action="~/Collectors/FollowCollector/@collector.CollectorId" accept-charset="UTF-8" id="follow-form@collector.CollectorId">
+                                            <button onclick="javascript: document.getElementById('follow-form@collector.CollectorId').submit()"><img src="~/Content/images/icons/follow.png" width="24" height="20" />Follow</button>
+                                        </form>
+                                    </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

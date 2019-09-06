@@ -1,0 +1,25 @@
+﻿
+<style>
+    .caret {
+        border-top: 4px solid white;
+    }
+</style>
+
+            <div class="dropdown visible-xs">
+                <button class="btn btn-primary dropdown-toggle" style="color: white; width:100%;" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    @ViewBag.Title
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 100%;">
+                    <li><a href="~/Dashboard/MessageCenter">Message Center</a></li>
+                    <li><a href="~/Dashboard/Notifications">Notifications</a></li>
+                    <li><a href="~/Dashboard/Sales">Sales</a></li>
+                    <li><a href="~/Dashboard/Purchases">Purchases</a></li>
+                    <li><a href="~/Dashboard/Following">Following (@ViewBag.FollowingCount)</a></li>
+                    <li><a href="~/Dashboard/Followers">Followers (@ViewBag.FollowersCount)</a></li>
+                    <li><a href="~/Dashboard/MyItems">My Items (@ViewBag.ItemsCount)</a></li>
+                </ul>
+            </div>
+<div class="spacer10"></div>
+
+            

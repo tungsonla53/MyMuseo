@@ -1,0 +1,79 @@
+﻿@model MyMuseo.Models.CollectiblesViewModel
+@{
+    ViewBag.Title = "Collectibles";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h2>Collectibles</h2>
+<p>
+    @Html.ActionLink("Create New Collectible", "Create")
+</p>
+@using (Html.BeginForm("Index", "Collectibles", FormMethod.Post, new { id = "TheForm" }))
+{
+    <div class="form-group">
+        @Html.DropDownList(
+    "Name",
+    (SelectList)Model.Collections,
+    "--All Collections--",
+    new
+    {
+        onchange = "document.getElementById('TheForm').submit();",
+        @class = "form-control"
+    })
+    </div>
+}
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                Collection
+            </th>
+            <th>
+                Thumbnail
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Display Order
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Collectibles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CollectionId)
+                </td>
+                <td>
+                    <img src="@item.ThumbImage" width="60" height="60">
+                </td>
+                <td>
+                    <img src="@item.NormalImage" width="100" height="100">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayOrder)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CollectibleId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.CollectibleId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CollectibleId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

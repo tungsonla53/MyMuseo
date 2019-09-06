@@ -1,0 +1,101 @@
+﻿@model MyMuseo.Models.Collector
+@using MyMuseo.Models
+@using MyMuseo.Helpers
+
+
+@{
+    ViewBag.Title = "Following (" + ViewBag.FollowingCount + ")";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 700px;">
+    <div class="spacer20"></div>
+    <div><span class="text28bold"><a href="~/Home/CollectorDetail/0" style="font-family:'Avenir-Book';color:#444444;">@Model.FirstName @Model.LastName</a> - Dashboard</span></div>
+    <div class="spacer20"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs hidden-xs">
+                <li ><a href="~/Dashboard/MessageCenter">Message Center</a></li>
+                <li><a href="~/Dashboard/Notifications">Notifications</a></li>
+                <li><a href="~/Dashboard/Sales">Sales</a></li>
+                <li><a href="~/Dashboard/Purchases">Purchases</a></li>
+                <li class="active"><a href="~/Dashboard/Following">Following (@ViewBag.FollowingCount)</a></li>
+                <li><a href="~/Dashboard/Followers">Followers (@ViewBag.FollowersCount)</a></li>
+                <li><a href="~/Dashboard/MyItems">My Items (@ViewBag.ItemsCount)</a></li>
+            </ul>
+            @Html.Partial("_Menu-m")
+
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab5">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Collectibles</th>
+                                <th>Last uploaded</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+@foreach (var following in ViewBag.FollowingList)
+{
+    <tr>
+        <td><a href="~/Home/CollectorDetail/@following.CollectorId">@following.FirstName @following.LastName</a></td>
+        <td>1</td>
+        <td>@following.CreatedDate</td>
+        <td><a href="#delete_following" data-toggle="modal" onclick="setDeleteValues('@following.CollectorId','@following.FirstName @following.LastName');">Remove</a></td>
+    </tr>
+}
+                        </tbody>
+                    </table>
+                </div>
+</div>
+<script>
+    function setDeleteValues(deleteId, deleteName) {
+        $('#deleteid').val(deleteId);
+        $('#deletename').html(deleteName);
+    }
+</script>
+<div class="modal fade" id="delete_following">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+
+                    @using (Html.BeginForm("DeleteFollowing", "Dashboard", FormMethod.Post, new { id = "DeleteForm" }))
+                    {
+                        <input type="hidden" name="deleteid" id="deleteid" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td class="text18">
+                                    <span>Remove following</span> <span id="deletename"></span>
+                                </td>
+                            </tr>
+                        </table>
+                            <div class="spacer20"></div>
+                            <div class="row">
+                                <div class="col-md-6" align="center">
+                                    <button type="button" class="button1" onclick="document.getElementById('DeleteForm').submit();"> Remove</button>
+                                </div>
+                                <div class="col-md-6" align="center">
+                                    <a href="#" data-dismiss="modal"><button type="button" class="btn btn-default"> Cancel</button></a>
+                                </div>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+    </div>
+</div>

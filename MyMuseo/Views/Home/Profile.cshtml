@@ -1,0 +1,110 @@
+﻿@model MyMuseo.Models.Collector
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_LayoutCollector.cshtml";
+}
+<div class="container">
+        <div class="container">
+            <h4>@Model.FirstName @Model.LastName</h4>
+        </div>
+        <div class="col-md-4 products-left">
+            
+                <div class="col-md-12">
+                
+            <div class="panel panel-default" style="background: url(@ViewBag.ProfileImage) no-repeat; background-size:cover; height: 320px;">
+                <div class="panel-body" style="height: 240px;">
+               
+                </div>
+                <div class="panel-footer" style="background-color: transparent; border: 0px;">
+                    <form class="form bottom" role="form" method="post" action="~/Collectors/FollowCollector/" accept-charset="UTF-8" id="follow-form">
+                        @Html.HiddenFor(model => model.CollectorId)
+                        <button type="submit" class="btn btn-block" style="background-color: black; color: white;">Follow</button>
+                    </form>
+                </div>    
+
+</div>
+                    
+
+
+                    </div>
+            
+            @Model.FirstName @Model.LastName
+                
+
+                <div class="container">
+                    <h4>Interests</h4>
+                    @if (Model.AreasOfInterest != null)
+                    {
+                    <span>@Html.Raw(Model.AreasOfInterest.Replace(",", "<BR/>"))</span>
+                    }
+                    <ul class="fa-ul">
+                        <li><i class="fa-li fa fa-square"></i>&nbsp;Collectibles (@ViewBag.CollectiblesCount)</li>
+                        <li><i class="fa-li fa fa-square"></i>&nbsp;Collections (@ViewBag.CollectionsCount)</li>
+                        <li><i class="fa-li fa fa-comment"></i>&nbsp;Followers (@ViewBag.FollowersCount)</li>
+                        <li><i class="fa-li fa fa-comments"></i>&nbsp;Following (@ViewBag.FollowingCount)</li>
+                        <li><i class="fa-li fa fa-star" style="background-color:red; color: white;"></i>&nbsp;Favorites (@ViewBag.FavoritesCount)</li>
+                    </ul>
+                    
+                </div>
+                <div class="container">
+                    <h4>Websites I like</h4>
+                    <span>@Html.Raw(ViewBag.Sites)</span>
+                </div>
+            </div>
+        <div class="col-md-8">
+            <div class="container">
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <img class="card-img-top img-fluid" src="@ViewBag.FeaturedImage" style="border: 1px; border-color: black; width: 360px; padding-right: 10px;" alt="Feature Image">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="~/Content/images/thumb1.png" style="border: 1px; border-color: black; width: 110px; margin-bottom: 10px;" alt="Feature Image">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="~/Content/images/thumb2.png" style="border: 1px; border-color: black; width: 110px;  margin-bottom: 10px;" alt="Feature Image">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="~/Content/images/thumb3.png" style="border: 1px; border-color: black; width: 110px;  margin-bottom: 10px;" alt="Feature Image">
+                            </div>
+                        </div>
+                       </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <img class="card-img-top img-fluid" src="~/Content/images/thumb1.png" style="border: 1px; border-color: black; width: 110px;  margin-bottom: 10px;" alt="Feature Image">
+                                </div>
+                            </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="~/Content/images/thumb1.png" style="border: 1px; border-color: black; width: 110px;  margin-bottom: 10px;" alt="Feature Image">
+                            </div>
+                        </div>
+                            
+                    </div>
+                    
+                </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container">
+                    <h3>About @Model.FirstName @Model.LastName</h3>
+                </div>
+                <div class="container well">
+                    @Html.Raw(Model.AboutMe)
+                </div>
+            </div>
+        </div>
+    </div>
+
+

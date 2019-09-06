@@ -1,0 +1,92 @@
+﻿@model MyMuseo.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="spacer20"></div>
+    <div>
+        <span class="text21bold">Register - Step 1 of 4</span>
+    </div>
+    <div class="spacer15"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group">
+                <div class="list-group">
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action active" style="font-weight:bold; font-size:21px;margin-bottom:20px;">Account Information</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold;font-size:21px;margin-bottom:20px;">Profile Information</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Address Information</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Privacy Preferences</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Logout</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FirstName, new { @class = "text21bold" })
+                    <div>
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "textfield1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LastName, new { @class = "text21bold" })
+                    <div>
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "textfield1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "text21bold" })
+                    <div>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "textfield1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "text21bold" })
+                    <div>
+                        @Html.PasswordFor(m => m.Password, new { @class = "textfield1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "text21bold" })
+                    <div>
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "textfield1" })
+                    </div>
+                </div>
+                <div>
+                    <label class="text21bold">I am</label>
+                </div>
+                <div class="form-group">
+                    @Html.DropDownList("TypeId", null, "Select...", new { @class = "textfield1" })
+                    @Html.ValidationMessageFor(model => model.TypeId)
+                </div>
+                <div class="spacer20"></div>
+                <div class="form-group">
+                    @Html.ValidationSummary("", new { @class = "text-danger text18" })
+                </div>
+                <div class="form-group">
+                    <div>
+                        <input type="submit" class="button1" value="Register" />
+                    </div>
+                </div>
+            }
+            
+            <p class="text18">
+                Please make sure your email address is correct.<br/>
+                After you save this information we will send you an
+                email to activate your account. After clicking the link
+                "Activate Your Account Now" in the email you will able to complete
+                your profile and begin to add collectibles, collection and more!
+            </p>
+            <div class="spacer20"></div>
+        </div>
+        </div>
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

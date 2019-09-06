@@ -1,0 +1,367 @@
+﻿@using MyMuseo.Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="At myMuseo.com we’re expanding the ecosystem for artists and collectors. Join our community to share your art and collections. myMuseo.com exists as an online forum to bring together art enthusiasts: artists and collectors, who are excited to share their work and collections and to discover something new. Buy sell or just take part in the discussion." />
+    <meta name="keywords" content="Art for Sale, Original Artwork, Paintings, Photography, Sculpture, Prints, Buy Art Online, Sell Art Online, myMuseo" />
+    <title>@ViewBag.Title - myMuseo</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="~/Content/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/popper.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/moment.js")" type="text/javascript"></script>
+</head>
+<body>
+  <style>
+
+.verticaltextx {
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	color: #fff;
+	background: #f45942;
+	font-size: 14px;
+    vertical-align: top;
+    height: 21px;
+	width: 100px;
+    margin-left: -40px;
+    margin-top: 38px;
+    text-align: center;
+   
+}
+
+#accordion .panel {
+    margin-left: 10px;
+    margin-right: 10px;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-radius: 0px;
+}
+
+#accordion .panel-heading { padding: 0;}
+#accordion .panel-title > a {
+	display: block;
+	padding: 0.4em 0.6em;
+    outline: none;
+    font-weight:normal;
+    text-decoration: none;
+    background: #f45942; 
+    color: white; 
+}
+
+#accordion .panel-title > a.accordion-toggle::before, #accordion a[data-toggle="collapse"]::before  {
+    content:"\e113";
+    float: right;
+    font-family: 'Glyphicons Halflings';
+	margin-right :0.5em;
+}
+#accordion .panel-title > a.accordion-toggle.collapsed::before, #accordion a.collapsed[data-toggle="collapse"]::before  {
+    content:"\e114";
+}
+
+#accordion .panel-body {
+    background: #f45942; 
+    color: white; 
+}
+
+
+.glyphicon-pencil:hover {
+    color:#d1d311;
+}
+.glyphicon-pencil:active {
+    color:#fdfb4a;
+}
+
+.glyphicon-refresh:hover {
+    color:#d1d311;
+}
+.glyphicon-refresh:active {
+    color:#fdfb4a;
+}
+.glyphicon-arrow-left:hover {
+    color:#d1d311;
+}
+.glyphicon-arrow-left:active {
+    color:#fdfb4a;
+}
+.glyphicon-arrow-right:hover {
+    color:#d1d311;
+}
+.glyphicon-arrow-right:active {
+    color:#fdfb4a;
+}
+
+#q:hover {
+    background-color: #f3f3f3;
+	border: 1px solid #d3e50a;
+    color: #333333;
+    outline: none;
+}
+
+#q:focus {
+    outline: none;
+    background-color: #f3f3f3;
+	border: 1px solid #d3e50a;
+    color: #333333;
+    -webkit-box-shadow: 7px 6px 23px 1px rgba(119, 119, 119, 0.37);
+	-moz-box-shadow: 7px 6px 23px 1px rgba(119, 119, 119, 0.37);
+	box-shadow: 7px 6px 23px 1px rgba(119, 119, 119, 0.37);
+}
+
+.unstyled-button {
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+
+    .object-fit_contain_social { width:340px; height:340px; object-fit: contain; }
+
+  </style>
+    <div class="navbar navbar-default navbar-fixed-top" style="background-color: white !important;">
+        
+        <div class="col-md-12">
+            <div>
+                <div class="navbar-header">
+                    <button button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+            <a href="~/Home" title="myMuseo">
+                <img style="padding-left: 40px; margin-top: 10px;" src="~/Content/images/myMuseo.png" class="hidden-xs">
+                <img style="padding-left: 0px; margin-top: 10px; width: 90%;" src="~/Content/images/myMuseo.png" class="visible-xs">
+            </a>
+            
+            @Html.Partial("_LoginDropdown")
+                 
+            </div>
+            
+            <div id="navbar" class="collapse navbar-collapse navbar-responsive-collapse" >
+                <ul class="nav navbar-nav" style="font-size: 16px;letter-spacing: 1px!important;font-family:Avenir-Book">
+                    <li>@Html.ActionLink("Painting", "ItemsListing", "Home",new { id = 1, order = 0 }, new { @class="border" })</li>
+                    <li>@Html.ActionLink("Drawing", "ItemsListing", "Home", new { id = 2, order = 0 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Prints", "ItemsListing", "Home", new { id = 3, order = 0 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Photography", "ItemsListing", "Home", new { id = 7, order = 0 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Collage", "ItemsListing", "Home", new { id = 4, order = 0 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Jewelry", "ItemsListing", "Home", new { id = 11, order = 0 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Sculpture", "ItemsListing", "Home", new { id = 16, order = 0 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("All Categories", "AllCategories", "Home", new { id = 0 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("All Members", "AllMembers", "Home", new { id = 0 }, new { @class = "border" })</li>
+                    <li>
+                        <form id="frmsearch" action="~/Home/ItemsSearch" method="get">
+                            <table style="margin-top: 8px;width: 200px;">
+                                <tr>
+                                    <td>
+                                        <input class="form-control no-border text18"  id="q" name="q" type="text" placeholder="Search" autocomplete="off">
+                                    </td>
+                                    <td>
+                                        <button id="submit" name="submit" class="unstyled-button"><i class="glyphicon glyphicon-search"></i></button>
+                                    </td>
+                                </tr>
+                            </table>
+                       </form>
+                    </li>   
+                </ul>    
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_ErrorMessageModal")
+
+    <script>
+       
+
+        var dict = {};
+        $(document).ready(function () {
+            //BindControls();
+            $('[data-toggle="popover"]').popover();
+            toggleCP();
+            var docHeight = $(window).height();
+            var footerHeight = $('#footer').height();
+            var footerTop = $('#footer').position().top + footerHeight;
+
+            if (footerTop < docHeight) {
+                $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+            }
+
+        });
+
+        function BindControls() {
+            $('#Search').typeahead({
+
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/Home/CollectibleLookup/" + request,
+                        dataType: "json",
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            var collectibles = [];
+                            response($.map(data, function (item) {
+                                dict[item.Title + ' ' + item.ArtistName] = item;
+                                collectibles.push(item.Title + ' ' + item.ArtistName);
+                            }))
+                            response(collectibles);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(textStatus);
+                        }
+                    });
+                },
+                updater: function (item) {
+                    var selectedCollectibleId = dict[item].CollectibleId;
+                    window.location.href = "/Home/CollectibleDetail/" + selectedCollectibleId;
+                    return item;
+                },
+                hint: true,             // SHOW HINT (DEFAULT IS "true").
+                highlight: true,        // HIGHLIGHT (SET <strong> or <b> BOLD). DEFAULT IS "true".
+                minLength: 1            // MINIMUM 1 CHARACTER TO START WITH.
+            });
+        }
+
+        $(document.body).on('click', function (e) {
+            $('[data-toggle="popover"]').each(function () {
+                //the 'is' for buttons that trigger popups
+                //the 'has' for icons within a button that triggers a popup
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    var bsPopover = $(this).data('bs.popover'); // Here's where the magic happens
+                    if (bsPopover) bsPopover.hide();
+                }
+            });
+        });
+
+    </script>
+
+    <div style="margin-top: 20px;">
+        <!-- Page content -->
+        <div id="page-content">
+            <div class="spacer40 hidden-sx" ></div>
+            <!-- Keep all page content within the page-content inset div! -->
+            <div>
+                @RenderBody()
+            </div>
+            <div id="footer">
+                @Html.Partial("_Footer")
+            </div>  
+  
+        </div>
+
+   </div>    
+   
+    
+         
+    
+    <script>
+        function postLike(id, threadid)
+        {
+            var count = $('#'+id).text();
+            var url = "/Xtra/LikeMsg";
+            $.get(url, { input: count, thread: threadid }, function (data) {
+                $("#"+id).html(data);
+            });
+        }
+
+        function postInterested(id, threadid) {
+            var count = $('#' + id).text();
+            var url = "/Xtra/InterestedMsg";
+            $.get(url, { input: count, thread: threadid }, function (data) {
+                $("#" + id).html(data);
+            });
+        }
+
+        function postGoing(id, threadid) {
+            var count = $('#' + id).text();
+            var url = "/Xtra/GoingMsg";
+            $.get(url, { input: count, thread: threadid }, function (data) {
+                $("#" + id).html(data);
+            });
+        }
+
+        function showReply (id)
+        {
+            $('#' + id).toggle();
+        }
+
+        function showComment(id) {
+            $('#' + id).toggle();
+            $('#L' + id).toggle();
+        }
+
+        function showEdit(id) {
+            $('#L' + id).toggle();
+            $('#T' + id).toggle();
+        }
+
+        function togglePost() {
+            $('#post-div-label').toggle();
+            $('#post-div-form').toggle();
+        }
+
+        function showEvent() {
+            $('#main-area').hide();
+            $('#event-area').show();
+        }
+
+        function hideEvent() {
+            $('#main-area').show();
+            $('#event-area').hide();
+        }
+
+        function showPhoto() {
+            $('#main-area').hide();
+            $('#photo-area').show();
+        }
+
+        function hidePhoto() {
+            $('#main-area').show();
+            $('#photo-area').hide();
+        }
+
+        function toggleCP() {
+            var cp = document.getElementById("cp");
+            cp.style.height = window.innerHeight - 160 + "px";
+            var cp2 = document.getElementById("cp2");
+            cp2.style.height = window.innerHeight - 160 + "px";
+            if (cp.style.right == "0px") {
+                cp.style.right = "-460px";
+                $("#vtext").show();
+                $("#menu-toggle").show();
+            } else {
+                cp.style.right = "0px";
+                $("#vtext").hide();
+                $("#menu-toggle").hide();
+            }
+            //var iSelector = $("#menu1");
+            //if (iSelector.hasClass('glyphicon-arrow-right')) {
+            //    iSelector.removeClass('glyphicon-arrow-right')
+            //    iSelector.addClass('glyphicon-arrow-left')
+            //} else if (iSelector.hasClass('glyphicon-arrow-left')) {
+            //    iSelector.removeClass('glyphicon-arrow-left')
+            //    iSelector.addClass('glyphicon-arrow-right')
+            //}
+        }
+
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114864897-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-114864897-1');
+    </script>
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,139 @@
+﻿@using MyMuseo.Models
+@using MyMuseo.Controllers
+@model MyMuseo.Models.Collection
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutCollector.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <h3>@Model.Name</h3>
+        <div class="col-md-8">
+            <img class="img-responsive" src="@Model.NormalImage" />
+        </div>
+        <div class="col-md-4">
+            <h4>@Model.Name</h4>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+        <div class="well-none">
+            <div id="myCarousel" class="carousel slide">
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="row">
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                        </div>
+                        <!--/row-->
+                    </div>
+                    <!--/item-->
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <a href="#x"><img src="http://placehold.it/150x150" alt="Image" class="img-responsive"></a>
+                            </div>
+                        </div>
+                        <!--/row-->
+                    </div>
+                    <!--/item-->
+                    <!--/item-->
+                </div>
+                <!--/carousel-inner-->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i class="fa fa-arrow-left fa-4"></i></a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next"><i class="fa fa-arrow-right fa-4"></i></a>
+            </div>
+            <!--/myCarousel-->
+        </div>
+        <!--/well-->
+    </div>
+</div>
+<div class="container">
+    <h3>Description</h3>
+    <p>@Model.Description</p>
+    <button type="button" class="btn btn-link pull-right" data-toggle="modal" data-target="#post_comment"><i class="fa fa-search"></i> Comment</button>
+    <div class="container ">
+        <h4>Comments:</h4>
+        @foreach (Comment comment in ViewBag.CommentList)
+        {  
+                if (comment.ParentId == 0)
+                {
+                    <div>
+                        <span style="font-weight: bold; color: blue;">@ViewBag.GetUserName(comment.PostByCollectorId)</span><span> Commented</span><br />
+                        <span style="font-weight: bold; color: lightblue;">@comment.CreatedDate</span>
+                        <p>@Html.Raw(@comment.CommentText)</p>
+                        <button type="button" class="btn btn-link pull-right" data-toggle="modal" data-target="#post_comment" onclick="$('#commentid').val(@comment.CommentId);">Reply</button>
+                    </div>
+
+                    foreach (Comment reply in ViewBag.CommentList)
+                    {
+                        if (reply.ParentId == comment.CommentId)
+                        {
+                            <div class="container">
+                                <span style="font-weight: bold; color: blue;">@ViewBag.GetUserName(reply.PostByCollectorId)</span><span> Replied</span><br />
+                                <span style="font-weight: bold; color: lightblue;">@reply.CreatedDate</span>
+                                <p>@Html.Raw(@reply.CommentText)</p>
+                            </div>
+                            <button type="button" class="btn btn-link pull-right" data-toggle="modal" data-target="#post_comment" onclick="$('#commentid').val(@reply.ParentId);">Reply</button>
+                    }
+                }
+            }
+
+        }
+    </div>
+</div>
+<div class="modal fade" id="post_comment">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Comment</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @using (Html.BeginForm("Details", "Collections", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                        @Html.HiddenFor(model => model.CollectionId)
+                        <textarea id="comment" name="comment" class="form-control"></textarea>
+                        <input type="hidden" name="commentid" id="commentid"/>
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('TheForm').submit();"> Submit</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

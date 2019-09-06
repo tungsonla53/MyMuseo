@@ -1,0 +1,38 @@
+﻿@using MyMuseo.Models;
+
+<link href="~/Content/bootstrap-player.css" rel="stylesheet" type="text/css" media="all" />
+<script src="@Url.Content("~/Scripts/bootstrap-player.js")" type="text/javascript"></script>
+
+<div class="modal fade" id="modal_audioplayer">
+    <div class="modal-dialog" style="width: 500px; height: auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" onclick="pauseAudio();" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <h3 class="modal-title">@Model.Title</h3>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-body" align="center">
+                <div>
+                    <div>
+                        <audio id="myAudio" controls crossorigin >
+                            <source src="@Model.AudioFile" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function pauseAudio() {
+        var x = document.getElementById("myAudio");
+        x.pause();
+    }
+</script>

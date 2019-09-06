@@ -1,0 +1,107 @@
+﻿
+@model MyMuseo.Models.Banner
+@{
+    ViewBag.Title = "Banner Image";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.cropit.js")" type="text/javascript"></script>
+
+<style>
+    .cropit-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        width: 250px;
+        height: 250px;
+    }
+    .cropit-preview-image-container {
+        cursor: move;
+    }
+    .cropit-preview-background {
+        opacity: .2;
+    }
+
+    .image-size-label {
+        margin-top: 10px;
+    }
+
+    input.cropit-image-zoom-input {
+        position: relative;
+    }
+
+    input {
+        display: block;
+    }   
+</style>
+
+  
+<div class="spacer20"></div>
+<div style="height: 400px; background: url(@Model.Image) no-repeat; background-size: cover;">
+</div>
+<div class="spacer20"></div>
+    <div style="margin-left: 25px; margin-right: 25px;">
+        <div align="center"><span class="text21bold">Update Banner</span></div>
+        <div class="spacer20"></div>
+        @using (Html.BeginForm("UpdateBanner", "Uploader", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.BannerId)
+            @Html.HiddenFor(model => model.Image)
+            @Html.HiddenFor(model => model.ImageMobile)
+            @Html.HiddenFor(model => model.DisplayOrder)
+            <div class="row">
+                <div class="col-md-4" align="center">
+
+                    <div class="image-editor">
+                        <span class="text16bold">Upload new destop banner:</span>
+                        <div class="spacer20"></div>
+                        <input type="file" name="files" id="file" class="cropit-image-input">
+                        <div class="spacer40"></div>
+                        <span class="text16bold">Upload new mobile banner:</span>
+                        <input type="file" name="files" id="fileMobile" class="cropit-image-input">
+                        <div class="spacer20"></div>
+                    </div>
+
+                </div>
+                <div class="col-md-8">
+
+                    <div>
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Title</label>
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.Title, new { @class = "textarea1" })
+                                @Html.ValidationMessageFor(model => model.Title)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Link To</label>
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.LinkTo, new { @class = "textfield1" })
+                                @Html.ValidationMessageFor(model => model.LinkTo)
+                            </div>
+                        </div>
+                        <div>
+                            @Html.ValidationSummary(true)
+                        </div>
+
+                        <div class="spacer20"></div>
+
+                        <button type="submit" class="button1">Submit</button>
+
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="spacer20"></div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('form').submit(function () {
+                var imageData = $('.image-editor').cropit('export');
+                $('.hidden-image-data').val(imageData);
+            });
+        });
+    </script>

@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Marketing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.js"></script>
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 760px;">
+    <div class="spacer20"></div>
+    <div><span class="page-header-text">Admin Dashboard - @Session["FullName"]</span></div>
+    <div class="spacer10"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs hidden-xs">
+                <li><a href="~/Admin/RegisteredUsers">Users</a></li>
+                <li><a href="~/Admin/Mailbox">Mailbox</a></li>
+                <li class="active"><a href="~/Admin/Marketing">Marketing</a></li>
+                <li><a href="~/Admin/Settings">Settings</a></li>
+                <li><a href="~/Admin/Groups">Groups</a></li>
+                <li><a href="~/Admin/Banners">Banners</a></li>
+            </ul>
+            @Html.Partial("_Menu-m")
+
+            <div class="tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="spacer40"></div>
+                    <div class="page-header-text" >Custom Pages</div>
+                    <div class="text18">
+                        <table class="table table-responsive" id="tblContents">
+                            <thead>
+                                <tr>
+                                    <th>Content</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>[NewName]</td>
+                                    <td width="100px;"><a href="~/Admin/EditContent/0">Create</a></td>
+                                </tr>
+                                @{
+                                    int item = 0;
+                                    var cbid = "";
+                                    foreach (var content in ViewBag.ContentsList)
+                                    {
+                                        cbid = "accordion" + item;
+                                        <tr>
+                                            <td>
+                                                <div class="panel-group">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" href="#@cbid">@content.ContentName</a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="@cbid" class="panel-collapse collapse">
+                                                            <div class="panel-body">@Html.Raw(content.ContentText)</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><a href="~/Admin/EditContent/@content.ContentId">Edit</a></td>
+                                        </tr>
+                                        item++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,583 @@
+﻿@using MyMuseo.Models
+@using MyMuseo.Controllers
+@model MyMuseo.Models.Collectible
+
+@{
+    ViewBag.Title = "Collectible Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jquery.fancybox.min.css" rel="stylesheet" type="text/css" media="all" />
+<script src="@Url.Content("~/Scripts/jquery.fancybox.min.js")" type="text/javascript"></script>
+
+<link rel="stylesheet" href="~/Content/flexslider.css" type="text/css" media="screen" />
+
+<link href="~/Content/bootstrap-player.css" rel="stylesheet" type="text/css" media="all" />
+<script src="@Url.Content("~/Scripts/bootstrap-player.js")" type="text/javascript"></script>
+
+<style>
+    .flexslider .slides img {
+        height: 125px;
+        width: auto;
+    }
+
+    .flex-direction-nav a {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+        .flex-direction-nav a.flex-prev:before {
+            content: " ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            transform: rotate(180deg);
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -2px;
+            margin-top: -5px;
+        }
+
+        .flex-direction-nav a.flex-next:before {
+            content: "  ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -0px;
+            margin-top: -0px;
+        }
+
+    .object-fit_contain {
+        width: 760px;
+        height: 500px;
+        object-fit: contain;
+    }
+
+    canvas {
+    max-width: 100%;
+    height: auto;
+    }
+
+</style>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+
+<div class="spacer20"></div>
+<div style="padding-left: 25px;">
+    <span class="text28" style="font-family:'Avenir-Book';color:#444444;" ><a href="~/Home/CollectorDetail/@Model.CollectorId" style="font-family:'Avenir-Book';color:#444444;" >@ViewBag.GetUserName(Model.CollectorId)</a> - @Model.Title</span>
+</div>
+<div class="spacer10"></div>
+<div id="imagecontainer" style="padding-left: 15px; padding-right: 15px; display: flex; flex-flow: row wrap;" width="100%">
+    <div style="flex-grow: 1;">
+        <table style="width:100%; max-width: 760px;">
+            <tr>
+                <td align="center">
+                    <canvas id="image"></canvas>
+
+                    </td></tr>
+            <tr><td>
+                @if (String.IsNullOrEmpty(Model.AudioFile))
+                {
+                    <div class="pull-left hidden-xs">
+                        <a href="@Model.OriginalImage" data-fancybox data-caption="@Model.Title"><button type="button" class="btn btn-link"><img src="~/Content/images/icons/zoom-icon.png" /><span class="text18bold"> View Larger</span></button></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="pull-left hidden-xs">
+                        <a href="#modal_audioplayer" data-toggle="modal" class="text18"><span class="glyphicon glyphicon-music"></span> Play Audio</a>
+                    </div>
+                }
+
+                    @if (Request.IsAuthenticated && ViewBag.IsMe)
+                    {
+                        <div class="dropdown pull-right">
+                            <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+                                <span class="text18bold"> Edit </span><span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="~/Uploader/UpdateCollectibleImage/@Model.CollectibleId" class="text18">Replace Image</a></li>
+                                <li><a href="~/Collectors/EditCollectibleDetail/@Model.CollectibleId" class="text18">Edit Item Details</a></li>
+                                <li><a href="#delete_item" data-toggle="modal" onclick="setDeleteValues('@Model.CollectibleId','@Model.Title');" class="text18">Delete Listing</a></li>
+@if (ViewBag.IsPending == true)
+{
+                                <li><a href="#remove_pending" data-toggle="modal" onclick="setPendingValues('@Model.CollectibleId');" class="text18">Remove Pending Status</a></li>
+}
+                            </ul>
+                        </div>
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="width: 420px; min-width: 300px; padding-left: 20px;">
+        <table style="width: 100%;">
+            <tr style="vertical-align: top;">
+               
+                <td>
+                    <div class="text21bold" style="font-size:18px;font-family:Aveninr-Medium;font-weight:600 !important;">@Model.Title</div>
+                    <div class="text21bold" style="font-size:18px;font-family:Aveninr-Medium;font-weight:600 !important;">@ViewBag.GetItemSource(Model.ArtistId): @Model.ArtistName</div>
+                @if (String.IsNullOrEmpty(Model.Medium))
+                {
+                    <div class="text16bold" style="font-weight: 400;font-size:18px;font-family:Aveninr-Medium;"> &nbsp; </div>
+                }
+                else
+                {
+                    <div class="text16bold" style="font-weight: 400;font-size:18px;font-family:Aveninr-Medium;">Medium: @Model.Medium</div>
+                }
+                @if (String.IsNullOrEmpty(Model.Width) && String.IsNullOrEmpty(Model.Width))
+                {
+                    <div class="text16bold" style="font-weight: 400;font-size:18px;font-family:Aveninr-Medium;"> &nbsp; </div>
+                }
+                else
+                {
+                    <div class="text16bold" style="font-weight: 400;font-size:18px;font-family:Aveninr-Medium;">Dimensions: @Model.Width &times; @Model.Height </div>
+                }
+                @if (String.IsNullOrEmpty(Model.ItemDate))
+                {
+                    <div class="text16bold" style="font-weight: 400;font-size:18px;font-family:Aveninr-Medium;"> &nbsp; </div>
+                }
+                else
+                {
+                    <div class="text16bold" style="font-weight: 400;font-size:18px;font-family:Aveninr-Medium;">Date: @Model.ItemDate </div>
+                }
+
+                    @if (ViewBag.CanFavorite == true)
+                    {
+                        <form class="form" role="form" method="post" action="~/Collectors/FavoriteCollectible/@Model.CollectibleId" accept-charset="UTF-8" id="favorite-form">
+                            <div class="text18bold"><img src="~/Content/images/icons/favorites.png" width="25" height="25" /><a href="javascript:document.getElementById('favorite-form').submit()"> Add to favorites</a></div>
+                        </form>
+                    }
+
+                    @if (ViewBag.IsPending == true)
+                    {
+                        <div class="spacer25"></div>
+                        <div class="text18bold">Pending Sale</div>
+                        if (ViewBag.OffersCount == 1)
+                        {
+                            <span>Offer (@ViewBag.OffersCount)</span>
+                        }
+                        if (ViewBag.OffersCount > 1)
+                        {
+                            <span>Offers (@ViewBag.OffersCount)</span>
+                        }
+                        <div class="spacer20"></div>        
+                    }
+                    else if (ViewBag.IsSold == true)
+                    {
+                        <div class="spacer25"></div>
+                        <div class="text18bold">Sold</div>
+                        <div class="spacer20"></div>
+                    }
+                    else if (Model.NotForSale == true)
+                    {
+                        <div class="spacer25"></div>
+                        <div class="text18bold">Not For Sale</div>
+                        <div class="spacer20"></div>
+                    }
+                    else
+                    {
+                        <div class="spacer15"></div>
+                        <div class="text16bold" Style="font-weight: 400;font-size:18px;">$@Model.Price plus shipping</div>
+
+                        if (Request.IsAuthenticated && (ViewBag.IsMe == false))
+                        {
+                            <div class="spacer20"></div>
+                        <div>
+                            @using (Html.BeginForm("PurchaseCollectible", "Collectors", FormMethod.Post, new { id = "purchaseForm" }))
+                            {
+                                @Html.HiddenFor(model => model.CollectibleId)
+                                <a href="javascript:document.getElementById('purchaseForm').submit()"><button class="button1">Buy Now</button></a>
+                            }
+                        </div>
+                        <div class="spacer20"></div>
+                            if (Model.AllowOffers == true)
+                            {
+                            <div>
+                                @using (Html.BeginForm("OfferCollectible", "Collectors", FormMethod.Post, new { id = "OfferForm" }))
+                                {
+                                    @Html.HiddenFor(model => model.CollectibleId)
+                                    <div style="display:block;"><span class="text21" style="font-weight: 500;font-size:18px;">Or Make an Offer </span><input name="OfferAmount" type="text" class="textfield1" style="width: 100px!important;" /> <a href="javascript:document.getElementById('offerForm').submit()"><button class="button1">Submit</button></a></div>
+                                }
+                            </div>
+                            }
+                        }
+                        else
+                        {
+                            if (!Request.IsAuthenticated)
+                            {
+                                <div class="text16bold" style="font-weight: 400;font-size:18px;">
+                                    <a href="~/Account/Login/" >Login</a> or <a href="~/Account/Register/">Register</a> to Purchase
+                                </div>
+                            }
+                        }
+                        <div class="spacer15"></div>
+                    }
+                    <div class="text16bold" Style="font-weight: 400;font-size:18px;">Views (@ViewBag.ViewCounts) </div>
+                    @if (ViewBag.FavoriteCounts == 0)
+                    {
+                        <div class="text16bold" Style="font-weight: 400;font-size:18px;">Favorites (@ViewBag.FavoriteCounts) </div>
+                    }
+                    else
+                    {
+                        <div class="text16bold" Style="font-weight: 400;font-size:18px;"><span data-toggle="modal" data-target="#modal_favorites"><a href="#" data-toggle="tooltip" data-placement="top" data-html="true" title="@ViewBag.FavoritesTips">Favorites (@ViewBag.FavoriteCounts)</a></span> </div>
+                    }
+                </td></tr><tr><td>
+                    </td></tr>
+            </table>
+    </div>
+    
+   
+    
+</div>
+<div class="spacer20"></div>
+<div style="padding-left: 15px; padding-right:15px; width: 100%; display:block;">
+
+    <div class="flexslider carousel" id="newcollectibles">
+        <ul class="slides">
+            @if (Request.IsAuthenticated && ViewBag.IsMe)
+            {
+                <li>
+                    <div>
+                        <a href="~/Uploader/AddCollectibleItem/0">
+                            <img src="~/Content/images/icons/upload-icon.png"
+                                 style="width: 125px; height:125px;padding:50px; background-color:#e3e5e4;" alt="Image" class="img-responsive" title="Upload an image">
+                            <span style="display:block; margin-top:-48px;margin-left:24px;color:#444444;font-size:11px; font-weight: bold;">Upload an Image</span>
+                        </a>
+                    </div>
+                </li>
+            }
+            @{
+                int item = 0;
+                foreach (Collectible collectible in ViewBag.MyCollectibles)
+                {
+                    <li>
+                        <div>
+                            <a href="/Home/CollectibleDetail/@collectible.CollectibleId" style="color:#444444;font-size: 18px;">
+                                <div style="width:125px; height: 125px;overflow:hidden;">
+                                    <img src="@collectible.ThumbImage" height="125" alt="Image">
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    item++;
+                }
+
+                while (item < 14)
+                {
+                    <li>
+                        <div>
+                            <a style="color:#444444;font-size: 18px;">
+                                <div style="width:125px; height: 125px;overflow:hidden;">
+                                    <img src="~/Content/images/place-holder.png" height="125" alt="Image">
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    item++;
+                }
+            }
+        </ul>
+    </div>
+</div>
+<div class="spacer10"></div>
+<div style="padding-left: 25px; padding-right: 25px;">
+    @if (!String.IsNullOrEmpty(Model.Description))
+    {
+        <div class="text21bold">Description</div>
+        <div class="text18">@Model.Description</div>
+    }
+</div>
+<div class="spacer0"></div>
+
+@{
+    <div style="padding-left: 25px; padding-right: 25px;">
+        @if (ViewBag.IsMe == false && Request.IsAuthenticated)
+        {
+            <button type="button" class="btn btn-link pull-right text18bold" data-toggle="modal" data-target="#post_comment"><img src="~/Content/images/icons/comments.png" /> Comment</button>
+        }
+        <div style="margin-left:20px;">
+            @if (ViewBag.CommentCount > 0)
+            {
+                <span class="text18bold">Comments:</span>
+            }
+            @foreach (Comment comment in ViewBag.CommentList)
+                {
+                    if (comment.ParentId == 0 && comment.FlagAsAbuse == false)
+                    {
+                    <div class="text18">
+                        <a href="~/Home/CollectorDetail/@comment.PostByCollectorId"><span style="font-weight: normal; color: #0098d1;">@ViewBag.GetUserName(comment.PostByCollectorId)</span></a><span> Commented</span><br />
+                        <span style="font-weight: normal; color: #0f8ddf;">@comment.CreatedDate.ToString("MMM dd, yyyy")</span>
+                        <div style="width: 90%;"><p>@Html.Raw(@comment.CommentText)</p></div>
+                            <div class="spacer10"></div>
+@if (Request.IsAuthenticated)
+{
+                            <div class="row">
+                                <div class="pull-left">
+                                    <button type="button" class="btn btn-link size18" data-toggle="modal" data-target="#post_reply" onclick="$('#commentid2').val(@comment.CommentId);">Reply</button>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-link size18" data-toggle="modal" data-target="#delete_comment" onclick="$('#deleteid').val(@comment.CommentId);">Delete Comment</button>
+                                </div>
+                            </div>
+}
+                        </div>
+                    foreach (Comment reply in ViewBag.CommentList)
+                    {
+                        if (reply.ParentId == comment.CommentId && reply.FlagAsAbuse == false)
+                        {
+                            <div class="spacer10"></div>
+                                <div class="text18" style="margin-left:20px; padding-right:25px; width:100%;">
+                                    <span style="font-weight: normal; color: #0098d1;"><a href="~/Home/CollectorDetail/@reply.PostByCollectorId">@ViewBag.GetUserName(reply.PostByCollectorId)</a></span><span> Replied</span><br />
+                                    <span style="font-weight: normal; color: #0098df;">@reply.CreatedDate.ToString("MMM dd, yyyy") </span>
+                                    <div style="padding-right:140px;"><p style="font-style:italic !important;" >@Html.Raw(@reply.CommentText)</p></div>
+@if (Request.IsAuthenticated)
+{
+                                    <div class="row">
+                                        <button type="button" class="btn btn-link pull-left size18" data-toggle="modal" data-target="#post_reply" onclick="$('#commentid2').val(@reply.ParentId);">Reply</button>
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-link size18" data-toggle="modal" data-target="#delete_comment" onclick="$('#deleteid').val(@reply.CommentId);">Delete Comment</button>
+                                        </div>
+                                    </div>
+}
+                                </div>
+                        }
+                    }
+
+                }
+            }
+
+        </div>
+    </div>
+}
+
+<div class="spacer40"></div>
+<div class="modal fade" id="post_comment">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Comment</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("CollectibleDetail", "Home", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                        @Html.HiddenFor(model => model.CollectibleId)
+                        <textarea id="comment" name="comment" class="textarea1" style="width: 100% !important;"></textarea>
+                            <input type="hidden" name="commentid" id="commentid" />
+                            <div class="spacer20"></div>
+                            <div>
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('TheForm').submit();"> Submit</button>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="post_reply">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Reply</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("CollectibleDetail", "Home", FormMethod.Post, new { id = "ReplyForm" }))
+                    {
+                        @Html.HiddenFor(model => model.CollectibleId)
+                        <textarea id="comment" name="comment" class="textarea1" style="width: 520px !important;"></textarea>
+                        <input type="hidden" name="commentid2" id="commentid2" />
+                            <div class="spacer20"></div>
+                            <div>
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('ReplyForm').submit();"> Submit</button>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="delete_comment">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well" >
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    
+                    @using (Html.BeginForm("FlagAsAbuseCollectible", "Home", FormMethod.Post, new { id = "DeleteForm" }))
+                    {
+                        @Html.HiddenFor(model => model.CollectibleId)
+                        <input type="hidden" name="deleteid" id="deleteid" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td>
+                                    <select name="reasonSelection" id="reasonSelection" class="form-control text18bold input-large">
+                                        <option value="0">Select</option>
+                                        <option value="1">Delete Comment</option>
+                                        <option value="2">Delete Comment and Flag as Abuse</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </table>
+                            <div class="spacer20"></div>
+                            <div class="row">
+                                <div class="col-md-6" align="center">
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('DeleteForm').submit();"> Delete</button>
+                                </div>
+                                <div class="col-md-6" align="center">
+                                    <a href="#" data-dismiss="modal" ><button type="button" class="btn btn-default" > Cancel</button></a>
+                                </div>
+                            </div>
+                    }
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function setDeleteValues(deleteId, deleteName) {
+        $('#deleteCollectibleId').val(deleteId);
+        $('#deleteCollectibleName').html(deleteName);
+    }
+    function setPendingValues(collectiveId) {
+        $('#removePendingCollectibleId').val(collectiveId);
+    }
+
+    var canvas = document.getElementById('image');
+    var ctx = canvas.getContext('2d');
+
+    var img = new Image();
+
+    img.onload = function () {
+        canvas.width = img.naturalWidth
+        canvas.height = img.naturalHeight
+        ctx.drawImage(img, 0, 0);
+    }
+
+    img.src = '@Model.OriginalImage';
+
+</script>
+
+@Html.Partial("_FavoritesModal")  
+
+<div class="modal fade" id="delete_item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+
+                    @using (Html.BeginForm("DeleteCollectible", "Collectors", FormMethod.Post, new { id = "DeleteCollectibleForm" }))
+                    {
+                        <input type="hidden" name="deleteCollectibleId" id="deleteCollectibleId" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td class="text18">
+                                    <span>Delete Item</span> <b><span id="deleteCollectibleName"></span></b>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="spacer20"></div>
+                            <div class="row">
+                                <div class="col-md-6" align="center">
+                                    <button type="button" class="button1" onclick="document.getElementById('DeleteCollectibleForm').submit();"> Delete</button>
+                                </div>
+                                <div class="col-md-6" align="center">
+                                    <a href="#" data-dismiss="modal"><button type="button" class="button1"> Cancel</button></a>
+                                </div>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="remove_pending">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+
+                    @using (Html.BeginForm("RemovePendingCollectible", "Collectors", FormMethod.Post, new { id = "RemovePendingCollectibleForm" }))
+                    {
+                        <input type="hidden" name="removePendingCollectibleId" id="removePendingCollectibleId" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td class="text18">
+                                    <span>Remove Pending Status</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="spacer20"></div>
+                        <div class="row">
+                            <div class="col-md-6" align="center">
+                                <button type="button" class="button1" onclick="document.getElementById('RemovePendingCollectibleForm').submit();"> Submit</button>
+                            </div>
+                            <div class="col-md-6" align="center">
+                                <a href="#" data-dismiss="modal"><button type="button" class="button1"> Cancel</button></a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_AudioPlayerModal") 
+
+<script defer src="~/Scripts/jquery.flexslider.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#newcollectibles').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 125,
+            itemMargin: 10,
+            minItems: 2,
+            maxItems: 11
+        });
+
+    });
+</script>
+
+

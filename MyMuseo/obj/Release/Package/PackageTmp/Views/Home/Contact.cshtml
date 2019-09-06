@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Contact Us";
+}
+
+<div class="container">
+    <div class="spacer20"></div>
+    <span class="page-header-text">@ViewBag.Title.</span>
+@using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { id = "ContactForm" }))
+{
+    <div class="text18">
+        <label>Your email address</label>
+    </div>
+    <div>
+        <input type="email" class="textfield1" name="email"  required/>
+    </div>
+    <div class="text18">
+        <label>Subject</label>
+    </div>
+    <div>
+        <input type="text" class="textfield1" name="subject" />
+    </div>
+    <div class="text18">
+        <label>Please add your message</label>
+    </div>
+    <div>
+        <textarea class="textarea1" name="message" required></textarea>
+    </div>
+    <div class="text18">
+        <label>Your Name</label>
+    </div>
+    <div>
+        <input type="text" class="textfield1" name="name" required />
+    </div>
+    <div class="spacer20"></div>
+    <div>
+        <img src='@Url.Action( "GetCaptchaImage", "Home")' title="Captcha" />
+        <br />
+        <input type="text" name="clientCaptcha" placeholder="Enter security code above" required />
+        <p style="font-weight:bold;color:red;">@ViewBag.CaptchaError</p>
+    </div>
+    <div>
+        <button class="button1" onclick="document.getElementById('ContactForm').submit();">Send Us Your Question!</button>
+    </div>
+}
+
+@if (ViewBag.Message != null)
+{
+        <script>
+        $(document).ready(function(){
+            $('#modalConfirm').modal('show');
+        });
+        </script>
+
+        <div class="modal fade" id="modalConfirm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                        <h3 class="modal-title">Confirm</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row text18" style="padding: 20px;">   
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <img src="~/Content/images/icons/email.png" />
+                                    </td>
+                                    <td>
+                                        <span>@ViewBag.Message</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+    <div class="spacer20"></div>
+    <div>
+        <address>
+            myMuseo<br />
+            708 Market Street #809<br />
+            Tacoma, WA 98402
+        </address>
+    </div>
+ </div>

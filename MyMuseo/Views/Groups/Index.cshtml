@@ -1,0 +1,29 @@
+﻿@model MyMuseo.Models.Group
+@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div  style="background: url(../Content/images/placeholder-collectible-hero-image.jpg) no-repeat; background-size:cover; width: 100%; height: 240px; display:block;position:relative;">
+
+<div class="col-md-12" style="width:100%; background-color: #444444; opacity: .7; height: 40px;position:absolute;bottom:0;">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">About</a></li>
+        <li role="presentation"><a href="#discussions" aria-controls="discussions" role="tab" data-toggle="tab">Discussions</a></li>
+        <li role="presentation"><a href="#members" aria-controls="members" role="tab" data-toggle="tab">Members</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Photos</a></li> 
+        <li role="presentation"><a href="#invitefriends" aria-controls="invitefriends" role="tab" data-toggle="tab">Invite Friends</a></li>
+    </ul>
+</div>
+    
+</div>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="discussions">...</div>
+    <div role="tabpanel" class="tab-pane" id="members">tab1</div>
+    <div role="tabpanel" class="tab-pane" id="messages">tab2</div>
+    <div role="tabpanel" class="tab-pane" id="settings">tab3</div>
+    <div role="tabpanel" class="tab-pane" id="invitefriends">tab4</div>
+</div>

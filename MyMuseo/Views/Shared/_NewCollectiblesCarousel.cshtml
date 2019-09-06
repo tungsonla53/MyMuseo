@@ -1,0 +1,100 @@
+﻿@using MyMuseo.Models
+
+<div class="col-md-12 hidden-xs" style="padding-left: 15px; padding-right:15px; margin-top:-40px;">
+    <div class="spacer40"><span style="font-size: 24px; font-weight: 300;color: #444444; font-family: Avenir-Book;">Recently Added</span></div>
+    <div style="width:100%">
+        <div class="flexslider carousel" id="newcollectibles">
+            <ul class="slides">
+                @{
+                    int item = 0;
+                    foreach (Collectible collectible in ViewBag.NewCollectibles)
+                    {
+                        <li>
+                            <div>
+                                <a href="/Home/CollectibleDetail/@collectible.CollectibleId" style="color:#444444;font-size: 18px;">
+                                    <div style="width:250px; height: 250px;overflow:hidden;">
+                                        <img src="@collectible.ThumbImage" height="250" alt="Image">
+                                    </div>
+                                    <span>@collectible.Title</span>
+                                </a>
+                            </div>
+                        </li>
+                        item++;
+                    }
+
+                    while (item < 20)
+                    {
+                        <li>
+                            <div>
+                                <a style="color:#444444;font-size: 18px;">
+                                    <div style="width:250px; height: 250px;overflow:hidden;">
+                                        <img src="~/Content/images/place-holder.png" height="250" alt="Image">
+                                    </div>
+                                    <span>Collectible @item</span>
+                                </a>
+                            </div>
+                        </li>
+                        item++;
+                    }
+                }
+        </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#newcollectibles').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 250,
+            itemMargin: 20,
+            minItems: 1,
+            maxItems: 7
+        });
+
+    });
+</script>
+
+<div class="col-md-12 visible-xs" style="padding-left: 15px; padding-right:15px; margin-top: -60px;">
+    <div class="spacer10"></div>
+    <div><span style="font-size: 24px; font-weight: 300;color: #444444; font-family: Avenir-Book;">Recently Added</span></div>
+    <div style="width:100%">
+        <div class="flexslider carousel" id="newcollectibles-m">
+            <ul class="slides">
+                @{
+                    foreach (Collectible collectible in ViewBag.NewCollectibles)
+                    {
+                        <li>
+                            <div>
+                                <a href="/Home/CollectibleDetail/@collectible.CollectibleId" style="color:#444444;font-size: 18px;">
+                                    <div>
+                                        <img src="@collectible.ThumbImage" class="image-responsive" alt="Image" style="width: 115px;height:115px;" >
+                                    </div>
+                                    <span>@collectible.Title</span>
+                                </a>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#newcollectibles-m').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 115,
+            itemMargin: 10,
+            minItems: 2,
+            maxItems: 7,
+            directionNav: false
+        });
+
+    });
+</script>

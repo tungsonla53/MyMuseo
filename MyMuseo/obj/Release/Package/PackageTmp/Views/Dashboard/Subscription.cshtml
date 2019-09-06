@@ -1,0 +1,359 @@
+﻿@model MyMuseo.Models.Collector
+@using MyMuseo.Models
+@using MyMuseo.Helpers
+
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 700px;">
+    <div class="spacer20"></div>
+    <div><span class="text28bold"><a href="~/Home/CollectorDetail/0" style="font-family:'Avenir-Book';color:#444444;">@Model.FirstName @Model.LastName</a> - Dashboard</span></div>
+    <div class="spacer20"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li ><a href="~/Dashboard/MessageCenter">Message Center</a></li>
+                <li><a href="~/Dashboard/Notifications">Notifications</a></li>
+                <li><a href="~/Dashboard/Sales">Sales</a></li>
+                <li><a href="~/Dashboard/Purchases">Purchases</a></li>
+                <li><a href="~/Dashboard/Following">Following (@ViewBag.FollowingCount)</a></li>
+                <li><a href="~/Dashboard/Followers">Followers (@ViewBag.FollowersCount)</a></li>
+                <li><a href="~/Dashboard/MyItems">My Items (@ViewBag.ItemsCount)</a></li>
+                <li class="active"><a href="~/Dashboard/Subscription">Subscription</a></li>
+            </ul>
+
+            <div class="tab-content">
+                
+                <div class="tab-pane fade in active" id="tab8">
+                    <style>
+                        .panel
+                        {
+                            text-align: center;
+                        }
+                        .panel:hover { box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4), 0 1px 5px rgba(130, 130, 130, 0.35); }
+                        .the-price
+                        {
+                            background-color: rgba(220,220,220,.17);
+                            box-shadow: 0 1px 0 #dcdcdc, inset 0 1px 0 #fff;
+                            padding: 20px;
+                            margin: 0;
+                        }
+                        .the-price h1
+                        {
+                            line-height: 1em;
+                            padding: 0;
+                            margin: 0;
+                        }
+                    </style>
+                    <div class="container">
+                        <div class="spacer20"></div>
+                        <p class="text18">myMuseo is a subscription based service. That means we take no percentage for sales on myMuseo.
+                         You will have unlimited uploads of your artwork or collectibles, the ability to buy, sell or just be part of an active community. 
+                        Subscription begin as low as $4.95 per month. Chose between: </p>
+                        <div class="spacer20"></div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-3">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            1 Year Subscription
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="the-price">
+                                            <h1>
+                                                $4.95
+                                            </h1>
+                                            <small>per month</small>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="panel-footer">
+                                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                            <input type="hidden" name="cmd" value="_s-xclick">
+                                            <input type="hidden" name="hosted_button_id" value="C9J2H6GYLX2KA">
+                                            <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                                            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-3">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            1 Year Subscription
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="the-price">
+                                            <h1>
+                                                $54.90
+                                            </h1>
+                                            <small>one-time payment</small>
+                                        </div>
+
+                                    </div>
+                                    <div class="panel-footer">
+                                        
+                                        <div id="cpcbd8714640" style="margin: 10px 0" onclick="document.getElementById('pay_now_form_4fdcba1334').submit()"><div><div class='r-bg '><span class='r-fg r-fg-3'></span> <span class='r-fg r-fg-2'></span> <span class='r-fg r-fg-1'></span> <span class='r-fg r-fg-0'></span> </div><form action="https://demo.globalgatewaye4.firstdata.com/pay" id="pay_now_form_4fdcba1334" method="post"><input type="hidden" name="x_login" value="HCO-MYMUS-938" /><input type="hidden" name="x_show_form" value="PAYMENT_FORM" /><input type="hidden" name="x_fp_sequence" value="1516926479525440178" /><input type="hidden" name="x_fp_hash" value="PNB-1.0-e73ff22f35ff7cc597589e52b53c56f2aab4a373" /><input type="hidden" name="x_amount" value="54.90" /><input type="hidden" name="x_currency_code" value="USD" /><input type="hidden" name="x_test_request" value="TRUE" /><input type="hidden" name="x_relay_response" value="" /><input type="hidden" name="donation_prompt" value="" /><input type="hidden" name="button_code" value="Subscribe MYMUSEO-1Y" /><div class="cpwrap"><button type="button">Subscribe</button></div></form><div class='r-bg '><span class='r-fg r-fg-0'></span> <span class='r-fg r-fg-1'></span> <span class='r-fg r-fg-2'></span> <span class='r-fg r-fg-3'></span> </div></div></div>
+                                        <style type="text/css">
+                                            div#cpcbd8714640 {
+                                                width: 200px;
+                                                background-color: #FF9900;
+                                            }
+
+                                                div#cpcbd8714640:hover {
+                                                    cursor: pointer;
+                                                }
+
+                                                div#cpcbd8714640 * {
+                                                    background-color: #FFAA00;
+                                                }
+
+                                                div#cpcbd8714640 form {
+                                                    margin: 0;
+                                                    padding: 0;
+                                                    text-align: center;
+                                                }
+
+                                                div#cpcbd8714640 div.cpwrap {
+                                                    width: 90%;
+                                                    border: 0;
+                                                    margin: 0 auto;
+                                                    padding: 0px;
+                                                    background-color: #FF9900;
+                                                }
+
+                                                div#cpcbd8714640 button {
+                                                    width: 95%;
+                                                    border: 0;
+                                                    margin: 0;
+                                                    padding: 3px 0;
+                                                    background-color: #FF9900;
+                                                    text-align: center;
+                                                    color: #FFFFFF;
+                                                }
+
+                                                div#cpcbd8714640:hover button {
+                                                    text-decoration: underline;
+                                                }
+
+                                                div#cpcbd8714640 button:focus, div#cpcbd8714640 button:visited, div#cpcbd8714640 button:active {
+                                                    border: none;
+                                                    outline: none;
+                                                }
+
+                                                div#cpcbd8714640 button {
+                                                    font-size: 16px;
+                                                }
+
+                                                div#cpcbd8714640 div.cpwrap {
+                                                    border-left: 3px solid #FFAA00;
+                                                    border-right: 3px solid #FFAA00;
+                                                }
+
+                                                div#cpcbd8714640 .r-fg {
+                                                    background-color: #FFAA00;
+                                                    border-color: #FFAA00;
+                                                }
+
+                                                div#cpcbd8714640 .r-bg {
+                                                    background-color: white;
+                                                }
+
+                                                div#cpcbd8714640 .r-fg {
+                                                    border-style: solid;
+                                                    border-width: 0px 1px;
+                                                    overflow: hidden;
+                                                    display: block;
+                                                    height: 1px;
+                                                    font-size: 1px;
+                                                }
+
+                                                div#cpcbd8714640 .r-fg-0 {
+                                                    margin-left: 1px;
+                                                    margin-right: 1px;
+                                                    border-width: 0px 1px !important;
+                                                    height: 1px !important;
+                                                }
+
+                                                div#cpcbd8714640 .r-fg-1 {
+                                                    margin-left: 2px;
+                                                    margin-right: 2px;
+                                                }
+
+                                                div#cpcbd8714640 .r-fg-2 {
+                                                    margin-left: 3px;
+                                                    margin-right: 3px;
+                                                }
+
+                                                div#cpcbd8714640 .r-fg-3 {
+                                                    margin-left: 5px;
+                                                    margin-right: 5px;
+                                                }
+                                        </style>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-3">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            2 Years Subscription
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="the-price">
+                                            <h1>
+                                                $94.80
+                                            </h1>
+                                            <small>one-time payment</small>
+                                        </div>
+
+                                    </div>
+                                    <div class="panel-footer">
+                                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                            <input type="hidden" name="cmd" value="_s-xclick">
+                                            <input type="hidden" name="hosted_button_id" value="KMLJZLYPGYSLQ">
+                                            <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                                            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="spacer20"></div>
+                        <p>myMuseo is super easy to use and a fun way to connect with others who share interests. Hesitating? Take a look at our <a href="../../Home/Faqs/">FAQs</a></p>
+                    </div>
+                </div>
+</div>
+<script>
+    function setDeleteValues(deleteId, deleteName) {
+        $('#deleteid').val(deleteId);
+        $('#deletename').html(deleteName);
+    }
+    function updateShippingValues(shippingId) {
+        $('#shippingid').val(shippingId);
+    }
+</script>
+<div class="modal fade" id="delete_item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+
+                    @using (Html.BeginForm("DeleteCollectible", "Collectors", FormMethod.Post, new { id = "DeleteForm" }))
+                    {
+                        <input type="hidden" name="deleteid" id="deleteid" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td class="text18">
+                                    <span>Delete Item</span> <span id="deletename"></span>
+                                </td>
+                            </tr>
+                        </table>
+                            <div class="spacer20"></div>
+                            <div class="row">
+                                <div class="col-md-6" align="center">
+                                    <button type="button" class="button1" onclick="document.getElementById('DeleteForm').submit();"> Delete</button>
+                                </div>
+                                <div class="col-md-6" align="center">
+                                    <a href="#" data-dismiss="modal"><button type="button" class="btn btn-default"> Cancel</button></a>
+                                </div>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="shipping_item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Shipping Update</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+
+                    @using (Html.BeginForm("ShippingCollectible", "Collectors", FormMethod.Post, new { id = "ShippingForm" }))
+                    {
+                        <input type="hidden" name="shippingid" id="shippingid" />
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Tracking Number</label>
+                            <div class="col-md-9">
+                               <input type="text" name="trackingnumber" id="trackingnumber" class="textfield1" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Shipper</label>
+                            <div class="col-md-9">
+                                <input type="text" name="shipper" id="shipper" class="textfield1" />
+                            </div>
+                        </div>
+                        <div class="spacer20"></div>
+                        <div class="row">
+                            <div class="col-md-6" align="center">
+                                <button type="button" class="button1" onclick="document.getElementById('ShippingForm').submit();"> Update</button>
+                            </div>
+                            <div class="col-md-6" align="center">
+                                <a href="#" data-dismiss="modal"><button type="button" class="button1"> Cancel</button></a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    </div>
+</div>
+<div class="modal fade" id="post_reply">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Reply</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("ReplyMessage", "Collectors", FormMethod.Post, new { id = "ReplyForm" }))
+                    {
+                        <input type="hidden" name="messageid1" id="messageid1" />
+                        <input type="hidden" name="collectorid1" id="collectorid1" />
+                        <textarea id="replymessage" name="replymessage" class="textarea1" style="width: 520px !important;"></textarea>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1" onclick="document.getElementById('ReplyForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function setReplyValues(messageId, collectorId) {
+        $('#messageid1').val(messageId);
+        $('#collectorid1').val(collectorId);
+    }
+</script>

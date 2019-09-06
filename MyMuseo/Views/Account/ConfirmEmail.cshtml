@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+
+<div class="spacer20"></div>
+<div class="container">
+    <div class="text21bold">@ViewBag.Title.</div>
+    <div>
+        <p class="text18">
+            Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: new { returnUrl = Url.Content("~/Collectors/AccountInfo") }, htmlAttributes: new { id = "loginLink" })
+        </p>
+    </div>
+</div>

@@ -1,0 +1,158 @@
+﻿@using MyMuseo.Models
+@{
+    ViewBag.Title = "All Categories";
+}
+<link rel="stylesheet" href="~/Content/flexslider.css" type="text/css" media="screen" />
+
+<style>
+    .flexslider .slides img {
+        height: 175px;
+        width: auto;
+    }
+
+    .flex-direction-nav a {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+        .flex-direction-nav a.flex-prev:before {
+            content: " ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            transform: rotate(180deg);
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -2px;
+            margin-top: -5px;
+        }
+
+        .flex-direction-nav a.flex-next:before {
+            content: "  ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -0px;
+            margin-top: -0px;
+        }
+</style>
+
+<script defer src="~/Scripts/jquery.flexslider.js"></script>
+
+<div class="spacer40"></div>
+<div class="hidden-xs">
+    <table width="100%">
+        <tr>
+            <td>
+                <div class="page-header-text" style="margin-left: 20px;">@ViewBag.Title</div>
+            </td>
+            <td>
+                <div class="pull-right" style="margin-right: 40px;">
+                    <span class="text18">Sort By:</span> <select class="textfield1" style="width: 100px;" onchange="ChangeOrder(this)">
+                        @if (ViewBag.SelectOrderId == 1)
+            {
+                            <option value="0">A-Z</option>
+                            <option value="1" selected>Z-A</option>
+                        }
+                        else
+                        {
+                            <option value="0" selected>A-Z</option>
+                            <option value="1">Z-A</option>
+                        }
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<table class="visible-xs">
+    <tr>
+        <td>
+            <div class="page-header-text">@ViewBag.Title</div>
+        </td>
+        </tr><tr>
+        <td>
+            <div>
+                <span class="text18">Sort By:</span> <select class="textfield1" style="width: 100px;" onchange="ChangeOrder(this)">
+                    @if (ViewBag.SelectOrderId == 1)
+            {
+                        <option value="0">A-Z</option>
+                        <option value="1" selected>Z-A</option>
+                    }
+                    else
+                    {
+                        <option value="0" selected>A-Z</option>
+                        <option value="1">Z-A</option>
+                    }
+                </select>
+            </div>
+        </td>
+    </tr>
+</table>
+<div class="spacer40"></div>
+    <hr />
+    <div class="spacer40"></div>
+    @{
+        var itemCount = 0;
+        SortedDictionary<String, List<Collectible>> workDictionnary = ViewBag.DictItems;
+        foreach (String key in workDictionnary.Keys)
+        {
+            var categoryId = workDictionnary[key].First().CategoryId;
+            var carouselid = "carouselid_" + itemCount;
+            itemCount++;
+            <div class="col-md-12" style="padding-left: 15px; padding-right:15px;margin-top: -40px;">
+                <div class="row" style="width:100%">
+                    <div class="col-md-9">
+                        <span style="font-size: 24px; font-weight: 300;color: #444444; font-family: Avenir-Book;">@key</span>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="pull-right" style="font-size:18px;" href="~/Home/ItemsListing/@categoryId?order=0">View All In This Category</a>
+                    </div>
+                </div>
+                <div style="width:100%">
+                    <div class="flexslider carousel" id="@carouselid">
+                        <ul class="slides">
+                            @foreach (Collectible collectible in workDictionnary[key])
+                            {
+                                <li>
+                                    <div>
+                                        <a href="/Home/CollectibleDetail/@collectible.CollectibleId" style="color:#444444;font-size: 18px;">
+                                            <div style="width:175px; height: 175px;overflow:hidden;">
+                                                <img src="@collectible.ThumbImage" height="175" alt="Image">
+                                            </div>
+                                            <span>@collectible.Title</span>
+                                        </a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <script>
+
+                function ChangeOrder(e)
+                {
+                    window.location.href = '/Home/AllCategories/' + e.value;
+                }
+
+                $(document).ready(function () {
+                    $('#@carouselid').flexslider({
+                        animation: "slide",
+                        controlNav: false,
+                        slideshow: false,
+                        animationLoop: false,
+                        itemWidth: 175,
+                        itemMargin: 10,
+                        minItems: 1,
+                        maxItems: 10
+                    });
+
+                });
+            </script>
+        }
+    }
+
+

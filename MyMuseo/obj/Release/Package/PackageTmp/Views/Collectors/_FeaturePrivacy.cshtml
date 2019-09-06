@@ -1,0 +1,38 @@
+﻿
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+
+<div class="row">
+    <div class="col-md-7">
+        <span class="text21bold">Notify your followers when you are featured</span>
+        <p class="text18">Choose who can see if you are featured collector</p>
+    </div>
+    <div class="col-md-5">
+@using (Ajax.BeginForm("_FeaturePrivacy", "Collectors",
+                                            new AjaxOptions()
+                                            {
+                                                HttpMethod = "POST",
+                                                UpdateTargetId = "divFeaturePrivacy",
+                                                OnSuccess = "callbackFeaturePrivacy"
+                                            },
+                                            new { id = "formUpdateFeaturePrivacy" }))
+{
+        <select name="featureprivacySelection" id="featureprivacySelection" class="form-control text18bold input-large">
+            <option value="0">My Followers</option>
+            <option value="1">Only me</option>
+        </select>
+
+        <input type="submit" value="Update" class="btn btn-link text18" />
+        <img src="~/Content/images/icons/privacy-saved.png" id="updateFeaturePrivacySaved" style="display:none;" />
+}
+    </div>
+    <script>
+        function callbackFeaturePrivacy()
+        {
+            $("#featureprivacySelection").val("@ViewBag.FeaturePrivacyId");
+            $('#updateFeaturePrivacySaved').show();
+        }
+        $("#featureprivacySelection").val("@ViewBag.FeaturePrivacyId");
+    </script>
+</div>

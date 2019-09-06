@@ -1,0 +1,773 @@
+﻿@model MyMuseo.Models.Collector
+@using Microsoft.AspNet.Identity
+@using MyMuseo.Models;
+
+@{
+    ViewBag.Title = "Collector Detail";
+    if (Request.IsAuthenticated && ViewBag.IsMe)
+    {
+        Layout = "~/Views/Shared/_LayoutXtra.cshtml";
+    }
+}
+
+
+<link href="~/Content/jquery.fancybox.min.css" rel="stylesheet" type="text/css" media="all" />
+<script src="@Url.Content("~/Scripts/jquery.fancybox.min.js")" type="text/javascript"></script>
+
+<style>
+    .object-fit_contain {
+        width: 440px;
+        height: 340px;
+        object-fit: contain;
+    }
+    .object-fit_cover {
+        width: 610px;
+        height: 420px;
+        object-fit: contain;
+    }
+</style>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+        $('a[data-toggle="tab"]:first').tab('show');
+    });
+</script>
+
+<div class="spacer20"></div>
+<div class="hidden-xs">
+    <div class="spacer20"></div>
+    <div style="padding-left: 25px;">
+        <span class="text28bold" style="font-family:'Avenir-Book';color:#444444;">@Model.FirstName @Model.LastName</span>
+    </div>
+
+    <div style="padding-left: 25px; padding-right: 25px; display: flex; flex-flow: row wrap; width: 100%;">
+        @if (Request.IsAuthenticated && ViewBag.IsMe)
+        {
+            <div style="width:340px; height:340px;">
+                <img src="@ViewBag.ProfileImage" width="340" height="340" />
+                <div class="dropdown pull-right">
+                    <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span class="text18bold"> Edit </span><span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="~/Uploader/ProfileImage/" class="text18">Replace Profile Image</a></li>
+                        <li><a href="~/Collectors/ProfileInfo/1" class="text18">Update Profile Detail</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div align="center" style="flex-grow: 1; margin-left: 40px;">
+                <table>
+                    <tr>
+                        <td>
+                            @if (Model.FeaturedItemId != 0)
+                            {
+                                <div>
+                                    <a href="~/Home/CollectibleDetail/@Model.FeaturedItemId"><img src="@ViewBag.FeaturedImage" class="object-fit_contain" /></a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <img src="@ViewBag.FeaturedImage" class="object-fit_contain" />
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="pull-left"><a href="@ViewBag.FeaturedImage" data-fancybox data-caption=""><button type="button" class="btn btn-link"><img src="~/Content/images/icons/zoom-icon.png" /><span class="text18bold"> View Larger</span></button></a></div>
+                            <div class="pull-right text18bold" style="margin-top: 8px;"><a href="~/Uploader/FeaturedImage/">Replace  <span class="glyphicon glyphicon-pencil"></span> </a></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        }
+        else
+        {
+            <div style="width:340px; height:340px;">
+                <img src="@ViewBag.ProfileImage" width="340" height="340" />
+            </div>
+            <div align="center" style="flex-grow: 1; margin-left: 40px;">
+                <table>
+                    <tr>
+                        <td>
+                            @if (Model.FeaturedItemId != 0)
+                            {
+                                <div>
+                                    <a href="~/Home/CollectibleDetail/@Model.FeaturedItemId"><img src="@ViewBag.FeaturedImage" class="object-fit_contain" /></a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <img src="@ViewBag.FeaturedImage" class="object-fit_contain" />
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="pull-left"><a href="@ViewBag.FeaturedImage" data-fancybox data-caption=""><button type="button" class="btn btn-link"><img src="~/Content/images/icons/zoom-icon.png" /><span class="text18bold"> View Larger</span></button></a></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        }
+
+        <div style="width:380px;">
+            @if (Request.IsAuthenticated && ViewBag.IsMe)
+            {
+                <div style="height: 340px; width:380px;">
+                    <div>
+                        <div class="pull-left" style="padding-left:20px;">
+                            <a href="~/Uploader/AddCollectibleItem/0" style="text-decoration:none;"><div style="width: 100px; height:100px; background-color:#e3e5e4;"><img src="~/Content/images/icons/upload-icon.png" style="margin-left:25px;margin-top:22px;" /><span style="display:block; margin-top:8px;margin-left:8px;color:#444444;font-size:11px; font-weight: bold; font-family: Arial,'Segoe UI', 'Helvetica' sans-serif;">Add an Image</span></div></a>
+                        </div>
+                        <div class="pull-left" style="padding-left:20px;">
+                            <a href="~/Collectors/AddCollection/" style="text-decoration:none;"><div style="width: 100px; height:100px; background-color:#e3e5e4;"><img src="~/Content/images/icons/add-icon.png" style="margin-left:25px;margin-top:20px;" /><span style="display:block; margin-top:8px;margin-left:6px;color:#444444;font-size:11px; font-weight: bold; font-family: Arial,'Segoe UI', 'Helvetica' sans-serif;">Start a Collection</span></div></a>
+                        </div>
+                        <div class="pull-left" style="padding-left:20px;"><a href="@ViewBag.CollectionLinks[0]"><img src="@ViewBag.CollectionThumbs[0]" width="100" height="100" /></a></div>
+                    </div>
+                    <div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[1]"><img src="@ViewBag.CollectionThumbs[1]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[2]"><img src="@ViewBag.CollectionThumbs[2]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[3]"><img src="@ViewBag.CollectionThumbs[3]" width="100" height="100" /></a></div>
+                    </div>
+                    <div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[4]"><img src="@ViewBag.CollectionThumbs[4]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[5]"><img src="@ViewBag.CollectionThumbs[5]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[6]"><img src="@ViewBag.CollectionThumbs[6]" width="100" height="100" /></a></div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="height: 340px; width:380px;">
+                    <div>
+                        <div class="pull-left" style="padding-left:20px;"><a href="@ViewBag.CollectionLinks[0]"><img src="@ViewBag.CollectionThumbs[0]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;"><a href="@ViewBag.CollectionLinks[1]"><img src="@ViewBag.CollectionThumbs[1]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;"><a href="@ViewBag.CollectionLinks[2]"><img src="@ViewBag.CollectionThumbs[2]" width="100" height="100" /></a></div>
+                    </div>
+                    <div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[3]"><img src="@ViewBag.CollectionThumbs[3]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[4]"><img src="@ViewBag.CollectionThumbs[4]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[5]"><img src="@ViewBag.CollectionThumbs[5]" width="100" height="100" /></a></div>
+                    </div>
+                    <div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[6]"><img src="@ViewBag.CollectionThumbs[6]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[7]"><img src="@ViewBag.CollectionThumbs[7]" width="100" height="100" /></a></div>
+                        <div class="pull-left" style="padding-left:20px;padding-top:20px;"><a href="@ViewBag.CollectionLinks[8]"><img src="@ViewBag.CollectionThumbs[8]" width="100" height="100" /></a></div>
+                    </div>
+                </div>
+            }
+
+            <div style="width: 300px; margin-top: 10px;" class="pull-right">
+                <span class="text18bold"><a href="~/Collectors/MyCollections/@Model.CollectorId">Collections (@ViewBag.CollectionsCount)</a></span> &nbsp;&nbsp;
+                <span class="text18bold"><a href="~/Collectors/MyCollectibles/@Model.CollectorId">Items (@ViewBag.CollectiblesCount)</a></span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="spacer20"></div>
+    <div style="padding-left: 25px; padding-right: 25px; display:flex;width:100%;">
+        <div style="width:390px; padding-right:40px;">
+            <span style="font-size: 21px;">@Model.FirstName @Model.LastName</span>
+            <div><span>@ViewBag.Location</span></div>
+            <div class="spacer30"></div>
+            <div>
+                @if (Model.AreasOfInterest != null)
+            {
+                if (Model.AreasOfInterest.Length > 1)
+                {
+                        <span class="text21bold">Interests</span>
+                        <div class="container">
+                            <span class="text18">@Html.Raw(ViewBag.AreasOfInterest)</span>
+                        </div>
+                    }
+                }
+                <div class="container text18">
+                    <div class="spacer40"></div>
+                    <div class="text18bold"><img src="~/Content/images/icons/followers.png" width="44" height="40" style="padding: 4px;" />&nbsp;<span data-toggle="modal" data-target="#modal_followers"><a href="#" data-toggle="tooltip" data-placement="top" data-html="true" title="@ViewBag.FollowersTips">Followers (@ViewBag.FollowersCount)</a></span></div>
+                    <div class="text18bold"><img src="~/Content/images/icons/following.png" width="44" height="40" style="padding: 4px;" />&nbsp;<span data-toggle="modal" data-target="#modal_following"><a href="#" data-toggle="tooltip" data-placement="top" data-html="true" title="@ViewBag.FollowingTips">Following (@ViewBag.FollowingCount)</a></span></div>
+                    <div class="spacer20"></div>
+                    @if (Request.IsAuthenticated && ViewBag.IsMe == false)
+                    {
+                        <div class="text18bold"><img src="~/Content/images/icons/email.png" width="44" height="40" style="padding: 4px;" />&nbsp;<a href="#" data-toggle="modal" data-target="#modal_email">Contact Me</a></div>
+                    }
+                    @if (ViewBag.CanFollow == true)
+                    {
+                        <div>
+                            <form class="form" role="form" method="post" action="~/Collectors/FollowCollector/@Model.CollectorId" accept-charset="UTF-8" id="follow-form">
+                                @Html.HiddenFor(model => model.CollectorId)
+                                <a href="javascript:document.getElementById('follow-form').submit()"><img src="~/Content/images/icons/follow.png" width="44" height="40" style="padding: 4px;" />&nbsp;Follow</a>
+                            </form>
+                        </div>
+
+                    }
+                    <div class="spacer40"></div>
+                </div>
+
+            </div>
+
+            @if (ViewBag.Sites != null)
+            {
+                <div>
+                    <span class="text21bold">Websites I like</span>
+                    <div class="spacer10"></div>
+                    <div class="container">
+                        <span class="text18">@Html.Raw(ViewBag.Sites)</span>
+                    </div>
+                </div>
+            }
+            <div class="spacer40"></div>
+            @if (Request.IsAuthenticated && (ViewBag.IsMe == false))
+            {
+                <div class="container text18">
+                    <a href="#" data-toggle="modal" data-target="#report_abuse"><img src="~/Content/images/icons/flag-inactive.png" width="25" height="25" />&nbsp;Report Abuse</a>
+                </div>
+            }
+        </div>
+        <div style="max-width: 800px; width: 100%;">
+            @if (Request.IsAuthenticated && (ViewBag.IsMe == true))
+            {
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a class="text18bold" data-toggle="tab" href="#post">Post</a>
+                    </li>
+                    <li>
+                        <a class="text18bold" data-toggle="tab" href="#about">About</a>
+                    </li>
+                </ul>
+                <div class="spacer10"></div>
+                <div class="tab-content" style="width: 100%;">
+                    <div class="tab-pane active fade in" id="post">
+
+                        <div id="cp2Profile" style="background: #f45942; width: 100%; display: block; overflow-y:auto; border-radius: 6px;">
+                            <table cellpadding="0" width="100%">
+                                <tr>
+                                    <td>
+
+                                        <div class="panel-heading">
+                                            <a href="#0" onclick="togglePost()" style="color: white; font-size: 16px;">Write a post <span class="glyphicon glyphicon-pencil"></span> </a> <a href="#0" onclick="showPhoto()" style="color: white; font-size: 16px; margin-left: 10px;">Add a Photo <span class="glyphicon glyphicon-picture"></span></a> <a href="#0" onclick="showEvent()" style="color: white; font-size: 16px; margin-left: 10px;">Add an Event <span class="glyphicon glyphicon-calendar"></span></a>
+                                        </div>
+
+
+                                        <div class="panel panel-primary" style="margin:6px; border-color: #f45942;">
+                                            <div class="panel-body" style="background-color: #e6e6e6;">
+                                                <div id="main-area">
+                                                    <table width="100%">
+                                                        <tr>
+                                                            <td width="60" valign="top">
+                                                                <img src="@ViewBag.CollectorImage" style="width: 50px; height: 50px;">
+                                                            </td>
+                                                            <td>
+                                                                <div id="post-div-label" onclick="togglePost()">
+                                                                    <span style="font-size:24px; width: 100%; color: #595959;">What's Up? Let Everyone know!</span>
+                                                                </div>
+                                                                <div id="post-div-form" style="display:none;">
+                                                                    <form class="form" role="form" method="post" action="~/Xtra/StartThread" id="startthread">
+                                                                        <div class="form-group">
+                                                                            <textarea name="topic" style="width: 100%; height: 80px; border-radius:6px;" class="textarea2"></textarea>
+                                                                        </div>
+                                                                        <div class="form-group pull-right">
+                                                                            <a href="#0" onclick='togglePost()'>Cancel</a>
+                                                                            <button type="submit" class="button2">Post</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <div id="photo-area" style="display:none;">
+                                                    @using (Html.BeginForm("CreatePhoto", "Xtra", FormMethod.Post, new { id = "PhotoForm", enctype = "multipart/form-data" }))
+                                                    {
+                                                        <div align="center"><span class="text18bold">Photo Information</span></div>
+                                                        <table width="100%" cellpadding="10">
+                                                            <tr><td class="text16bold">Photo</td><td><input type="file" name="file" class="text16bold"></td></tr>
+                                                            <tr><td class="text16bold">Message</td><td><textarea rows="2" style="width: 100%;" name="photo-message"></textarea></td></tr>
+                                                        </table>
+                                                        <div class="spacer10"></div>
+                                                            <div class="pull-right">
+                                                                <a href="#0" onclick='hidePhoto()'>Cancel</a>
+                                                                <button type="button" class="button2" onclick="document.getElementById('PhotoForm').submit();">Upload Photo</button>
+                                                            </div>
+                                                    }
+                                                </div>
+
+
+                                                <div id="event-area" style="display:none;">
+                                                    @using (Html.BeginForm("CreateEvent", "Xtra", FormMethod.Post, new { id = "EventForm", enctype = "multipart/form-data" }))
+                                                    {
+
+                                                        <table width="100%">
+                                                            <tr><td colspan="2"><span class="text16bold">Event Information (Fill in the details of your Event)</span></td></tr>
+                                                            <tr><td colspan="2"><div class="spacer10"></div></td></tr>
+                                                            <tr><td class="text16bold">Event Photo <br /> (Optional)</td><td><input type="file" name="file" class="text16bold"></td></tr>
+                                                            <tr><td colspan="2"><div class="spacer10"></div></td></tr>
+                                                            <tr><td class="text16bold">Event Name:</td><td><input name="event-name" class="textfield2" type="text" style="width: 100%;" /></td></tr>
+                                                            <tr><td colspan="2"><div class="spacer10"></div></td></tr>
+                                                            <tr><td class="text16bold">Location:</td><td><input name="event-location" class="textfield2" type="text" style="width: 100%;" /></td></tr>
+                                                            <tr><td colspan="2"><div class="spacer10"></div></td></tr>
+                                                            <tr>
+                                                                <td class="text16bold">Start Date:</td>
+                                                                <td>
+                                                                    @Html.DropDownList("StartDay", Enumerable.Range(1, 31).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "Day", new { @class = "textfield2", @style = "width: 100px;" })
+                                                                    @Html.DropDownList("StartMonth", Enumerable.Range(1, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i) }), "Month", new { @class = "textfield2", @style = "width: 100px;" })
+                                                                    @Html.DropDownList("StartYear", Enumerable.Range(2018, 2).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "Year", new { @class = "textfield2", @style = "width: 100px;" })
+                                                                </td>
+                                                            </tr>
+                                                            <tr><td colspan="2"><div class="spacer10"></div></td></tr>
+                                                            <tr>
+                                                                <td class="text16bold">Start Time:</td>
+                                                                <td>
+                                                                    @Html.DropDownList("StartHour", Enumerable.Range(0, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "HH", new { @class = "textfield2", @style = "width: 100px;" })<span> : </span>
+                                                                    @Html.DropDownList("StartMinute", Enumerable.Range(0, 12).Select(i => new SelectListItem { Value = (i * 5).ToString(), Text = (i * 5).ToString() }), "MM", new { @class = "textfield2", @style = "width: 100px;" }) <span> </span>
+                                                                    @Html.DropDownList("StartAMPM", Enumerable.Range(0, 2).Select(i => new SelectListItem { Value = (i > 0 ? "PM" : "AM"), Text = (i > 0 ? "PM" : "AM") }), "AM/PM", new { @class = "textfield2", @style = "width: 100px;" })
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr><td colspan="2"><div class="spacer10"></div></td></tr>
+                                                            <tr>
+                                                                <td class="text16bold">End Date:</td>
+                                                                <td>
+                                                                    @Html.DropDownList("EndDay", Enumerable.Range(1, 31).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "Day", new { @class = "textfield2", @style = "width: 100px;" })
+                                                                    @Html.DropDownList("EndMonth", Enumerable.Range(1, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i) }), "Month", new { @class = "textfield2", @style = "width: 100px;" })
+                                                                    @Html.DropDownList("EndYear", Enumerable.Range(2018, 2).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "Year", new { @class = "textfield2", @style = "width: 100px;" })
+                                                                </td>
+                                                            </tr>
+                                                            <tr><td colspan="2"><div class="spacer10"></div></td></tr>
+                                                            <tr>
+                                                                <td class="text16bold">End Time:</td>
+                                                                <td>
+                                                                    @Html.DropDownList("EndHour", Enumerable.Range(0, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "HH", new { @class = "textfield2", @style = "width: 100px;" })<span> : </span>
+                                                                    @Html.DropDownList("EndMinute", Enumerable.Range(0, 12).Select(i => new SelectListItem { Value = (i * 5).ToString(), Text = (i * 5).ToString() }), "MM", new { @class = "textfield2", @style = "width: 100px;" }) <span> </span>
+                                                                    @Html.DropDownList("EndAMPM", Enumerable.Range(0, 2).Select(i => new SelectListItem { Value = (i > 0 ? "PM" : "AM"), Text = (i > 0 ? "PM" : "AM") }), "AM/PM", new { @class = "textfield2", @style = "width: 100px;" })
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="spacer20"></div>
+                                                        <div class="pull-right">
+                                                            <a href="#0" onclick='hideEvent()'>Cancel</a>
+                                                            <button type="button" class="button2" onclick="document.getElementById('EventForm').submit();">Create Event</button>
+                                                        </div>
+                                                    }
+                                                </div>
+
+
+                                            </div>
+                                            <div class="panel-footer" style="color: #FFFFFF; background-color: #000000; font-size: 16px;">
+                                                <a href="#0" onclick="showPhoto()" style="color: #fff;">Photo <span class="glyphicon glyphicon-picture"></span></a> <a href="#0" onclick="showEvent()" style="color: #fff; margin-left: 10px;">Event <span class="glyphicon glyphicon-calendar"></span></a>
+                                            </div>
+                                        </div>
+
+
+                                        @foreach (Thread thread in ViewBag.Threads)
+                                        {
+                                            if (thread.HasComments == false)
+                                            {
+                                                if (thread.PostByCollectorId != Model.CollectorId)
+                                                {
+                                                    continue;
+                                                }
+                                            }
+                                            var threadTag = "T" + thread.ThreadId;
+                                            var threadLabel = "L_" + thread.ThreadId;
+                                            var commentTag = "C" + thread.ThreadId;
+                                            var commentLabel = "LC" + thread.ThreadId;
+                                            var likeLabel = "Like" + thread.ThreadId;
+                                            var interestedLabel = "Interested" + thread.ThreadId;
+                                            var goingLabel = "Going" + thread.ThreadId;
+
+                                            <div class="panel panel-primary" style="margin: 6px; border-color: #f45942;">
+                                                <div class="panel-body" style="background-color: #e6e6e6;">
+                                                    <table width="100%">
+                                                        <tr>
+                                                            <td width="60" valign="top">
+                                                                <img src="@ViewBag.GetUserImage(@thread.PostByCollectorId)" style="width: 50px; height: 50px;">
+                                                            </td>
+                                                            <td>
+                                                                <table width="100%">
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (Request.IsAuthenticated)
+                                                                            {
+                                                                                if (thread.IsOwner)
+                                                                                {
+                                                                                    <a class="pull-right" style="text-decoration: none;" href="#0" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<div><a href='#0' onclick='showEdit(@thread.ThreadId)'>Edit</a><br/><a href='#0' onclick='deleteThread(@thread.ThreadId)'>Delete</a></div>"><span style="font-size:40px;">&#8230;</span></a>
+                                                                                }
+
+                                                                                if (thread.ThreadTypeId == 2)
+                                                                                {
+                                                                                    <div class="pull-right">
+                                                                                        <div class="dropdown">
+                                                                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                                                <span class="glyphicon glyphicon-star"></span> Interested
+                                                                                                <span class="caret"></span>
+                                                                                            </button>
+                                                                                            <ul class="dropdown-menu">
+                                                                                                <li><a href="#0" onclick="postGoing('@goingLabel', '@thread.ThreadId')">Going</a></li>
+                                                                                                <li><a href="#0" onclick="postInterested('@interestedLabel', '@thread.ThreadId')">Interested</a></li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                }
+                                                                            }
+
+                                                                            <div style="font-size:16px;"><a href="#0">@ViewBag.GetUserName(@thread.PostByCollectorId)</a></div>
+
+                                                                            <div><span style="font-size:12px;">@thread.CreatedDate.ToString("MMM d, yyyy")</span></div>
+                                                                        </td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </table>
+                                                                <div id="@threadLabel" style="font-size:14px;">
+                                                                    @if (thread.ThreadTypeId != 2)
+                                                                    {
+                                                                        <span>@Html.Raw(@thread.ThreadTopic.Replace(Environment.NewLine, "<br/>"))</span>
+                                                                        <div class="spacer10"></div>
+                                                                    }
+                                                                </div>
+                                                                <div id="@threadTag" style="display:none;">
+                                                                    <form class="form" role="form" method="post" action="~/Xtra/UpdateThread" id="updatethread@threadTag">
+                                                                        <input id="reply-text@threadTag" name="reply-text@threadTag" type="text" style="font-size:16px; width: 100%;" value="@thread.ThreadTopic" />
+                                                                        <input type="hidden" name="threadTag" id="threadTag" value="@thread.ThreadId" />
+                                                                        <div class="form-group pull-left">
+                                                                            <a href="#0" onclick='showEdit("@thread.ThreadId")'>Cancel</a>
+                                                                            <button type="submit" class="button2">Update</button>
+                                                                        </div>
+                                                                    </form>
+                                                                    <div class="spacer20"></div>
+                                                                </div>
+                                                                @if (thread.ThreadTypeId == 2)
+                                                                {
+                                                                    <div>
+                                                                        <table cellpadding="10">
+                                                                            <tr>
+                                                                                <td valign="top" width="80" align="center">
+                                                                                    <span style="font-size: 16px; color: red; font-weight: bold;">@thread.ThreadStartDate.ToString("MMM").ToUpper()</span><br />
+                                                                                    <span style="font-size: 16px; font-weight: bold;">@thread.ThreadStartDate.Day</span>
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    <div>
+                                                                                        <span>@Html.Raw(@thread.ThreadTopic.Replace(Environment.NewLine, "<br/>"))</span><br />
+                                                                                        <span>@Html.Raw(@thread.ThreadText.Replace(Environment.NewLine, "<br/>"))</span><br />
+                                                                                        <span>@thread.ThreadStartDate</span><br />
+                                                                                        <span>@thread.ThreadEndDate</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+
+                                                                    </div>
+                                                                    <div class="spacer10"></div>
+                                                                }
+                                                                @if (!String.IsNullOrEmpty(thread.ThreadImage))
+                                                                {
+                                                                    <img src="@thread.ThreadImage" class="object-fit_cover" />
+                                                                }
+                                                                @foreach (Post post in thread.Posts)
+                                                                {
+                                                                    <div>
+                                                                        <div>
+                                                                            <a href="#0">-- @ViewBag.GetUserName(@post.PostByCollectorId): </a>
+                                                                            <span>@Html.Raw(@post.PostTopic.Replace(Environment.NewLine, "<br/>"))</span>
+                                                                        </div>
+                                                                        <div><span style="font-size:12px;">@post.CreatedDate.ToString("MMM d, yyyy")</span></div>
+
+                                                                        @foreach (Reply reply in post.Replies)
+                                                                        {
+                                                                            <div style="margin-left:20px;">
+                                                                                <span class="glyphicon glyphicon-share-alt"> </span><a href="#">@ViewBag.GetUserName(@reply.ReplyByCollectorId):</a>
+                                                                                <span>@Html.Raw(@reply.ReplyTopic.Replace(Environment.NewLine, "<br/>"))</span>
+                                                                            </div>
+                                                                            <div style="margin-left:20px;"><span style="font-size:12px;">@reply.CreatedDate.ToString("MMM d, yyyy")</span></div>
+                                                                        }
+                                                                        @if (Request.IsAuthenticated)
+                                                                        {
+                                                                            <div>
+                                                                                <a href="#0" onclick='showReply("@post.PostId")'>Reply</a>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div>
+                                                                                <span>  </span>
+                                                                            </div>
+                                                                        }
+
+                                                                        <div id="@post.PostId" style="display:none;">
+                                                                            <form class="form" role="form" method="post" action="~/Xtra/ReplyPost" accept-charset="UTF-8" id="replypost@post.PostId">
+                                                                                <textarea rows="2" id="reply-text@post.PostId" name="reply-text@post.PostId" style="font-size:16px; width: 100%;"></textarea>
+                                                                                <input type="hidden" name="P@post.PostId" id="P@post.PostId" value="@post.PostId" />
+                                                                                <div class="form-group pull-right">
+                                                                                    <a href="#0" onclick='showReply("@post.PostId")'>Cancel</a>
+                                                                                    <button type="submit" class="button2">Reply</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="spacer20"></div>
+                                                                    </div>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                                <div class="panel-footer" style="color: #FFFFFF; background-color: #000000; font-size: 16px;">
+                                                    @if (Request.IsAuthenticated)
+                                                    {
+                                                        <div id="@commentLabel">
+                                                            <button onclick='showComment("@commentTag")' style="width: 100%; color: #444444; border-radius: 6px; background-color: #fff;">Write a Comment</button>
+                                                        </div>
+                                                    }
+                                                    <div id="@commentTag" style="display:none;">
+                                                        <form class="form" role="form" method="post" action="~/Xtra/ReplyThread" accept-charset="UTF-8" id="replythread">
+                                                            <div class="form-group">
+                                                                <textarea id="reply-thread" name="reply-thread" rows="2" style="width: 100%; height: 100px;" class="textarea2"></textarea>
+                                                            </div>
+                                                            <input type="hidden" name="T@thread.ThreadId" id="T@thread.ThreadId" value="@thread.ThreadId" />
+                                                            <div class="form-group pull-right">
+                                                                <a href="#0" onclick='showComment("@commentTag")' style="color: #fff;">Cancel</a>
+                                                                <button type="submit" class="button2">Post</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="spacer10"></div>
+                                                    <div>
+                                                        @if (thread.ThreadTypeId == 2)
+                                                        {
+                                                            <span id="@goingLabel">@thread.GoingCount</span> <span>Going </span>
+                                                            <span id="@interestedLabel">@thread.InterestedCount</span> <span>Interested </span>
+                                                        }
+                                                        <span id="@likeLabel">@thread.LikesCount</span> Likes
+                                                        @if (Request.IsAuthenticated)
+                                                        {
+                                                            <a style="margin-left:10px; color: white;" href="#0" onclick="postLike('@likeLabel', '@thread.ThreadId')">Like <span class="glyphicon glyphicon-heart"></span></a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+
+                    </div>
+                    <div class="tab-pane fade in" id="about">
+                        <span class="text21bold">About @Model.FirstName @Model.LastName</span>
+                        <div class="text18">
+                            <span style="font-size: 18px;">@Html.Raw(Model.AboutMe)</span>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <span class="text21bold">About @Model.FirstName @Model.LastName</span>
+                <div class="text18">
+                    <span style="font-size: 18px;">@Html.Raw(Model.AboutMe)</span>
+                </div>
+            }
+            <div class="spacer40"></div>
+        </div>
+    </div>
+</div>
+<div class="visible-xs">
+    <div style="padding-left: 15px;">
+        <span class="text28bold" style="font-family:'Avenir-Book';color:#444444;">@Model.FirstName @Model.LastName</span>
+    </div>
+    <div align="center" style="margin-left: 15px; margin-right: 15px;">
+        <img src="@ViewBag.ProfileImage" width="100%" height="auto" class="img-responsive" />
+    </div>
+    <div class="spacer10"></div>
+    <div class="row" style="margin-left: 15px; margin-right: 15px;">
+        <div class="col-xs-6">
+            <a href="~/Collectors/MyCollections/@Model.CollectorId" style="text-decoration: none;"><div class="btn btn-primary  btn-block btn-sm"><span>Collections (@ViewBag.CollectionsCount)</span></div></a>
+        </div>
+        <div class="col-xs-6">
+            <a href="~/Collectors/MyCollectibles/@Model.CollectorId" style="text-decoration: none;"><div class="btn btn-primary btn-block btn-sm"><span>Items (@ViewBag.CollectiblesCount)</span></div></a>
+        </div>
+    </div>
+    <div class="spacer10"></div>
+    <div class="row" style="margin-left: 15px; margin-right: 15px;">
+        <span class="text21bold">About @Model.FirstName @Model.LastName</span>
+        <div class="text18">
+            <span style="font-size: 18px;">@Html.Raw(Model.AboutMe)</span>
+        </div>
+    </div>
+    <div class="spacer10"></div>
+    <div class="row" style="margin-left: 15px; margin-right: 15px;">
+        <div class="col-xs-4">
+            <div class="text18bold"><img src="~/Content/images/icons/followers.png" width="44" height="40" style="padding: 4px;" />&nbsp;<span data-toggle="modal" data-target="#modal_followers"><a href="#" data-toggle="tooltip" data-placement="top" data-html="true" title="@ViewBag.FollowersTips">Followers (@ViewBag.FollowersCount)</a></span></div>
+            <div class="text18bold"><img src="~/Content/images/icons/following.png" width="44" height="40" style="padding: 4px;" />&nbsp;<span data-toggle="modal" data-target="#modal_following"><a href="#" data-toggle="tooltip" data-placement="top" data-html="true" title="@ViewBag.FollowingTips">Following (@ViewBag.FollowingCount)</a></span></div>
+            <div class="spacer20"></div>
+            @if (Request.IsAuthenticated && ViewBag.IsMe == false)
+            {
+                <div class="text18bold"><img src="~/Content/images/icons/email.png" width="44" height="40" style="padding: 4px;" />&nbsp;<a href="#" data-toggle="modal" data-target="#modal_email">Contact Me</a></div>
+            }
+            @if (ViewBag.CanFollow == true)
+            {
+                <div>
+                    <form class="form" role="form" method="post" action="~/Collectors/FollowCollector/@Model.CollectorId" accept-charset="UTF-8" id="follow-form-m">
+                        @Html.HiddenFor(model => model.CollectorId)
+                        <a href="javascript:document.getElementById('follow-form-m').submit()"><img src="~/Content/images/icons/follow.png" width="44" height="40" style="padding: 4px;" />&nbsp;Follow</a>
+                    </form>
+                </div>
+            }
+
+        </div>
+        <div class="col-xs-4">
+            <span class="text21bold">Interests</span>
+            @if (Model.AreasOfInterest != null)
+            {
+                if (Model.AreasOfInterest.Length > 1)
+                {
+                    <span class="text18">@Html.Raw(ViewBag.AreasOfInterest)</span>
+                }
+            }
+        </div>
+        <div class="col-xs-4">
+            <span class="text21bold">Websites I like</span>
+            @if (ViewBag.Sites != null)
+            {
+                <div class="spacer10"></div>
+                <span class="text18">@Html.Raw(ViewBag.Sites)</span>
+            }
+        </div>
+        <div class="spacer10"></div>
+    </div>
+</div>
+
+<script>
+
+        function postLike(id, threadid) {
+            var count = $('#' + id).text();
+            var url = "/Xtra/LikeMsg";
+            $.get(url, { input: count, thread: threadid }, function (data) {
+                $("#" + id).html(data);
+            });
+        }
+
+        function postInterested(id, threadid) {
+            var count = $('#' + id).text();
+            var url = "/Xtra/InterestedMsg";
+            $.get(url, { input: count, thread: threadid }, function (data) {
+                $("#" + id).html(data);
+            });
+        }
+
+        function postGoing(id, threadid) {
+            var count = $('#' + id).text();
+            var url = "/Xtra/GoingMsg";
+            $.get(url, { input: count, thread: threadid }, function (data) {
+                $("#" + id).html(data);
+            });
+        }
+
+        function deleteThread(threadid) {
+            var url = "/Xtra/DeleteThread";
+            $.get(url, {thread: threadid }, function () {
+                //alert("Delete");
+                window.location.reload(true);
+            });
+        }
+
+        function showReply(id) {
+            $('#' + id).toggle();
+        }
+
+        function showComment(id) {
+            $('#' + id).toggle();
+            $('#L_' + id).toggle();
+        }
+
+        function showEdit(id) {
+            $('#L_' + id).toggle();
+            $('#T' + id).toggle();
+        }
+
+        function togglePost() {
+            $('#post-div-label').toggle();
+            $('#post-div-form').toggle();
+        }
+
+        function showEvent() {
+            $('#main-area').hide();
+            $('#event-area').show();
+        }
+
+        function hideEvent() {
+            $('#main-area').show();
+            $('#event-area').hide();
+        }
+
+        function showPhoto() {
+            $('#main-area').hide();
+            $('#photo-area').show();
+        }
+
+        function hidePhoto() {
+            $('#main-area').show();
+            $('#photo-area').hide();
+        }
+
+</script>
+
+<div class="modal fade" id="modal_email">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Contact @Model.FirstName @Model.LastName</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("ContactMe", "Home", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                        @Html.HiddenFor(model => model.CollectorId)
+                        <textarea id="comment" name="comment" class="textarea1" style="width: 520px !important;"></textarea>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1" onclick="document.getElementById('TheForm').submit();"> Send</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="report_abuse">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Report Abuse</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("FlagAsAbuseCollector", "Home", FormMethod.Post, new { id = "ReportAbuseForm" }))
+                    {
+                        @Html.HiddenFor(model => model.CollectorId)
+                        <textarea id="comment" name="comment" class="textarea1" style="width: 520px !important;"></textarea>
+                        <input type="hidden" name="commentid" id="commentid" />
+                        <div class="spacer20"></div>
+                            <div>
+                                <button type="button" class="button1" onclick="document.getElementById('ReportAbuseForm').submit();"> Submit</button>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

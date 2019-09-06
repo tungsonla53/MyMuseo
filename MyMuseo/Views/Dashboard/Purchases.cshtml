@@ -1,0 +1,116 @@
+﻿@model MyMuseo.Models.Collector
+@using MyMuseo.Models
+@using MyMuseo.Helpers
+
+
+@{
+    ViewBag.Title = "Purchases";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 700px;">
+    <div class="spacer20"></div>
+    <div><span class="text28bold"><a href="~/Home/CollectorDetail/0" style="font-family:'Avenir-Book';color:#444444;">@Model.FirstName @Model.LastName</a> - Dashboard</span></div>
+    <div class="spacer20"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs hidden-xs">
+                <li ><a href="~/Dashboard/MessageCenter">Message Center</a></li>
+                <li><a href="~/Dashboard/Notifications">Notifications</a></li>
+                <li><a href="~/Dashboard/Sales">Sales</a></li>
+                <li class="active"><a href="~/Dashboard/Purchases">Purchases</a></li>
+                <li><a href="~/Dashboard/Following">Following (@ViewBag.FollowingCount)</a></li>
+                <li><a href="~/Dashboard/Followers">Followers (@ViewBag.FollowersCount)</a></li>
+                <li><a href="~/Dashboard/MyItems">My Items (@ViewBag.ItemsCount)</a></li>
+            </ul>
+            @Html.Partial("_Menu-m")
+
+            <div class="tab-content">               
+                <div class="tab-pane fade in active" id="tab4">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Item
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Purchased From
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>Tracking Number</th>
+                                <th>Shipper</th>
+                                <th>
+                                    Status
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+@foreach (var purchase in ViewBag.PurchasesList)
+{
+    <tr><td>@purchase.Title</td><td>@purchase.Price</td>
+                            <td><a href="~/Home/CollectorDetail/@purchase.CollectorId">@ViewBag.GetUserName(@purchase.CollectorId)</a></td>
+                            <td>@purchase.CreatedDate</td>
+                            <td>@purchase.TrackingNumber</td><td>@purchase.Shipper</td><td>@purchase.StatusId</td>
+        <td> <a href="#cancel_purchase" data-toggle="modal" onclick="updatePurchaseValues('@purchase.PurchaseId');">Cancel Order</a></td>
+                            </tr>
+}
+                        </tbody>
+                    </table>
+                </div>
+                
+</div>
+<script>
+    function updatePurchaseValues(purchaseId) {
+        $('#purchaseid').val(purchaseId);
+    }
+</script>
+
+</div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancel_purchase">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("CancelPurchase", "Dashboard", FormMethod.Post, new { id = "DeleteForm" }))
+                    {
+                        <input type="hidden" name="purchaseid" id="purchaseid" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td class="text18">
+                                    <span>Cancel Purchase</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="spacer20"></div>
+                            <div class="row">
+                                <div class="col-md-6" align="center">
+                                    <button type="button" class="button1" onclick="document.getElementById('DeleteForm').submit();"> Submit</button>
+                                </div>
+                                <div class="col-md-6" align="center">
+                                    <a href="#" data-dismiss="modal"><button type="button" class="button1"> Cancel</button></a>
+                                </div>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

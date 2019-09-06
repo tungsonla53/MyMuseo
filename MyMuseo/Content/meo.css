@@ -1,0 +1,152 @@
+/* meo media Player *
+ * v2.0.2 || LGPLv3 *
+ * by haiderzia2002 */
+video /* Prevent white bars next to <video>*/
+{
+	background: #000;
+}
+
+audio /* Default <audio> controlbar width */
+{
+	width: 18em;
+}
+
+.meo /* Style container */
+{
+	display: table;
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	outline: none;
+}
+
+.meo video, .meo audio /* Reset <video>/<audio> elements */
+{
+	display: block;
+	outline: none;
+}
+
+.meo video ~ ul /* Position controlbar at bottom of <video> element */
+{
+	position: absolute;
+	bottom: 0;
+}
+
+.meo audio ~ ul .fs /* Hide fullscreen button on <audio> elements */
+{
+	width: 0;
+	margin: 0;
+}
+
+.meo ul /* Style background behind controls */
+{
+	font-family: "Helvetica", "Arial", "Roboto", "Liberation Sans", sans-serif;
+	margin: 0;
+	padding: 0;
+	height: 2em;
+	width: 100%;
+	list-style: none;
+	background: #000;
+	color: #fff;
+	outline: none;
+	display: inline-block;
+}
+
+.meo ul li /* Style controls */
+{
+	margin: 0.5em;
+	padding: 0;
+	height: 1em;
+	width: 1em;
+	background: url("controls.svg");
+	float: left;
+}
+
+.meo .ctime, .meo .ttime /* Style current time and total time */
+{
+	width: auto;
+	background: none;
+	margin: 0 0.5em;
+	line-height: 2em;
+	height: 2em;
+}
+
+.meo .progr /* Style progress and loading bar, as well as time float */
+{
+	margin: 0.6875em;
+	height: 0.625em;
+	background: #d00;
+	position: relative;
+}
+
+.meo .progr * /* Position progress, loading bar and time float relative to time bar */
+{
+	height: 0.625em;
+	position: absolute;
+}
+
+.meo .progr .progb /* Progress bar */
+{
+	background: #fff;
+}
+
+.meo .progr .progl /* Loading bar */
+{
+	background: #f00;
+}
+
+.meo .progr .ftime, .meo .hidec /* Hide time float */
+{
+	visibility: hidden;
+}
+
+.meo .progr:hover > .ftime
+{
+	visibility: visible;
+}
+
+.meo .progr .ftime /* Time float */
+{
+	padding: 0 0.25em;
+	height: 1.25em;
+	top: -1.9375em;
+	background: #fff;
+	color: #000;
+}
+
+.meo .progr .ftime:after /* Time float triangle */
+{
+	content: "";
+	width: 0;
+	height: 0;
+	border-left: 0.6875em solid transparent;
+	border-right: 0.6875em solid transparent;
+	border-top: 0.6875em solid #fff;
+	position: relative;
+	display: block;
+	left: 50%;
+	margin-left: -0.6875em;
+}
+
+.meofs, .meofs video /* Fullscreen */
+{
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+
+.nomed /* Fallback */
+{
+	background: #000;
+	color: #fff;
+	width: 18em;
+	text-align: left;
+	border: 0.0625em solid #fff;
+}
+
+.nomed a
+{
+	display: inline-block;
+}

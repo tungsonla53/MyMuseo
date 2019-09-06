@@ -1,0 +1,236 @@
+﻿@model MyMuseo.Models.CollectorViewModel
+@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script> 
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 760px;">
+    <div class="spacer20"></div>
+    <div><span class="page-header-text">Admin Dashboard - @Session["FullName"]</span></div>
+    <div class="spacer10"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs hidden-xs">
+                <li class="active" ><a href="~/Admin/RegisteredUsers">Users</a></li>
+                <li><a href="~/Admin/Mailbox">Mailbox</a></li>
+                <li><a href="~/Admin/Marketing">Marketing</a></li>
+                <li><a href="~/Admin/Settings">Settings</a></li>
+                <li><a href="~/Admin/Groups">Groups</a></li>
+                <li><a href="~/Admin/Banners">Banners</a></li>
+            </ul>
+            @Html.Partial("_Menu-m")
+
+            <div class="tab-content">
+                <div class="tab-pane fade in active" >
+                    <div class="spacer40"></div>
+                    <div class="text18">
+                        <table class="table table-responsive" id="tblUsers">
+                            <thead>
+                                <tr>
+                                    <th><span class="text12">First Name</span></th>
+                                    <th><span class="text12">Last Name</span></th>
+                                    <th><span class="text12">E-mail address</span></th>
+                                    <th><span class="text12">Street Address</span></th>
+                                    <th><span class="text12">City</span></th>
+                                    <th><span class="text12">Country</span></th>
+                                    <th><span class="text12">Zip/Area code</span></th>
+                                    <th><span class="text12">Subscription Type</span></th>
+                                    <th><span class="text12">Acount Expiry Date</span></th>
+                                    <th><span class="text12">View Details</span></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var collector in ViewBag.CollectorsDetailsList)
+                                {
+                                    <tr>
+                                        <td>@collector.Collector.FirstName</td>
+                                        <td>@collector.Collector.LastName</td>
+                                        <td>@collector.Email</td>
+                                        <td>@collector.AddressInfo.Street</td>
+                                        <td>@collector.AddressInfo.City</td>
+                                        <td>@ViewBag.GetCountryName(collector.AddressInfo.CountryId)</td>
+                                        <td>@collector.AddressInfo.ZipPostalCode</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><a href="~/Home/CollectorDetail/@collector.Collector.CollectorId">View</a></td>
+                                        <td><a data-toggle="modal" data-target="#modal_admingroup" href="" onclick="$('#collectorId').val(@collector.Collector.CollectorId);" >Group Admin</a></td>
+                                        <td><a data-toggle="modal" data-target="#modal_adminsite" href="" onclick="$('#adminId').val(@collector.Collector.CollectorId);">Site Admin</a></td>
+                                        @if (collector.Collector.DisplayOrder == 0)
+                                        {
+                                            <td><a data-toggle="modal" data-target="#modal_hideprofile" href="" onclick="$('#hideId').val(@collector.Collector.CollectorId);">Hide Profile</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td><a data-toggle="modal" data-target="#modal_showprofile" href="" onclick="$('#showId').val(@collector.Collector.CollectorId);">Show Profile</a></td>
+                                        }
+                                        <td>
+                                        <a data-toggle="modal" data-target="#modal_deletecollector" href="" onclick="$('#deleteId').val(@collector.Collector.CollectorId);">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                       </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_admingroup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Group Admin</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("GroupAdmin", "Admin", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                        <input type="hidden" name="collectorId" id="collectorId" />
+                        <div>
+                            @Html.DropDownList("GroupId", null, "Select a group", new { @class = "textfield1" })
+                        </div>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('TheForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_adminsite">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Site Admin</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("SiteAdmin", "Admin", FormMethod.Post, new { id = "SiteAdminForm" }))
+                    {
+                        <input type="hidden" name="adminId" id="adminId" />
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('SiteAdminForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_hideprofile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Hide Profile</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("HideProfile", "Admin", FormMethod.Post, new { id = "HideProfileForm" }))
+                    {
+                        <input type="hidden" name="hideId" id="hideId" />
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('HideProfileForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_showprofile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Show Profile</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("ShowProfile", "Admin", FormMethod.Post, new { id = "ShowProfileForm" }))
+                    {
+                        <input type="hidden" name="showId" id="showId" />
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('ShowProfileForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_deletecollector">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Delete Collector</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("DeleteCollector", "Admin", FormMethod.Post, new { id = "DeleteCollectorForm" }))
+                    {
+                        <input type="hidden" name="deleteId" id="deleteId" />
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td>
+                                    <span class="text21bold">This Action Cannot Be Undone.</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('DeleteCollectorForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tblUsers').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'excel', 'pdf'
+            ]});
+    });
+</script>
+
+
+

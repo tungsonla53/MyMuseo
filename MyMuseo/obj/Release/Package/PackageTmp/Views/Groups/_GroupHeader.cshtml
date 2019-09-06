@@ -1,0 +1,127 @@
+﻿<style>
+    .button {
+        position: relative;
+      width: 80px;
+      left:25px;
+      top: 180px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity .35s ease;
+      z-index: 999;
+    }
+    .groupimage:hover .button {
+        opacity: 1;
+    }
+    .button a {
+  width: 80px;
+  padding: 10px 20px;
+  text-align: center;
+  color: white;
+  border: solid 2px white;
+  background-color: cornflowerblue;
+  z-index: 999;
+}
+
+.vertical-menu {
+    width: 200px; /* Set a width if you like */
+}
+
+.vertical-menu a {
+    background-color: #eee; /* Grey background color */
+    color: black; /* Black text color */
+    display: block; /* Make the links appear below each other */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.vertical-menu a:hover {
+    background-color: #ccc; /* Dark grey background on mouse-over */
+}
+
+.vertical-menu a.active {
+    background-color: #4CAF50; /* Add a green color to the "active/current" link */
+    color: white;
+} 
+
+.caret{border-top:4px solid white;}
+
+</style>
+
+
+<div class="col-md-12 text18 hidden-xs" style="width:100%; background-color: #444444; opacity: .5; height: 48px;position:absolute;bottom:0;">
+    <ul id="nav" class="nav nav-tabs" role="tablist" style="margin-left: 200px;">
+        <li role="tab" @if (ViewBag.MenuId == 4) { @Html.Raw("class='active'")  }><a href="~/Groups/About/@Model.GroupId"><span style="color:#FFFFFF;">About</span></a></li>
+        <li role="tab" @if (ViewBag.MenuId == 1) { @Html.Raw("class='active'") }><a href="~/Groups/Photos/@Model.GroupId"><span style="color:#FFFFFF;">Photos</span></a></li>  
+        <li role="tab" @if (ViewBag.MenuId == 2) { @Html.Raw("class='active'") }><a href="~/Groups/Board/@Model.GroupId"><span style="color:#FFFFFF;">Discussions</span></a></li>
+        <li role="tab" @if (ViewBag.MenuId == 3) { @Html.Raw("class='active'") }><a href="~/Groups/Members/@Model.GroupId"><span style="color:#FFFFFF;">Members</span></a></li>   
+        <li role="tab" @if (ViewBag.MenuId == 5) { @Html.Raw("class='active'") }><a href="~/Groups/InviteFriends/@Model.GroupId"><span style="color:#FFFFFF;">Invite Friends</span></a></li>
+    </ul>
+</div>
+
+<div class="col-md-12 text18 visible-xs" style="width:100%; background-color: #444444; height: 48px;position:absolute;bottom:0;">
+    <div class="dropdown pull-right" style="padding-top: 7px;">
+        <button class="btn dropdown-toggle" style="background: #444444; color: white;" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            @if (ViewBag.MenuId == 4) { @Html.Raw("About")  }
+            @if (ViewBag.MenuId == 1) { @Html.Raw("Photos")  }
+            @if (ViewBag.MenuId == 2) { @Html.Raw("Discussions")  }
+            @if (ViewBag.MenuId == 3) { @Html.Raw("Members")  }
+            @if (ViewBag.MenuId == 5) { @Html.Raw("Invite Friends")  }
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="~/Groups/About/@Model.GroupId">About</a></li>
+            <li><a href="~/Groups/Photos/@Model.GroupId">Photos</a></li>
+            <li><a href="~/Groups/Board/@Model.GroupId">Discussions</a></li>
+            <li><a href="~/Groups/Members/@Model.GroupId">Members</a></li>
+            <li><a href="~/Groups/InviteFriends/@Model.GroupId">Invite Friends</a></li>
+        </ul>
+    </div>
+</div>
+
+    @if (Request.IsAuthenticated && (bool)ViewBag.IsGroupMember == true)
+    {
+        <div class="groupimage">
+            <img class="img-thumbnail" src="@Model.Image" width="125" height="125" style="margin-left: 15px; position:absolute; bottom: 20px; z-index: 99;" />
+            <div class="button"><a href="~/Uploader/UpdateGroupImage/@Model.GroupId"> REPLACE </a></div>
+        </div>
+    }
+    else
+    {
+        <img class="img-thumbnail" src="@Model.Image" width="125" height="125" style="margin-left: 15px; position:absolute; bottom: 20px; z-index: 99;" />
+    }
+    <div style="margin-left: 160px; position:absolute; bottom: 60px; z-index: 99;">
+        <span style="font-family:BauhausMedium;font-size:30px;color:#ffffff !important;">@Model.Name</span>
+    </div>
+
+
+
+    @if (Request.IsAuthenticated)
+    {
+        if ((bool)ViewBag.IsGroupMember == true)
+        {
+            <div  class="hidden-xs" style="right: 160px; position:absolute; bottom: 60px; z-index: 99;">
+                <form class="form" role="form" method="post" action="~/Groups/LeaveGroup/@Model.GroupId" accept-charset="UTF-8" id="leave-form">
+                    <a href="javascript:document.getElementById('leave-form').submit()"><button class="button1"> - Leave Group</button></a>
+                </form>
+            </div>
+            <div class="row visible-xs" style="position:absolute; top: 10px; right:40px; z-index: 99;">
+                <form class="form" role="form" method="post" action="~/Groups/LeaveGroup/@Model.GroupId" accept-charset="UTF-8" id="leave-form">
+                    <a href="javascript:document.getElementById('leave-form').submit()"><button class="btn btn-default"> - Leave Group</button></a>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="hidden-xs" style="right: 160px; position:absolute; bottom: 60px; z-index: 99;">
+                <form class="form" role="form" method="post" action="~/Groups/JoinGroup/@Model.GroupId" accept-charset="UTF-8" id="join-form">
+                    <a href="javascript:document.getElementById('join-form').submit()"><button class="button1"> + Join Group</button></a>
+                </form>
+            </div>
+            <div class="row pull-right visible-xs" style="margin-top:10px; margin-right:20px; z-index: 99;">
+                <form class="form" role="form" method="post" action="~/Groups/JoinGroup/@Model.GroupId" accept-charset="UTF-8" id="join-form">
+                    <a href="javascript:document.getElementById('join-form').submit()"><button class="btn btn-default"> + Join Group</button></a>
+                </form>
+            </div>
+        }
+    }
+

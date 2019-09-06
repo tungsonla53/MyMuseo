@@ -1,0 +1,57 @@
+﻿@model MyMuseo.Models.Collectible
+
+@{
+    ViewBag.Title = "Purchase";
+}
+
+<div class="spacer40"></div>
+<div class="spacer40"></div>
+<div style="padding-left: 65px; padding-right: 65px; min-height: 700px;">
+    <div>
+        <span class="text18">
+            Thank You for purchasing <b>@Model.Title</b> from @ViewBag.GetUserName(Model.CollectorId). We have sent a message to the seller
+            and the item has been marked "Pending Sale" on myMuseo. Once you completed the transaction with the seller the item will no longer
+            available for sale.
+        </span>
+    </div>
+    <div class="spacer40"></div>
+    <div>
+        <img src="@Model.NormalImage"  width="300" class="image-responsive" />
+    </div>
+    <div class="spacer20"></div>
+    <div class="text18">
+        @Model.Title
+    </div>
+    <div>
+        @Model.Price USD Plus Shipping
+    </div>
+    <div class="spacer20"></div>
+    <div class="text18">
+        <span>Need to provide the seller with more information or ask a question? <a href="#" data-toggle="modal" data-target="#modal_email">Click here.</a></span>
+    </div>
+
+</div>
+<div class="modal fade" id="modal_email">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Contact @ViewBag.GetUserName(Model.CollectorId)</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("ContactMe", "Home", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                        @Html.HiddenFor(model => model.CollectorId)
+                        <textarea id="comment" name="comment" class="textarea1" style="width: 520px !important;"></textarea>
+                        <input type="hidden" name="commentid" id="commentid" />
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('TheForm').submit();"> Send</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

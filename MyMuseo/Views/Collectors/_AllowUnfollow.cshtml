@@ -1,0 +1,38 @@
+﻿
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+
+<div class="row">
+    <div class="col-md-7">
+        <span class="text21bold">Unfollowed</span>
+        <p class="text18">See your Unfollow list in your Dashboard and make changes if you like</p>
+    </div>
+    <div class="col-md-5">
+@using (Ajax.BeginForm("_AllowUnfollow", "Collectors",
+                                                                    new AjaxOptions()
+                                                                    {
+                                                                        HttpMethod = "POST",
+                                                                        UpdateTargetId = "divAllowUnfollow",
+                                                                        OnSuccess = "callbackAllowUnfollow"
+                                                                    },
+                                                                    new { id = "formUpdateAllowUnfollow" }))
+{
+        <select name="allowunfollowSelection" id="allowunfollowSelection" class="form-control text18bold input-large">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+
+        <input type="submit" value="Update" class="btn btn-link text18" />
+        <img src="~/Content/images/icons/privacy-saved.png" id="updateAllowUnfollowSaved" style="display:none;" />
+}
+    </div>
+    <script>
+        function callbackAllowUnfollow()
+        {
+            $("#allowunfollowSelection").val("@ViewBag.AllowUnfollowId");
+            $('#updateAllowUnfollowSaved').show();
+        }
+        $("#allowunfollowSelection").val("@ViewBag.AllowUnfollowId");
+    </script>
+</div>

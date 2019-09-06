@@ -1,0 +1,186 @@
+﻿@model MyMuseo.Models.Collector
+@using MyMuseo.Models
+@using MyMuseo.Helpers
+
+
+@{
+    ViewBag.Title = "Sales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 700px;">
+    <div class="spacer20"></div>
+    <div><span class="text28bold"><a href="~/Home/CollectorDetail/0" style="font-family:'Avenir-Book';color:#444444;">@Model.FirstName @Model.LastName</a> - Dashboard</span></div>
+    <div class="spacer20"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs hidden-xs">
+                <li ><a href="~/Dashboard/MessageCenter">Message Center</a></li>
+                <li><a href="~/Dashboard/Notifications">Notifications</a></li>
+                <li class="active"><a href="~/Dashboard/Sales">Sales</a></li>
+                <li><a href="~/Dashboard/Purchases">Purchases</a></li>
+                <li><a href="~/Dashboard/Following">Following (@ViewBag.FollowingCount)</a></li>
+                <li><a href="~/Dashboard/Followers">Followers (@ViewBag.FollowersCount)</a></li>
+                <li><a href="~/Dashboard/MyItems">My Items (@ViewBag.ItemsCount)</a></li>
+            </ul>
+            @Html.Partial("_Menu-m")
+
+            <div class="tab-content">
+                
+                
+                <div class="tab-pane fade in active" id="tab3">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Item
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Purchased By
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>Tracking Number</th>
+                                <th>Shipper</th>
+                                <th>Status</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+@foreach (var sales in ViewBag.SalesList)
+{
+    <tr><td>@sales.Title</td><td>@sales.Price</td>
+                            <td><a href="~/Home/CollectorDetail/@sales.CustomerId">@ViewBag.GetUserName(sales.CustomerId)</a></td>
+                            <td>@sales.CreatedDate</td>
+                            <td>@sales.TrackingNumber</td><td>@sales.Shipper</td><td>@sales.StatusId</td>
+        <td> <a href="#shipping_item" data-toggle="modal" onclick="updateShippingValues('@sales.PurchaseId');">Update</a></td>
+        <td> <a href="#cancel_purchase" data-toggle="modal" onclick="updatePurchaseValues('@sales.PurchaseId');">Cancel Order</a></td>
+                            </tr>
+}
+                        </tbody>
+                    </table>
+                </div>
+                
+</div>
+<script>
+    function setDeleteValues(deleteId, deleteName) {
+        $('#deleteid').val(deleteId);
+        $('#deletename').html(deleteName);
+    }
+    function updateShippingValues(shippingId) {
+        $('#shippingid').val(shippingId);
+    }
+
+    function submitShippingItem() {
+        if ($('#trackingnumber').val().length == 0) {
+            $('#errorMessageText').html('Please enter tracking number');
+            $('#error_message').modal();
+            return false;
+        }
+
+        if ($('#shipper').val().length == 0) {
+            $('#errorMessageText').html('Please enter shipper name');
+            $('#error_message').modal();
+            return false;
+        }
+
+        document.getElementById('ShippingForm').submit();
+    }
+
+    function updatePurchaseValues(purchaseId) {
+        $('#purchaseid').val(purchaseId);
+    }
+
+
+</script>
+
+
+<div class="modal fade" id="shipping_item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Shipping Update</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+
+                    @using (Html.BeginForm("ShippingCollectible", "Collectors", FormMethod.Post, new { id = "ShippingForm" }))
+                    {
+                        <input type="hidden" name="shippingid" id="shippingid" />
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Tracking Number</label>
+                            <div class="col-md-9">
+                               <input type="text" name="trackingnumber" id="trackingnumber" class="textfield1" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Shipper</label>
+                            <div class="col-md-9">
+                                <input type="text" name="shipper" id="shipper" class="textfield1" />
+                            </div>
+                        </div>
+                        <div class="spacer20"></div>
+                        <div class="row">
+                            <div class="col-md-6" align="center">
+                                <button type="button" class="button1" onclick="submitShippingItem()"> Update</button>
+                            </div>
+                            <div class="col-md-6" align="center">
+                                <a href="#" data-dismiss="modal"><button type="button" class="button1"> Cancel</button></a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancel_purchase">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("CancelSales", "Dashboard", FormMethod.Post, new { id = "DeleteForm" }))
+                    {
+                        <input type="hidden" name="purchaseid" id="purchaseid" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td class="text18">
+                                    <span>Cancel Purchase</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="spacer20"></div>
+                        <div class="row">
+                            <div class="col-md-6" align="center">
+                                <button type="button" class="button1" onclick="document.getElementById('DeleteForm').submit();"> Submit</button>
+                            </div>
+                            <div class="col-md-6" align="center">
+                                <a href="#" data-dismiss="modal"><button type="button" class="button1"> Cancel</button></a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,124 @@
+2017-09-29 21:12:09,645 [10] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/x-www-form-urlencoded
+2017-09-29 21:12:09,658 [10] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:12:09,659 [10] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Basic QVc2YmtCRFYzOVhJUWttaGkxUE5KT0dwa0FtdXJmQTNxVWFlY3ppLWxLSnZqbzU5aXV2MmUya3FySWdnOkVCTnZqaEEzbGZXeFBGNU0yUjB4VzQ1TkhQUFNPdEUtZWxPQ0dNRkpjYkZvYlVXblBXbDJCN0NqTkxrVw==
+2017-09-29 21:12:09,659 [10] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:481d982f-ca95-4ed6-972b-696e11fc4d3b
+2017-09-29 21:12:09,746 [10] DEBUG PayPal.Api.HttpConnection [(null)] grant_type=client_credentials
+2017-09-29 21:12:23,934 [10] DEBUG PayPal.Api.HttpConnection [(null)] Service response: 
+2017-09-29 21:12:23,934 [10] DEBUG PayPal.Api.HttpConnection [(null)] {"scope":"https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card openid https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-30T04:12:22ZqXmhtAxXmFmJxtf62QzHt9GBA0FqnsI-xRav32qwKIs","access_token":"A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":32400}
+2017-09-29 21:12:24,143 [10] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/json
+2017-09-29 21:12:24,143 [10] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:12:24,143 [10] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Bearer A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw
+2017-09-29 21:12:24,143 [10] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:9b3349c8-5711-4e55-ad34-ad129acbaffb
+2017-09-29 21:12:24,197 [10] DEBUG PayPal.Api.HttpConnection [(null)] {"intent":"sale","payer":{"payment_method":"credit_card","funding_instruments":[{"credit_card":{"number":"1234567890123456","type":"discover","expire_month":1,"expire_year":2020,"cvv2":"874","first_name":"Aman","last_name":"Thakur","billing_address":{"line1":"23rd street kew gardens","city":"NewYork","country_code":"US","postal_code":"43210","state":"NY"}}}]},"transactions":[{"amount":{"currency":"USD","total":"7","details":{"subtotal":"5","shipping":"1","tax":"1"}},"description":"Description about the payment amount.","invoice_number":"your invoice number which you are generating","item_list":{"items":[{"sku":"sku","name":"Demo Item","quantity":"1","price":"5","currency":"USD"}]}}]}
+2017-09-29 21:12:24,476 [10] ERROR PayPal.Api.HttpConnection [(null)] Error response:
+2017-09-29 21:12:24,477 [10] ERROR PayPal.Api.HttpConnection [(null)] {"name":"VALIDATION_ERROR","details":[{"field":"payer.funding_instruments[0].credit_card.number","issue":"Value is invalid"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"e7801333a5908"}
+2017-09-29 21:12:24,477 [10] ERROR PayPal.Api.HttpConnection [(null)] The remote server returned an error: (400) Bad Request.
+2017-09-29 21:12:24,513 [10] ERROR PayPal.PayPalException [(null)] Payments Exception: 
+   Error:    VALIDATION_ERROR
+   Message:  Invalid request - see details
+   URI:      https://developer.paypal.com/docs/api/payments/#errors
+   Debug ID: e7801333a5908
+   Details:  payer.funding_instruments[0].credit_card.number -> Value is invalid
+
+2017-09-29 21:12:38,965 [10] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/x-www-form-urlencoded
+2017-09-29 21:12:38,965 [10] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:12:38,966 [10] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Basic QVc2YmtCRFYzOVhJUWttaGkxUE5KT0dwa0FtdXJmQTNxVWFlY3ppLWxLSnZqbzU5aXV2MmUya3FySWdnOkVCTnZqaEEzbGZXeFBGNU0yUjB4VzQ1TkhQUFNPdEUtZWxPQ0dNRkpjYkZvYlVXblBXbDJCN0NqTkxrVw==
+2017-09-29 21:12:38,966 [10] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:c627e852-989c-4b70-9860-fbb19bbcc40a
+2017-09-29 21:12:39,033 [10] DEBUG PayPal.Api.HttpConnection [(null)] grant_type=client_credentials
+2017-09-29 21:12:39,238 [10] DEBUG PayPal.Api.HttpConnection [(null)] Service response: 
+2017-09-29 21:12:39,239 [10] DEBUG PayPal.Api.HttpConnection [(null)] {"scope":"https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card openid https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-30T04:12:22ZqXmhtAxXmFmJxtf62QzHt9GBA0FqnsI-xRav32qwKIs","access_token":"A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":32385}
+2017-09-29 21:12:39,241 [10] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/json
+2017-09-29 21:12:39,242 [10] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:12:39,242 [10] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Bearer A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw
+2017-09-29 21:12:39,242 [10] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:aa45f9a1-110c-42a5-992e-c38cdf550187
+2017-09-29 21:12:39,295 [10] DEBUG PayPal.Api.HttpConnection [(null)] {"intent":"sale","payer":{"payment_method":"paypal"},"transactions":[{"amount":{"currency":"USD","total":"7","details":{"subtotal":"5","shipping":"1","tax":"1"}},"description":"Transaction description.","invoice_number":"your invoice number","item_list":{"items":[{"sku":"sku","name":"Item Name","quantity":"1","price":"5","currency":"USD"}]}}],"redirect_urls":{"return_url":"http://localhost:50646/Paypal/PaymentWithPayPal?guid=44188","cancel_url":"http://localhost:50646/Paypal/PaymentWithPayPal?guid=44188"}}
+2017-09-29 21:12:39,874 [10] DEBUG PayPal.Api.HttpConnection [(null)] Service response: 
+2017-09-29 21:12:39,874 [10] DEBUG PayPal.Api.HttpConnection [(null)] {"id":"PAY-796808055A440341CLHHRTNQ","intent":"sale","state":"created","payer":{"payment_method":"paypal"},"transactions":[{"amount":{"total":"7.00","currency":"USD","details":{"subtotal":"5.00","tax":"1.00","shipping":"1.00"}},"description":"Transaction description.","invoice_number":"your invoice number","item_list":{"items":[{"name":"Item Name","sku":"sku","price":"5.00","currency":"USD","quantity":1}]},"related_resources":[]}],"create_time":"2017-09-30T04:12:37Z","links":[{"href":"https://api.sandbox.paypal.com/v1/payments/payment/PAY-796808055A440341CLHHRTNQ","rel":"self","method":"GET"},{"href":"https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-4S768807R5617694D","rel":"approval_url","method":"REDIRECT"},{"href":"https://api.sandbox.paypal.com/v1/payments/payment/PAY-796808055A440341CLHHRTNQ/execute","rel":"execute","method":"POST"}]}
+2017-09-29 21:24:59,958 [5] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/x-www-form-urlencoded
+2017-09-29 21:24:59,971 [5] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:24:59,972 [5] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Basic QVc2YmtCRFYzOVhJUWttaGkxUE5KT0dwa0FtdXJmQTNxVWFlY3ppLWxLSnZqbzU5aXV2MmUya3FySWdnOkVCTnZqaEEzbGZXeFBGNU0yUjB4VzQ1TkhQUFNPdEUtZWxPQ0dNRkpjYkZvYlVXblBXbDJCN0NqTkxrVw==
+2017-09-29 21:24:59,972 [5] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:15689765-93ba-4ac2-afd9-e722090af0c3
+2017-09-29 21:25:00,066 [5] DEBUG PayPal.Api.HttpConnection [(null)] grant_type=client_credentials
+2017-09-29 21:25:00,341 [5] DEBUG PayPal.Api.HttpConnection [(null)] Service response: 
+2017-09-29 21:25:00,342 [5] DEBUG PayPal.Api.HttpConnection [(null)] {"scope":"https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card openid https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-30T04:12:22ZqXmhtAxXmFmJxtf62QzHt9GBA0FqnsI-xRav32qwKIs","access_token":"A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":31644}
+2017-09-29 21:25:00,619 [5] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/json
+2017-09-29 21:25:00,620 [5] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:25:00,620 [5] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Bearer A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw
+2017-09-29 21:25:00,621 [5] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:f7357196-fa92-4b7d-857f-66983785d991
+2017-09-29 21:25:00,676 [5] DEBUG PayPal.Api.HttpConnection [(null)] {"intent":"sale","payer":{"payment_method":"credit_card","funding_instruments":[{"credit_card":{"number":"1234567890123456","type":"discover","expire_month":1,"expire_year":2020,"cvv2":"874","first_name":"Aman","last_name":"Thakur","billing_address":{"line1":"23rd street kew gardens","city":"NewYork","country_code":"US","postal_code":"43210","state":"NY"}}}]},"transactions":[{"amount":{"currency":"USD","total":"7","details":{"subtotal":"5","shipping":"1","tax":"1"}},"description":"Description about the payment amount.","invoice_number":"your invoice number which you are generating","item_list":{"items":[{"sku":"sku","name":"Demo Item","quantity":"1","price":"5","currency":"USD"}]}}]}
+2017-09-29 21:25:00,963 [5] ERROR PayPal.Api.HttpConnection [(null)] Error response:
+2017-09-29 21:25:00,964 [5] ERROR PayPal.Api.HttpConnection [(null)] {"name":"VALIDATION_ERROR","details":[{"field":"payer.funding_instruments[0].credit_card.number","issue":"Value is invalid"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"1d1da4352269d"}
+2017-09-29 21:25:00,964 [5] ERROR PayPal.Api.HttpConnection [(null)] The remote server returned an error: (400) Bad Request.
+2017-09-29 21:25:01,016 [5] ERROR PayPal.PayPalException [(null)] Payments Exception: 
+   Error:    VALIDATION_ERROR
+   Message:  Invalid request - see details
+   URI:      https://developer.paypal.com/docs/api/payments/#errors
+   Debug ID: 1d1da4352269d
+   Details:  payer.funding_instruments[0].credit_card.number -> Value is invalid
+
+2017-09-29 21:26:07,614 [5] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/x-www-form-urlencoded
+2017-09-29 21:26:07,614 [5] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:26:07,615 [5] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Basic QVc2YmtCRFYzOVhJUWttaGkxUE5KT0dwa0FtdXJmQTNxVWFlY3ppLWxLSnZqbzU5aXV2MmUya3FySWdnOkVCTnZqaEEzbGZXeFBGNU0yUjB4VzQ1TkhQUFNPdEUtZWxPQ0dNRkpjYkZvYlVXblBXbDJCN0NqTkxrVw==
+2017-09-29 21:26:07,615 [5] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:dd87ab23-905a-4105-9a35-a743b136d871
+2017-09-29 21:26:07,665 [5] DEBUG PayPal.Api.HttpConnection [(null)] grant_type=client_credentials
+2017-09-29 21:26:07,874 [5] DEBUG PayPal.Api.HttpConnection [(null)] Service response: 
+2017-09-29 21:26:07,875 [5] DEBUG PayPal.Api.HttpConnection [(null)] {"scope":"https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card openid https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-30T04:12:22ZqXmhtAxXmFmJxtf62QzHt9GBA0FqnsI-xRav32qwKIs","access_token":"A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":31576}
+2017-09-29 21:26:07,875 [5] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/json
+2017-09-29 21:26:07,876 [5] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:26:07,876 [5] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Bearer A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw
+2017-09-29 21:26:07,876 [5] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:1ad49c5d-7c89-48be-b41a-fbd90e2f99b8
+2017-09-29 21:26:07,938 [5] DEBUG PayPal.Api.HttpConnection [(null)] {"intent":"sale","payer":{"payment_method":"credit_card","funding_instruments":[{"credit_card":{"number":"1234567890123456","type":"discover","expire_month":1,"expire_year":2020,"cvv2":"874","first_name":"Aman","last_name":"Thakur","billing_address":{"line1":"23rd street kew gardens","city":"NewYork","country_code":"US","postal_code":"43210","state":"NY"}}}]},"transactions":[{"amount":{"currency":"USD","total":"7","details":{"subtotal":"5","shipping":"1","tax":"1"}},"description":"Description about the payment amount.","invoice_number":"your invoice number which you are generating","item_list":{"items":[{"sku":"sku","name":"Demo Item","quantity":"1","price":"5","currency":"USD"}]}}]}
+2017-09-29 21:26:08,231 [5] ERROR PayPal.Api.HttpConnection [(null)] Error response:
+2017-09-29 21:26:08,232 [5] ERROR PayPal.Api.HttpConnection [(null)] {"name":"VALIDATION_ERROR","details":[{"field":"payer.funding_instruments[0].credit_card.number","issue":"Value is invalid"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"47d4cf0d678fc"}
+2017-09-29 21:26:08,232 [5] ERROR PayPal.Api.HttpConnection [(null)] The remote server returned an error: (400) Bad Request.
+2017-09-29 21:26:08,233 [5] ERROR PayPal.PayPalException [(null)] Payments Exception: 
+   Error:    VALIDATION_ERROR
+   Message:  Invalid request - see details
+   URI:      https://developer.paypal.com/docs/api/payments/#errors
+   Debug ID: 47d4cf0d678fc
+   Details:  payer.funding_instruments[0].credit_card.number -> Value is invalid
+
+2017-09-29 21:28:04,927 [6] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/x-www-form-urlencoded
+2017-09-29 21:28:04,928 [6] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:28:04,929 [6] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Basic QVc2YmtCRFYzOVhJUWttaGkxUE5KT0dwa0FtdXJmQTNxVWFlY3ppLWxLSnZqbzU5aXV2MmUya3FySWdnOkVCTnZqaEEzbGZXeFBGNU0yUjB4VzQ1TkhQUFNPdEUtZWxPQ0dNRkpjYkZvYlVXblBXbDJCN0NqTkxrVw==
+2017-09-29 21:28:04,929 [6] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:868f7621-8dfd-46b8-bb6f-019b7a98b47b
+2017-09-29 21:28:04,980 [6] DEBUG PayPal.Api.HttpConnection [(null)] grant_type=client_credentials
+2017-09-29 21:28:05,176 [6] DEBUG PayPal.Api.HttpConnection [(null)] Service response: 
+2017-09-29 21:28:05,177 [6] DEBUG PayPal.Api.HttpConnection [(null)] {"scope":"https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card openid https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-30T04:12:22ZqXmhtAxXmFmJxtf62QzHt9GBA0FqnsI-xRav32qwKIs","access_token":"A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":31459}
+2017-09-29 21:28:05,178 [6] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/json
+2017-09-29 21:28:05,178 [6] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:28:05,178 [6] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Bearer A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw
+2017-09-29 21:28:05,179 [6] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:0ff766b1-9366-489d-a13d-ced23b9c3d80
+2017-09-29 21:28:05,237 [6] DEBUG PayPal.Api.HttpConnection [(null)] {"intent":"sale","payer":{"payment_method":"credit_card","funding_instruments":[{"credit_card":{"number":"1234567890123456","type":"discover","expire_month":1,"expire_year":2020,"cvv2":"874","first_name":"Aman","last_name":"Thakur","billing_address":{"line1":"23rd street kew gardens","city":"NewYork","country_code":"US","postal_code":"43210","state":"NY"}}}]},"transactions":[{"amount":{"currency":"USD","total":"7","details":{"subtotal":"5","shipping":"1","tax":"1"}},"description":"Description about the payment amount.","invoice_number":"your invoice number which you are generating","item_list":{"items":[{"sku":"sku","name":"Demo Item","quantity":"1","price":"5","currency":"USD"}]}}]}
+2017-09-29 21:28:06,493 [6] ERROR PayPal.Api.HttpConnection [(null)] Error response:
+2017-09-29 21:28:06,494 [6] ERROR PayPal.Api.HttpConnection [(null)] {"name":"VALIDATION_ERROR","details":[{"field":"payer.funding_instruments[0].credit_card.number","issue":"Value is invalid"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"f6d4a7f39b884"}
+2017-09-29 21:28:06,494 [6] ERROR PayPal.Api.HttpConnection [(null)] The remote server returned an error: (400) Bad Request.
+2017-09-29 21:28:06,495 [6] ERROR PayPal.PayPalException [(null)] Payments Exception: 
+   Error:    VALIDATION_ERROR
+   Message:  Invalid request - see details
+   URI:      https://developer.paypal.com/docs/api/payments/#errors
+   Debug ID: f6d4a7f39b884
+   Details:  payer.funding_instruments[0].credit_card.number -> Value is invalid
+
+2017-09-29 21:30:41,796 [9] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/x-www-form-urlencoded
+2017-09-29 21:30:41,797 [9] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:30:41,797 [9] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Basic QVc2YmtCRFYzOVhJUWttaGkxUE5KT0dwa0FtdXJmQTNxVWFlY3ppLWxLSnZqbzU5aXV2MmUya3FySWdnOkVCTnZqaEEzbGZXeFBGNU0yUjB4VzQ1TkhQUFNPdEUtZWxPQ0dNRkpjYkZvYlVXblBXbDJCN0NqTkxrVw==
+2017-09-29 21:30:41,797 [9] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:611a5bed-6934-40b1-a6fc-fb142e546e2b
+2017-09-29 21:30:41,881 [9] DEBUG PayPal.Api.HttpConnection [(null)] grant_type=client_credentials
+2017-09-29 21:30:42,083 [9] DEBUG PayPal.Api.HttpConnection [(null)] Service response: 
+2017-09-29 21:30:42,084 [9] DEBUG PayPal.Api.HttpConnection [(null)] {"scope":"https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card openid https://api.paypal.com/v1/vault/credit-card/.*","nonce":"2017-09-30T04:12:22ZqXmhtAxXmFmJxtf62QzHt9GBA0FqnsI-xRav32qwKIs","access_token":"A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw","token_type":"Bearer","app_id":"APP-80W284485P519543T","expires_in":31302}
+2017-09-29 21:31:16,512 [9] DEBUG PayPal.Api.PayPalResource [(null)] Content-Type:application/json
+2017-09-29 21:31:16,513 [9] DEBUG PayPal.Api.PayPalResource [(null)] User-Agent:PayPalSDK/PayPal-NET-SDK 1.9.0 (lang=DOTNET;v=4.5.1;clr=4.0.30319.42000;bit=64;os=Microsoft Windows NT 10.0.15063.0)
+2017-09-29 21:31:16,513 [9] DEBUG PayPal.Api.PayPalResource [(null)] Authorization:Bearer A21AAHz5v-TnDEv9L-lOaXgkA0zWDdJMll9NbZfCazK992QDSG66H6vITpUAShCyRu_0CUCBAwAq4QPHIaeLhSkz6qZJzpbDw
+2017-09-29 21:31:16,514 [9] DEBUG PayPal.Api.PayPalResource [(null)] PayPal-Request-Id:92bef0a2-ecc8-4b91-af2b-bcbf397b0c3a
+2017-09-29 21:31:16,567 [9] DEBUG PayPal.Api.HttpConnection [(null)] {"intent":"sale","payer":{"payment_method":"credit_card","funding_instruments":[{"credit_card":{"number":"1234567890123456","type":"discover","expire_month":1,"expire_year":2020,"cvv2":"874","first_name":"Aman","last_name":"Thakur","billing_address":{"line1":"23rd street kew gardens","city":"NewYork","country_code":"US","postal_code":"43210","state":"NY"}}}]},"transactions":[{"amount":{"currency":"USD","total":"7","details":{"subtotal":"5","shipping":"1","tax":"1"}},"description":"Description about the payment amount.","invoice_number":"your invoice number which you are generating","item_list":{"items":[{"sku":"sku","name":"Demo Item","quantity":"1","price":"5","currency":"USD"}]}}]}
+2017-09-29 21:31:16,855 [9] ERROR PayPal.Api.HttpConnection [(null)] Error response:
+2017-09-29 21:31:16,855 [9] ERROR PayPal.Api.HttpConnection [(null)] {"name":"VALIDATION_ERROR","details":[{"field":"payer.funding_instruments[0].credit_card.number","issue":"Value is invalid"}],"message":"Invalid request - see details","information_link":"https://developer.paypal.com/docs/api/payments/#errors","debug_id":"cf10425d9c59"}
+2017-09-29 21:31:16,855 [9] ERROR PayPal.Api.HttpConnection [(null)] The remote server returned an error: (400) Bad Request.
+2017-09-29 21:31:16,856 [9] ERROR PayPal.PayPalException [(null)] Payments Exception: 
+   Error:    VALIDATION_ERROR
+   Message:  Invalid request - see details
+   URI:      https://developer.paypal.com/docs/api/payments/#errors
+   Debug ID: cf10425d9c59
+   Details:  payer.funding_instruments[0].credit_card.number -> Value is invalid
+

@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = "PDF";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<object data="data:application/pdf;base64,@System.Convert.ToBase64String((Byte[])ViewData["PDF"])" type="application/pdf" width="500px">
+    <embed src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])ViewData["PDF"])" type="application/pdf" />
+</object>

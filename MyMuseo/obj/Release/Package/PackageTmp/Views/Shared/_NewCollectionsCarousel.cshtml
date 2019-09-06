@@ -1,0 +1,106 @@
+﻿@using MyMuseo.Models
+
+<div class="col-md-12 hidden-xs" style="padding-left: 15px; padding-right:15px; width: 100%; margin-top:-40px;">
+    <div class="spacer40"><span style="font-size: 24px; font-weight: 300; color: #444444; font-family: Avenir-Book;">New Collections</span></div>
+    <div style="width:100%">
+        <div class="flexslider carousel" id="newcollections">
+          <ul class="slides">
+                    @{
+                        int item = 0;
+
+                        foreach (Collection collection in ViewBag.NewCollections)
+                        {
+                            <li>
+                            <div>
+                                <a href="/Home/CollectionDetail/@collection.CollectionId" style="color:#444444;font-size: 18px;">
+                                    <div style="width:250px; height: 250px;overflow:hidden;">
+                                        <img src="@collection.ThumbImage" height="250" alt="Image">
+                                    </div>
+                                        <span>@collection.Name</span>
+                                </a>
+                            </div>
+                            </li>
+                            item++;
+                        }
+                        while (item < 20)
+                        {
+                            <li>
+                                <div>
+                                    <a style="color:#444444;font-size: 18px;">
+                                        <div style="width:250px; height: 250px;overflow:hidden;">
+                                            <img src="~/Content/images/place-holder.png" height="250" alt="Image">
+                                        </div>
+                                        <span>Collection @item</span>
+                                    </a>
+                                </div>
+                            </li>
+                            item++;
+                        }
+
+                    }
+                   </ul> 
+           </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#newcollections').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 250,
+            itemMargin: 20,
+            minItems: 1,
+            maxItems: 7
+        });
+
+    });
+</script>
+
+<div class="col-md-12 visible-xs" style="padding-left: 15px; padding-right:15px; width: 100%; margin-top: -60px;">
+    <div class="spacer10"></div>
+    <div><span style="font-size: 24px; font-weight: 300; color: #444444; font-family: Avenir-Book;">New Collections</span></div>
+    <div style="width:100%">
+        <div class="flexslider carousel" id="newcollections-m">
+            <ul class="slides">
+
+                @{
+                    foreach (Collection collection in ViewBag.NewCollections)
+                    {
+                        <li>
+                            <div>
+                                <a href="/Home/CollectionDetail/@collection.CollectionId" style="color:#444444;font-size: 18px;">
+                                    <div>
+                                        <img src="@collection.ThumbImage" class="image-responsive" alt="Image" style="width: 115px;height:115px;" >
+                                    </div>
+                                    <span>@collection.Name</span>
+                                </a>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#newcollections-m').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 115,
+            itemMargin: 10,
+            minItems: 2,
+            maxItems: 7,
+            directionNav: false
+        });
+
+    });
+</script>

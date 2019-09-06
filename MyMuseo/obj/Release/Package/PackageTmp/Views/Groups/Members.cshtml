@@ -1,0 +1,282 @@
+﻿@model MyMuseo.Models.Group
+@using MyMuseo.Models
+
+<link rel="stylesheet" href="~/Content/flexslider.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="~/Content/fontawesome/font-awesome.css" type="text/css" media="screen" />
+
+@{
+    ViewBag.Title = "Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+.nav-tabs > li > a:focus, 
+.nav-tabs > li > a:hover 
+{
+    background-color: #000000;
+}
+
+.nav-tabs > .active > a {
+    background-color: #000000!important;
+}
+
+</style>
+
+<style>
+    .flexslider .slides img {
+        height: 125px;
+        width: auto;
+    }
+
+    .flex-direction-nav a {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+        .flex-direction-nav a.flex-prev:before {
+            content: " ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            transform: rotate(180deg);
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -2px;
+            margin-top: -5px;
+        }
+
+        .flex-direction-nav a.flex-next:before {
+            content: "  ";
+            display: block;
+            background: url('/Content/images/icons/next_default.png');
+            background-repeat: no-repeat;
+            width: 52px !important;
+            height: 52px !important;
+            margin-left: -0px;
+            margin-top: -0px;
+        }
+
+    input[type="radio"][id^="cb"] {
+        display: none;
+    }
+
+    label {
+        cursor: pointer;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border: 2px solid transparent;
+        margin-bottom: 0;
+        outline: 0;
+    }
+
+    :checked + label {
+        border-color: #4783B0;
+    }
+
+    label:before {
+        content: ' ';
+        position: absolute;
+        margin-left: 100px;
+        z-index: 100;
+    }
+
+    :checked + label:before {
+        content: "\f00c";
+        display: block;
+        font-family: FontAwesome;
+        color: #FFFFFF;
+        background-color: #4783B0;
+        padding: 6px;
+    }
+</style>
+
+<div class="spacer20"></div>
+<div style="background: url(/Content/images/default-group-banner.jpg) no-repeat; background-size:cover; width: 100%; height: 240px; display:block;position:relative;">
+    @Html.Partial("_GroupHeader")
+</div>
+    
+    
+        <div style="margin-left: 40px; margin-right: 40px;">
+            <div style="padding: 10px;"></div>
+            
+            @if ((bool)ViewBag.IsGroupAdmin == true)
+            {
+                <button class="button1 pull-right hidden-xs" data-toggle="modal" data-target="#add_admin">+ Add Admin</button>
+                <button class="btn btn-primary visible-xs" style="width: 100%;" data-toggle="modal" data-target="#add_admin">+ Add Admin</button>
+            }
+            <span class="text18bold">Admins</span>
+            <div style="padding: 10px;"></div>
+            <div class="row" style="width: 100%; margin-left: 0px;">
+                @{
+                    int itemCount = 0;
+                    foreach (Collector collector in ViewBag.AdminCollectors)
+                    {
+
+                        <div class="pull-left" style="padding-right:10px;">
+                            <a href="/Home/CollectorDetail/@collector.CollectorId" style="color:#444444;font-size: 18px;">
+                                <div style="width:125px; height: 125px;overflow:hidden;">
+                                    <img src="@collector.ProfileImage" height="125" alt="Image">
+                                </div>
+                                <span>@collector.FirstName @collector.LastName</span>
+                            </a>
+                        </div>
+
+                        itemCount++;
+                    }
+                    while (itemCount < 1)
+                    {
+
+                        <div class="pull-left" style="padding-right:10px;">
+                            <a style="color:#444444;font-size: 18px;">
+                                <div style="width:125px; height: 125px;overflow:hidden;">
+                                    <img src="~/Content/images/place-holder.png" height="125" alt="Image">
+                                </div>
+                                <span>Admin @itemCount</span>
+                            </a>
+                        </div>
+
+                        itemCount++;
+                    }
+                }
+            </div>
+            
+            <div style="padding: 10px;"></div>
+            <span class="text18bold">Members</span>
+            <div style="padding: 10px;"></div>
+            <div class="row" style="width: 100%; margin-left: 0px;">
+                @{
+                int item = 0;
+                foreach (Collector collector in ViewBag.MemberCollectors)
+                {
+
+                        <div class="pull-left" style="padding-right:10px;">
+                            <a href="/Home/CollectorDetail/@collector.CollectorId" style="color:#444444;font-size: 18px;">
+                                <div style="width:125px; height: 125px;overflow:hidden;">
+                                    <img src="@collector.ProfileImage" height="125" alt="Image">
+                                </div>
+                                <span>@collector.FirstName @collector.LastName</span>
+                            </a>
+                        </div>
+
+                    item++;
+                }
+                while (item < 8)
+                {
+
+                        <div class="pull-left" style="padding-right:10px;">
+                            <a style="color:#444444;font-size: 18px;">
+                                <div style="width:125px; height: 125px;overflow:hidden;">
+                                    <img src="~/Content/images/place-holder.png" height="125" alt="Image">
+                                </div>
+                                <span>Member @item</span>
+                            </a>
+                        </div>
+
+                    item++;
+                }
+                }
+            </div>
+        </div>
+   <div class="spacer20"></div> 
+<div class="modal fade" id="add_admin">
+    <div class="modal-dialog" style="width: 100%;">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Add Admin</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("AddAdmin", "Groups", FormMethod.Post, new { id = "TheForm" }))
+                    {
+                        @Html.HiddenFor(model => model.GroupId)
+                        <input type="hidden" name="AdminId" id="AdminId" />
+                        <div>
+
+                            <div style="width:100%">
+                                <div class="flexslider carousel" id="newcollectors">
+                                    <ul class="slides">
+                                        @{
+                                            int index = 0;
+                                            var cbid = "";
+                                            foreach (Collector collector in ViewBag.AvailableCollectors)
+                                            {
+                                                cbid = "cb" + index;
+                                                <li>
+                                                    <div>
+                                                        <input type="radio" name="cbgroup" id="@cbid" />
+                                                        <label for="@cbid">
+                                                            <div style="width:125px; height: 125px;overflow:hidden;">
+                                                                <img src="@collector.ProfileImage" onclick="CheckRadioListSelectedItem('@collector.CollectorId')" />
+                                                            </div>
+
+                                                            <span style="font-size: 11px;">@collector.FirstName @collector.LastName</span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+
+                                                index++;
+                                            }
+                                            while (index < 15)
+                                            {
+                                                cbid = "cb" + index;
+                                                <li>
+                                                    <div>
+                                                        <input type="radio" name="cbgroup" id="@cbid" />
+                                                        <label for="@cbid">
+                                                            <div style="width:125px; height: 125px;overflow:hidden;">
+                                                                <img src="~/Content/images/place-holder.png"  />
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                index++;
+                                            }
+                                        }
+                                    </ul>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1 pull-right" onclick="document.getElementById('TheForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script defer src="~/Scripts/jquery.flexslider.js"></script>
+<script>
+    function CheckRadioListSelectedItem(adminId) {
+        $("#AdminId").val(adminId);
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#add_admin').on('shown.bs.modal', function () {
+            $('#newcollectors').flexslider({
+                animation: "slide",
+                controlNav: false,
+                slideshow: false,
+                animationLoop: false,
+                itemWidth: 125,
+                itemMargin: 10,
+                minItems: 1,
+                maxItems: 10
+            });
+        });
+
+    });
+</script>
+
+    
+
+    
+
+    

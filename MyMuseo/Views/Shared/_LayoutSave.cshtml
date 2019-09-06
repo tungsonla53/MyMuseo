@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - myMuseo</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="~/Content/style.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+  <style>
+
+.right-inner-addon {
+    position: relative;
+}
+.right-inner-addon input {
+    padding-right: 20px;    
+}
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+    top: -4px;
+}
+
+  </style>
+    <div class="navbar navbar-default navbar-fixed-top" style="background-color: white !important;">
+        
+        <div class="col-md-12">
+            <div>
+                <div class="navbar-header">
+                    <button button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+            <a href="~/Home" title="myMuseo">
+                <img style="padding-left: 40px; margin-top: 10px;"
+                src="~/Content/images/myMuseo.png">
+            </a>
+             
+            @Html.Partial("_LoginDropdown")
+                 
+            </div>
+            
+            <div id="navbar" class="collapse navbar-collapse navbar-responsive-collapse" >
+                <ul class="nav navbar-nav" style="font-size: 18px;letter-spacing: 1px!important;font-family:Avenir-Book">
+                    <li>@Html.ActionLink("Painting", "ItemsListing", "Home",new { id = 1 }, new { @class="border" })</li>
+                    <li>@Html.ActionLink("Drawing", "ItemsListing", "Home", new { id = 2 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Prints", "ItemsListing", "Home", new { id = 3 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Photography", "ItemsListing", "Home", new { id = 7 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Collage", "ItemsListing", "Home", new { id = 4 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Jewelry", "ItemsListing", "Home", new { id = 11 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("Sculpture", "ItemsListing", "Home", new { id = 16 }, new { @class = "border" })</li>
+                    <li>@Html.ActionLink("View All Categories", "AllCategories", "Home", new { id = 0 }, new { @class = "border" })</li>
+                    <li>
+                        <form role="form">
+                            <div class="right-inner-addon" style="margin-top: 8px;" >
+                                <input class="form-control no-border text18" id="Search" type="text" placeholder="Search" autocomplete="off">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </div>
+                        </form>  
+                    </li>   
+                </ul>    
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var dict = {};
+        $(document).ready(function () {
+            BindControls();
+
+            var docHeight = $(window).height();
+            var footerHeight = $('#footer').height();
+            var footerTop = $('#footer').position().top + footerHeight;
+
+            if (footerTop < docHeight) {
+                $('#footer').css('margin-top', 0 + (docHeight - footerTop) + 'px');
+            }
+
+        });
+
+        function BindControls() {
+            $('#Search').typeahead({
+
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/Home/CollectibleLookup/" + request,
+                        dataType: "json",
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            var collectibles = [];
+                            response($.map(data, function (item) {
+                                dict[item.Title + ' ' + item.ArtistName] = item;
+                                collectibles.push(item.Title + ' ' + item.ArtistName);
+                            }))
+                            response(collectibles);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(textStatus);
+                        }
+                    });
+                },
+                updater: function (item) {
+                    var selectedCollectibleId = dict[item].CollectibleId;
+                    window.location.href = "/Home/CollectibleDetail/" + selectedCollectibleId;
+                    return item;
+                },
+                hint: true,             // SHOW HINT (DEFAULT IS "true").
+                highlight: true,        // HIGHLIGHT (SET <strong> or <b> BOLD). DEFAULT IS "true".
+                minLength: 1            // MINIMUM 1 CHARACTER TO START WITH.
+            });
+        }
+
+
+    </script>
+
+    <div>
+        <div id="wrapper-right">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper-right">
+            @if (Request.IsAuthenticated)
+            {
+                <ul id="sidebar_menu" class="sidebar-nav-right">
+                    <li class="sidebar-brand-right">
+                        <a id="menu-toggle-right" href="#"> My Account<span id="main_icon" class="glyphicon glyphicon-arrow-left"></span></a>
+                    </li>
+                    <p class="container" style="color: #fff;">View or change your profile and access your personal Dashboard.</p>
+                </ul>
+                <div class="letterP3"><span> myMuseo </span></div>
+                <ul class="sidebar-nav-right">
+                    <li class="sidebar-brand-right"><span id="main_icon">&nbsp;</span> </li>
+                </ul>
+                <ul class="sidebar-nav-right">
+                    <li class="sidebar-brand-right"><a href="#"> &nbsp;Recent Activity<span id="main_icon" class="glyphicon glyphicon-star"></span></a></li>
+                </ul>
+                <ul class="sidebar-nav-right" style="margin-top:4px;">
+                    <li class="sidebar-brand-right"><a href="#"> &nbsp;Comments<span id="main_icon" class="glyphicon glyphicon-pencil"></span></a></li>
+                    <p class="container" style="color: #fff;"></p>
+                </ul>
+                <ul class="sidebar-nav-right">
+                    <li class="sidebar-brand-right"><a href="#"> &nbsp;Today's Browsing History<span id="main_icon" class="glyphicon glyphicon-refresh"></span></a></li>
+                </ul>
+            }
+        </div>
+
+        <!-- Page content -->
+        <div id="page-content-wrapper-right">
+            
+            <!-- Keep all page content within the page-content inset div! -->
+            <div>
+
+                @RenderBody()
+
+</div>
+       
+            <div id="footer">
+                @Html.Partial("_Footer")
+            </div>     
+            
+        </div>
+
+        </div>    
+        
+    </div>
+    
+    <script>
+    $(document).ready(function () {
+        $("#menu-toggle-right").click(function (e) {
+            e.preventDefault();
+            $("#wrapper-right").toggleClass("active");
+        });
+    });
+    </script>
+
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
+</body>
+</html>

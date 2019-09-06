@@ -1,0 +1,143 @@
+﻿@using Microsoft.AspNet.Identity
+
+<style>
+    .dropdown-toggle:active, .open .dropdown-toggle {
+        background: #e7e7e7;
+        !important;
+        color: #000 !important;
+    }
+    .scrollable-menu {
+    height: auto;
+    max-height: 400px;
+    overflow-x: hidden;
+    }
+
+</style>
+
+@if (Request.IsAuthenticated)
+{
+    <table class="pull-right">
+        <tr>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="border-width: 0px; font-size: 20px; color: #f45942;">
+                        <span class="glyphicon glyphicon-bell"></span>
+                    </button>
+                    <ul class="dropdown-menu scrollable-menu" style="width: 300px; padding: 10px;">
+                        <li style="border-bottom-style:solid;"><b>Notifications</b></li>
+                        @foreach (var following in ViewBag.FollowingIds)
+                        {
+                            <li><div style="margin-bottom: 10px;"><a href="~/Home/CollectorDetail/@following">@ViewBag.GetUserName(@following)</a> is following you. Visit his/her profile <a href="~/Home/CollectorDetail/@following"> here.</a></div></li>
+                        }
+                        @foreach (var post in ViewBag.ThreadComments)
+                        {
+                            <li><div style="margin-bottom: 10px;"><a href="~/Home/CollectorDetail/@post.PostByCollectorId">@ViewBag.GetUserName(@post.PostByCollectorId)</a> Commented on your post: <a href="~/Home/CollectorDetail/0#L_@post.ThreadId">Check out...</a></div></li>
+                        }
+                    </ul>
+                </div>
+            </td>
+            <td>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                @Html.AntiForgeryToken()
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" style="width: 240px;">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="text18bold" style="padding-top:20px;font-family: 'Avenir-Book' !important;">@Session["FullName"]</span> <b class="caret"></b></a>
+                        <ul class="dropdown-menu text21bold" style="width: 240px;">
+                            @if (Session["IsAdmin"] != null && Session["IsAdmin"].ToString() == "True")
+                            {
+                                <li><a href="~/Admin/Index">Admin</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="~/Home/CollectorDetail/@Session["CurrentCollectorId"]"> My Profile</a></li>
+                                <li><a href="~/Collectors/MyFavorites/0"> My Favorites</a></li>
+                                <li><a href="~/Groups/MyGroups"> My Groups</a></li>
+                                <li><a href="~/Collectors/AccountInfo"> My Account</a></li>
+                                <li><a href="~/Dashboard/MessageCenter"> My Dashboard</a></li>
+                                <li><a href="~/Collectors/PrivacyPreferences"> Preferences</a></li>
+                            }
+                            <li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                                    <a href="javascript:document.getElementById('logoutForm').submit()"> Sign Out</a>
+                                }
+                            </li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+                }
+            </td>
+        </tr>
+    </table>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right" style="margin-top: 10px;">
+        <li class="dropdown" style="position: initial;">
+            <a class="dropdown-toggle text18bold" href="#" data-toggle="dropdown" style="font-family:'Avenir-Book' !important;">Sign in | Register</a>
+            <ul class="dropdown-menu" style="padding: 15px; padding-bottom: 10px; width: 100%; top:inherit; background-color: #e7e7e7;">
+                <li>
+                    <div class="row" style="height: 370px; overflow-y: auto;">
+                        <div class="col-md-5 col-sm-12 hidden-xs">
+                            <div><span style="font-size:24px;color:#333333">Quick Links</span></div>
+                            <div></div>
+                            <div>
+                                <span><a href="~/Home/Faqs/" style="font-size:18px;color:#333333;">Collector FAQs</a></span><br />
+                                <span><a href="~/Home/Terms/" style="font-size:18px;color:#333333;">Terms of Use</a></span><br />
+                                <span><a href="~/Home/Contact/" style="font-size:18px;color:#333333;">Contact Us</a></span><br />
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd; height: 360px;">
+                            <span style="font-size:24px;color:#333333">New to myMuseo?</span>
+                            <div>
+                                <span style="font-size:18px;color:#333333;">Welcome!</span>
+                            </div>
+                            <div class="spacer45"></div>
+                            <div class="form-group">
+                                <a href="~/Account/Register/" class="button1" style="text-decoration: none; display:block; height: 45px; padding-top: 6px;">Register</a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <span style="font-size:24px;color:#333333">Already Registered?</span>
+                            <div>
+                                <span style="font-size:18px;color:#333333;">Sign Into Your Account</span>
+                            </div>
+                            <div class="spacer20"></div>
+                            <form class="form" role="form" method="post" action="~/Account/Login" accept-charset="UTF-8" id="login-nav">
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    <label class="text18">Email Address</label>
+                                    <div>
+                                        <input type="email" class="textfield1" id="Email" name="Email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text18">Password</label>
+                                    <div>
+                                        <input type="password" class="textfield1" id="Password" name="Password" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="button1">Sign in</button>
+                                </div>
+                                <div class="help-block text-left" style="font-size:14px;"><a href="~/Account/ForgotPassword">I Forgot My Password</a></div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> Remember Me on This Device
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+
+}

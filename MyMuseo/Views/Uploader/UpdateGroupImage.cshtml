@@ -1,0 +1,87 @@
+﻿
+@model MyMuseo.Models.Group
+@{
+    ViewBag.Title = "Group Image";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Styles.Render("~/Content/fontawesome")
+<script src="@Url.Content("~/Scripts/jquery.cropit.js")" type="text/javascript"></script>
+
+<style>
+    .cropit-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        width: 250px;
+        height: 250px;
+    }
+    .cropit-preview-image-container {
+        cursor: move;
+    }
+    .cropit-preview-background {
+        opacity: .2;
+    }
+
+    .image-size-label {
+        margin-top: 10px;
+    }
+
+    input.cropit-image-zoom-input {
+        position: relative;
+    }
+
+    input {
+        display: block;
+    }   
+</style>
+
+  
+<div class="spacer20"></div>
+<div class="container" align="center">
+    <span class="text21bold">Upload Group Image</span>
+    <div class="spacer20"></div>
+    @using (Html.BeginForm("UpdateGroupImage", "Uploader", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.GroupId)
+
+            <div class="image-editor" id="image-cropper">
+                <input type="file" name="file" class="cropit-image-input">
+                <div class="spacer20"></div>
+                <span class="text18bold">Modify the image to adjust how you want the thumbnail to display.</span>
+                <div class="cropit-preview"></div>
+                <div class="image-size-label">
+                    Resize image
+                </div>
+                <input type="range" class="cropit-image-zoom-input">
+                <a href="#" class="rotate-cw-btn" style="font-size: 13px; color:#428bca;"> <i class="fa fa-rotate-right fa-4"></i><span>Rotate image</span></a>
+                <input type="hidden" id="image-data" name="image-data" class="hidden-image-data" />
+                <div class="spacer20"></div>
+                <div><a href="#" data-toggle="modal" data-target="#image_requirements">Minimum Requirements For Images</a></div>
+                <div class="spacer20"></div>
+                <button type="submit" class="button1">Submit</button>
+                
+            </div>
+   
+    } 
+</div>
+
+@Html.Partial("_ImageRequirementsModal")
+@Html.Partial("_ImageMissingModal")
+
+<script type="text/javascript">
+            $(function () {
+                $('.image-editor').cropit();
+                $('.rotate-cw-btn').click(function () {
+                    $('#image-cropper').cropit('rotateCW');
+                });
+                $('form').submit(function () {
+                    var imageData = $('.image-editor').cropit('export');
+                    if (imageData == null) {
+                        $("#image_missing").modal();
+                        return false;
+                    }
+                    $('.hidden-image-data').val(imageData);
+                });
+            });
+</script>

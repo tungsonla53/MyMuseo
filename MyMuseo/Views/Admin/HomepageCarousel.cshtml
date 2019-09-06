@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Homepage Carousel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.js"></script>
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 760px;">
+    <div class="spacer20"></div>
+    <div><span class="page-header-text">Admin Dashboard - @Session["FullName"]</span></div>
+    <div class="spacer10"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li ><a href="~/Admin/RegisteredUsers">Users</a></li>
+                <li ><a href="~/Admin/Mailbox">Mailbox</a></li>
+                <li class="active"><a href="~/Admin/Marketing">Marketing</a></li>
+                <li><a href="~/Admin/Settings">Settings</a></li>
+                <li><a href="~/Admin/Groups">Groups</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade in active" >
+                    <div class="spacer40"></div>
+                    <div class="page-header-text">@ViewBag.Title</div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
+        
+
+
+

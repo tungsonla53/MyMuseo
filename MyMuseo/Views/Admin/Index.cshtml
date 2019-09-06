@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 760px;">
+    <div class="spacer20"></div>
+    <div><span class="page-header-text">Admin Dashboard - @Session["FullName"]</span></div>
+    <div class="spacer10"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="~/Admin/Index" data-toggle="tab">Admin Home</a></li>
+                <li><a href="~/Admin/RegisteredUsers">Users</a></li>
+                <li><a href="~/Admin/Mailbox">Mailbox</a></li>
+                <li><a href="~/Admin/Marketing">Marketing</a></li>
+                <li><a href="~/Admin/Settings">Settings</a></li>
+                <li><a href="~/Admin/Groups">Groups</a></li>
+                <li><a href="~/Admin/Banners">Banners</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade in active">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int item = 0;
+                                var cbid = "";
+                                foreach (var message in ViewBag.Messages)
+                                {
+                                    cbid = "accordion" + item;
+                                    <tr>
+                                        <td>@ViewBag.GetUserName(@message.FromCollectorId)</td>
+                                        <td>@ViewBag.GetUserName(@message.ToCollectorId)</td>
+                                        <td>@message.CreatedDate</td>
+                                        <td>@message.ViewStatusId</td>
+                                        <td><a href="#@cbid" data-toggle="collapse">View Message</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div id="@cbid" class="collapse well">Topic: @message.MessageTopic <br /><br /> @message.MessageText</div>
+                                        </td>
+                                    </tr>
+                                    item++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div> 
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+

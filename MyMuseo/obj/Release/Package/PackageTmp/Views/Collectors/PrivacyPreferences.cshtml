@@ -1,0 +1,117 @@
+﻿@model MyMuseo.Models.UserSettings
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .big-checkbox {width: 20px; height: 20px;}
+</style>
+<div class="container">
+    <div class="spacer20"></div>
+    <div>
+        <span class="text21bold">Register - Step 4 of 4</span>
+    </div>
+    <div class="spacer15"></div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="list-group">
+                <div class="list-group">
+                    <div class="list-group">
+                        <a href="~/Collectors/AccountInfo" type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold; font-size:21px;margin-bottom:20px;">Account Information</a>
+                        <a href="~/Collectors/ProfileInfo" type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold;font-size:21px;margin-bottom:20px;">Profile Information</a>
+                        <a href="~/Collectors/AddressInfo" type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold;font-size:21px;margin-bottom:20px;">Address Information</a>
+                        <a href="~/Collectors/PrivacyPreferences" type="button" class="col-md-12 list-group-item list-group-item-action active" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Privacy Preferences</a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()" type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Logout</a>
+                    </div>
+                </div>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                }
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div id="divProfilePrivacy">
+                @Html.Partial("_ProfilePrivacy")
+            </div>
+            <div class="spacer10"></div><hr />
+            <div id="divFollowPrivacy">
+                @Html.Partial("_FollowPrivacy")
+            </div>
+            <div class="spacer10"></div><hr />
+            <div id="divFeaturePrivacy">
+                @Html.Partial("_FeaturePrivacy")
+            </div>
+            <div class="spacer10"></div><hr />
+            <div id="divLocationPrivacy">
+                @Html.Partial("_LocationPrivacy")
+            </div>
+            <div class="spacer10"></div><hr />
+            <div id="divAllowFollow">
+                @Html.Partial("_AllowFollow")
+            </div>
+            <div class="spacer10"></div><hr />
+            <div id="divAllowUnfollow">
+                @Html.Partial("_AllowUnfollow")
+            </div>
+            <div class="spacer10"></div><hr />
+                <div class="row">
+                    <div class="col-md-9">
+                        <span class="text21bold">E-Mail Preferences</span>
+                        <p class="text18">Review and Set your email preferences</p>
+                        <div id="emailpanel" class="collapse">
+@using (Html.BeginForm("EmailPreferences", "Collectors", FormMethod.Post, new { id = "EmailPreferencesForm" }))
+{
+                            <div class="text18">What you will receive from us:</div>
+                            <div class="checkbox text18">
+                                <label>@Html.CheckBoxFor(x => x.ReceiveEmails, new {@class= "big-checkbox" })&nbsp; All email from Museo</label>
+                            </div>
+                            <div class="checkbox text18">
+                                <label>
+                                @Html.CheckBoxFor(x => x.ReceiveLetters, new { @class = "big-checkbox" })
+                                &nbsp; Occassional newsletters and other information from myMuseo</label>
+                            </div>
+                            <div class="checkbox text18">
+                                <label>
+                                @Html.CheckBoxFor(x => x.ChangesToPolicies, new { @class = "big-checkbox" })
+                                &nbsp; Changes to our policies</label>
+                            </div>
+                            <div class="text18">Email notifications of activity on your account:</div>
+                            <div class="checkbox text18">
+                                <label>
+                                @Html.CheckBoxFor(x => x.NotifyWhenFollowed, new { @class = "big-checkbox" })
+                                &nbsp; Notifications when you are followed by someone</label>
+                            </div>
+                            <div class="checkbox text18">
+                                <label>
+                                @Html.CheckBoxFor(x => x.NotifyWhenCommented, new { @class = "big-checkbox" })
+                                &nbsp; Notifications when someone comments on one of your items</label>
+                            </div>
+                            <div class="checkbox text18">
+                                <label>@Html.CheckBoxFor(x => x.NotifyWhenReplied, new { @class = "big-checkbox" })
+                                &nbsp; Notifications when someone replies to comment you have made</label>
+                            </div>
+                            <div class="checkbox text18">
+                                <label>
+                                @Html.CheckBoxFor(x => x.NotifyWhenInvited, new { @class = "big-checkbox" })
+                                &nbsp; Invitations to join a group or discussion</label>
+                            </div>
+                            <div>
+                                <button class="button1" onclick="document.getElementById('EmailPreferencesForm').submit();" >Save Email Preferences</button>
+                            </div>
+}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="text18" data-toggle="collapse" data-target="#emailpanel">Review/Change</a>
+                    </div>
+                </div>
+                <div class="spacer40"></div>
+            </div>
+    </div>
+</div>

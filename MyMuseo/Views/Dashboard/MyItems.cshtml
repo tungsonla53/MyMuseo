@@ -1,0 +1,196 @@
+﻿@model MyMuseo.Models.Collector
+@using MyMuseo.Models
+@using MyMuseo.Helpers
+
+
+@{
+    ViewBag.Title = "My Items (" + ViewBag.ItemsCount + ")";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script> 
+<style>
+    .caret{border-top:4px solid white;}
+</style>
+
+<div style="margin-left: 25px; margin-right: 25px; min-height: 700px;">
+    <div class="spacer20"></div>
+    <div><span class="text28bold"><a href="~/Home/CollectorDetail/0" style="font-family:'Avenir-Book';color:#444444;">@Model.FirstName @Model.LastName</a> - Dashboard</span></div>
+    <div class="spacer20"></div>
+    <div class="row text18">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs hidden-xs">
+                <li><a href="~/Dashboard/MessageCenter">Message Center</a></li>
+                <li><a href="~/Dashboard/Notifications">Notifications</a></li>
+                <li><a href="~/Dashboard/Sales">Sales</a></li>
+                <li><a href="~/Dashboard/Purchases">Purchases</a></li>
+                <li><a href="~/Dashboard/Following">Following (@ViewBag.FollowingCount)</a></li>
+                <li><a href="~/Dashboard/Followers">Followers (@ViewBag.FollowersCount)</a></li>
+                <li class="active"><a href="~/Dashboard/MyItems">My Items (@ViewBag.ItemsCount)</a></li>
+            </ul>
+            @Html.Partial("_Menu-m")
+
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab7">
+                    <div class="spacer10"></div>
+                    <table class="table table-responsive" id="tblItems">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Multiples</th>
+                                <th>Quantity</th>
+                                <th>Category</th>
+                                <th>For Sale</th>
+                                <th>Action</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        @foreach (var collectible in ViewBag.ItemsList)
+        {
+            <tr><td>@collectible.Title</td><td>No</td><td>1</td><td>@ViewBag.GetCategoryName(@collectible.CategoryId)</td><td>@Html.BoolToNoYes((Boolean)collectible.NotForSale)</td>
+             <td><a href="~/Collectors/EditCollectibleDetail/@collectible.CollectibleId">Edit</a></td>
+                            <td> <a href="#delete_item" data-toggle="modal" onclick="setDeleteValues('@collectible.CollectibleId','@collectible.Title');">Delete</a></td>
+            </tr>
+        }
+                        </tbody>
+                    </table>
+
+                </div>
+                
+</div>
+            <div class="spacer20"></div>
+<script>
+    $(document).ready(function () {
+        $('#tblItems').DataTable({
+            "order": [], "pageLength": 25, "dom": '<<t>p>'
+        });
+    });
+
+    function setDeleteValues(deleteId, deleteName) {
+        $('#deleteid').val(deleteId);
+        $('#deletename').html(deleteName);
+    }
+    function updateShippingValues(shippingId) {
+        $('#shippingid').val(shippingId);
+    }
+</script>
+<div class="modal fade" id="delete_item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("DeleteCollectible", "Collectors", FormMethod.Post, new { id = "DeleteForm" }))
+                    {
+                        <input type="hidden" name="deleteid" id="deleteid" />
+                        <table width="100%">
+                            <tr><td></td><td><span class="text21bold">This Action Cannot Be Undone.</span></td></tr>
+                            <tr>
+                                <td>
+                                    <img src="~/Content/images/icons/warning.png" />
+                                </td>
+                                <td class="text18">
+                                    <span>Delete Item</span> <span id="deletename"></span>
+                                </td>
+                            </tr>
+                        </table>
+                            <div class="spacer20"></div>
+                            <div class="row">
+                                <div class="col-md-6" align="center">
+                                    <button type="button" class="button1" onclick="document.getElementById('DeleteForm').submit();"> Delete</button>
+                                </div>
+                                <div class="col-md-6" align="center">
+                                    <a href="#" data-dismiss="modal"><button type="button" class="btn btn-default"> Cancel</button></a>
+                                </div>
+                            </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="shipping_item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Shipping Update</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+
+                    @using (Html.BeginForm("ShippingCollectible", "Collectors", FormMethod.Post, new { id = "ShippingForm" }))
+                    {
+                        <input type="hidden" name="shippingid" id="shippingid" />
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Tracking Number</label>
+                            <div class="col-md-9">
+                               <input type="text" name="trackingnumber" id="trackingnumber" class="textfield1" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 text18">Shipper</label>
+                            <div class="col-md-9">
+                                <input type="text" name="shipper" id="shipper" class="textfield1" />
+                            </div>
+                        </div>
+                        <div class="spacer20"></div>
+                        <div class="row">
+                            <div class="col-md-6" align="center">
+                                <button type="button" class="button1" onclick="document.getElementById('ShippingForm').submit();"> Update</button>
+                            </div>
+                            <div class="col-md-6" align="center">
+                                <a href="#" data-dismiss="modal"><button type="button" class="button1"> Cancel</button></a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    </div>
+</div>
+<div class="modal fade" id="post_reply">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Reply</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    @using (Html.BeginForm("ReplyMessage", "Collectors", FormMethod.Post, new { id = "ReplyForm" }))
+                    {
+                        <input type="hidden" name="messageid1" id="messageid1" />
+                        <input type="hidden" name="collectorid1" id="collectorid1" />
+                        <textarea id="replymessage" name="replymessage" class="textarea1" style="width: 520px !important;"></textarea>
+                        <div class="spacer20"></div>
+                        <div>
+                            <button type="button" class="button1" onclick="document.getElementById('ReplyForm').submit();"> Submit</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function setReplyValues(messageId, collectorId) {
+        $('#messageid1').val(messageId);
+        $('#collectorid1').val(collectorId);
+    }
+</script>

@@ -1,0 +1,82 @@
+﻿@using MyMuseo.Models
+
+<div class="col-md-12 hidden-xs" style="padding-left: 15px; padding-right:15px;margin-top:-40px;">
+    <div class="spacer40"><span style="font-size: 24px; font-weight: 300; color: #444444; font-family: Avenir-Book;">Groups</span></div>
+    <div style="width:100%">
+        <div class="flexslider carousel" id="newgroups">
+            <ul class="slides">
+                @{
+                    foreach (Group group in ViewBag.NewGroups)
+                    {
+                        <li>
+                            <div>
+                                <a href="/Groups/About/@group.GroupId" style="color:#444444;font-size: 18px;">
+                                    
+                                    <img src="@group.Image" alt="Image" class="image-responsive">
+                                    
+                                    <span>@group.Name</span>
+                                </a>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#newgroups').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 250,
+            itemMargin: 20,
+            minItems: 2,
+            maxItems: 7
+        });
+    });
+</script>        
+
+<div class="col-md-12 visible-xs" style="padding-left: 15px; padding-right:15px;margin-top:-140px;">
+    <div class="spacer10"></div>
+    <div><span style="font-size: 24px; font-weight: 300; color: #444444; font-family: Avenir-Book;">Groups</span></div>
+    <div style="width:100%">
+        <div class="flexslider carousel" id="newgroups-m">
+            <ul class="slides">
+                @{
+                    foreach (Group group in ViewBag.NewGroups)
+                    {
+                        <li>
+                            <div>
+                                <a href="/Groups/About/@group.GroupId" style="color:#444444;font-size: 18px;">
+
+                                    <img src="@group.Image" alt="Image" class="image-responsive" style="width: 115px;height:115px;">
+
+                                    <span>@group.Name</span>
+                                </a>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#newgroups-m').flexslider({
+            animation: "slide",
+            controlNav: false,
+            slideshow: false,
+            animationLoop: false,
+            itemWidth: 115,
+            itemMargin: 10,
+            minItems: 2,
+            maxItems: 7,
+            directionNav: false
+        });
+    });
+</script>
+        

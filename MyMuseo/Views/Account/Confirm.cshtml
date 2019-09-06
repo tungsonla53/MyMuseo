@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Confirm Email Address Sent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+
+<div class="container">
+    <div class="spacer20"></div>
+    <div>
+        <span class="text21bold">Register - Step 1 of 5</span>
+    </div>
+    <div class="spacer15"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group">
+                <div class="list-group">
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action active" style="font-weight:bold; font-size:21px;margin-bottom:20px;">Account Information</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold;font-size:21px;margin-bottom:20px;">Profile Information</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Address Information</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Tax Form</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Privacy Preferences</div>
+                    <div type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Logout</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <p class="text21bold">Welcome!</p>
+            <p class="text18">
+                You have created your myMuseo account. Please check your e-mail to validate your email address.
+                Once you have validated your email address. You may completed your profile and begin to add listings!
+            </p>
+            Please check your Email Inbox, a confirm Email is Sent to @ViewBag.Email
+        </div>
+    </div>
+</div>
+           

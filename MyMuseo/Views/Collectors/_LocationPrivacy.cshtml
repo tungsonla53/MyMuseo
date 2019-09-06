@@ -1,0 +1,38 @@
+﻿
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+<div class="row">
+    <div class="col-md-7">
+        <span class="text21bold">Your city and state</span>
+        <p class="text18">Choose who can see your city and state</p>
+    </div>
+    <div class="col-md-5">
+@using (Ajax.BeginForm("_LocationPrivacy", "Collectors",
+                                            new AjaxOptions()
+                                            {
+                                                HttpMethod = "POST",
+                                                UpdateTargetId = "divLocationPrivacy",
+                                                OnSuccess = "callbackLocationPrivacy"
+                                            },
+                                            new { id = "formUpdateLocationPrivacy" }))
+{
+        <select name="locationprivacySelection" id="locationprivacySelection" class="form-control text18bold input-large">
+            <option value="0">All Registered Users</option>
+            <option value="1">My Followers</option>
+            <option value="2">Only me</option>
+        </select>
+
+        <input type="submit" value="Update" class="btn btn-link text18" />
+        <img src="~/Content/images/icons/privacy-saved.png" id="updateLocationPrivacySaved" style="display:none;" />
+}
+    </div>
+    <script>
+        function callbackLocationPrivacy()
+        {
+            $("#locationprivacySelection").val("@ViewBag.LocationPrivacyId");
+            $('#updateLocationPrivacySaved').show();
+        }
+        $("#locationprivacySelection").val("@ViewBag.LocationPrivacyId");
+    </script>
+</div>

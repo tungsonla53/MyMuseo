@@ -1,0 +1,132 @@
+﻿@model MyMuseo.Models.ProfileInfo
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/ckeditor/ckeditor.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/ckeditor/adapters/jquery.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<div class="container">
+    <div class="spacer20"></div>
+    <div>
+        <span style="font-size: 21px;font-weight:bold;">Register - Step 2 of 4</span>
+    </div>
+    <div class="spacer15"></div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group">
+                <div class="list-group">
+                    <a href="~/Collectors/AccountInfo" type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold; font-size:21px;margin-bottom:20px;">Account Information</a>
+                    <a href="~/Collectors/ProfileInfo" type="button" class="col-md-12 list-group-item list-group-item-action active" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Profile Information</a>
+                    <a href="~/Collectors/AddressInfo" type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Address Information</a>
+                    <a href="~/Collectors/PrivacyPreferences" type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Privacy Preferences</a>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Logout</a>   
+                </div>
+            </div>
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+{
+    @Html.AntiForgeryToken()
+}
+            <div class="row" style="text-align: center;">
+                <img src="@Model.ProfileImage" width="200" height="200" />
+            </div>
+            <div class="spacer10"></div>
+            <div class="row" align="center">
+                <a href="/Uploader/ProfileInfo"><button class="button1">Upload Profile Image</button></a>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            @using (Html.BeginForm("ProfileInfo", "Collectors", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+            {
+                @Html.ValidationSummary(true)
+
+                <p><span class="text21bold">Areas of interest</span></p>
+                <p class="text18">Add your areas of collecting interest here. At least one is required.</p>
+                for (int i = 0; i < Model.InterestList.Count; i++)
+                {
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => Model.InterestList[i], new { @class = "textfield1" }) 
+                        @if (i == 0) {@Html.Raw("<span class='text-danger' style='font-size: 18px;'>*</span>")}
+                    </div>
+                }
+
+                <p><span class="text21bold">Links</span></p>
+                <p class="text18">Add link to your favorite websites in your area(s) of interest. Share the love of collecting with other collectors.</p>
+                for (int i = 0; i < Model.LinkUrlList.Count; i++)
+                {
+                    <div class="row" style="padding-bottom: 10px;">
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => Model.LinkUrlList[i].Name, new { @class = "textfield1", placeholder = "Website Name", style="width: 240px;" })
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => Model.LinkUrlList[i].Url, new { @class = "textfield1", placeholder = "address (do not add http://)" })
+                        </div>
+                    </div>
+                }
+
+                <div>
+                    <p class="text21bold">Personal Information</p>
+                    <p class="text18">This will be viewable in your public profile page. Describe your interest and any other information you feel other users may want to know about your collectibles!</p>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="text18">About Me</label>
+                </div>
+                <div class="text18">
+                    @Html.TextAreaFor(model => model.AboutMe)
+                    @Html.ValidationMessageFor(model => model.AboutMe)
+                </div>
+                <div style="padding:20px;"></div>
+                <div class="form-group">
+                    <input type="submit" value="Save Changes" class="button1" />
+                </div>
+
+            }
+        </div>
+
+    </div>
+</div>
+
+<script>
+    CKEDITOR.replace('AboutMe',
+                        {
+                            toolbar: 'Basic'
+                        });
+
+    $('form').submit(function () {
+        var interest0 = $('#InterestList_0_').val();
+        if (interest0 == '') {
+            $("#interest_missing").modal();
+            return false;
+        }
+    });
+</script>    
+
+<div class="modal fade" id="interest_missing">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header well">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Error Message</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding: 20px;">
+                    <table width="100%">
+                        <tr>
+                            <td style="width: 140px;"><img src="~/Content/images/icons/error.png" /></td>
+                            <td><h4>At least one of your areas of collecting interest is required.</h4></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Home Page";
+}
+@Scripts.Render("~/bundles/jquery")
+
+@Html.Partial("_FeaturedCarousel") 
+<div class="spacer35"></div>
+@Html.Partial("_NewCollectorsCarousel")
+@Html.Partial("_NewCollectionsCarousel")
+@Html.Partial("_NewCollectiblesCarousel")
+@Html.Partial("_NewGroupsCarousel")
+ 
+@if (!Request.IsAuthenticated)
+{
+    @Html.Partial("_PromotionModal") 
+
+    <script type="text/javascript">
+        $(window).load(function () {
+            if (window.innerWidth <= 800) {
+                return;
+            }
+            // setTimeout(function () { $('#modal_promotion').modal('show'); }, 1000);
+            
+          });
+    </script>
+}

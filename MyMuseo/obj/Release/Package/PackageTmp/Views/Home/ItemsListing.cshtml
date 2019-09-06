@@ -1,0 +1,112 @@
+﻿@model MyMuseo.Models.Collectible
+@using MyMuseo.Models
+@using MyMuseo.Helpers
+
+@{
+    ViewBag.Title = "Items Listing";
+}
+
+<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.dataTables.js"></script>
+<style>
+    .table>thead>tr>th,
+    .table>tbody>tr>td {
+        border-top: 0!important;
+        border-bottom: 0!important;
+    }
+    .table {
+        border-top: 0!important;
+        border-bottom: 0!important;
+    }
+   
+</style>
+<div class="spacer20"></div>
+<div class="row" style="margin-left: 15px; margin-right: 15px; min-height: 670px;">
+    <div class="hidden-xs">
+        <table class="table table-responsive">
+            <tr>
+                <td>
+                    <div class="page-header-text" style="margin-left: 20px;">@ViewBag.CategoryName</div>
+                </td>
+                <td>
+                    <div class="pull-right" style="margin-right: 40px;">
+                        <span class="text18">Sort By:</span> <select class="textfield1" id="selectOrder" onchange="ChangeOrder(this)">
+                            <option value="0">Most Recently Uploaded</option>
+                            <option value="1">Least Expensive</option>
+                            <option value="2">Most Expensive</option>
+                            <option value="3">Name</option>
+                            <option value="4">Year Made (Most Recent)</option>
+                            <option value="5">Year Made (Least Recent)</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="visible-xs">
+        <tr>
+            <td>
+                <div class="page-header-text">@ViewBag.CategoryName</div>
+            </td>
+        </tr><tr>
+            <td>
+                <div>
+                    <span class="text18">Sort By:</span> <select class="textfield1" id="selectOrder-m" onchange="ChangeOrder(this)">
+                        <option value="0">Most Recently Uploaded</option>
+                        <option value="1">Least Expensive</option>
+                        <option value="2">Most Expensive</option>
+                        <option value="3">Name</option>
+                        <option value="4">Year Made (Most Recent)</option>
+                        <option value="5">Year Made (Least Recent)</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </table>
+<div class="spacer20"></div>
+    @if (ViewBag.CollectiblesList.Count > 0)
+    {
+    <table id="itemsTable" class="table table-responsive">
+        <thead><tr><th></th></tr></thead>
+        <tbody>
+            @{
+                int itemCount = 0;
+                @Html.Raw("<tr><td><div class='row'>");
+                foreach (Collectible collectible in ViewBag.CollectiblesList)
+                {
+                    if (itemCount > 0 && itemCount % 4 == 0)
+                    {
+                        @Html.Raw("</div></td></tr>");
+                        @Html.Raw("<tr><td><div class='row'>");
+                    }
+                <div class="col-md-3">
+                    <div>
+                <a href='~/Home/CollectibleDetail/@collectible.CollectibleId'><img src='@collectible.ThumbImage' width='250' height='250' /></a>
+                        </div>
+                    <div style='width: 250px; height: 50px;'>
+                        <span class="text18">@collectible.Title</span>
+                    </div>
+                </div>
+                    itemCount++;
+                }
+                
+            @Html.Raw("</div></td></tr>");
+        }
+        </tbody>
+    </table>
+                }
+    <div class="spacer40"></div>
+</div>
+<script type="text/javascript">
+            function ChangeOrder(e) {
+                window.location.href = '/Home/ItemsListing/@ViewBag.CategoryId?order=' + e.value;
+            }
+
+            $(document).ready(function () {
+                document.getElementById("selectOrder").value = '@ViewBag.Order';
+                document.getElementById("selectOrder-m").value = '@ViewBag.Order';
+                $('#itemsTable').DataTable({
+                    "order": [], "pageLength": 4, "dom": '<<t>p>'});
+
+            });
+</script>

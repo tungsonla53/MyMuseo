@@ -1,0 +1,104 @@
+﻿@model MyMuseo.Models.Collectible
+@using MyMuseo.Models
+@using MyMuseo.Helpers
+
+@{
+    ViewBag.Title = "Items Gallery";
+}
+
+<style>
+    .tz-gallery {
+    padding: 40px;
+}
+
+.tz-gallery .thumbnail {
+    padding: 0;
+    margin-bottom: 30px;
+    border: none;
+}
+
+.tz-gallery img {
+    border-radius: 2px;
+}
+
+.tz-gallery .caption{
+    padding: 26px 30px;
+    text-align: center;
+}
+
+.tz-gallery .caption h3 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.tz-gallery .caption p {
+    font-size: 12px;
+    color: #7b7d7d;
+    margin: 0;
+}
+
+
+</style>
+
+<div class="spacer20"></div>
+<div class="row" style="margin-left: 15px; margin-right: 15px; min-height: 670px;">
+    <table class="table table-responsive">
+        <tr>
+            <td>
+                <div class="page-header-text" style="margin-left: 20px;">@ViewBag.CategoryName</div>
+            </td>
+            <td>
+                <div class="pull-right" style="margin-right: 40px;">
+                    <span class="text18">Sort By:</span> <select class="textfield1" id="selectOrder" onchange="ChangeOrder(this)">
+                        <option value="0">Most Recently Uploaded</option>
+                        <option value="1">Least Expensive</option>
+                        <option value="2">Most Expensive</option>
+                        <option value="3">Name</option>
+                        <option value="4">Year Made (Most Recent)</option>
+                        <option value="5">Year Made (Least Recent)</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="spacer20"></div>
+    @if (ViewBag.CollectiblesList.Count > 0)
+    {
+        <div class="tz-gallery">
+            <div class="row">
+
+                
+                    @foreach (Collectible collectible in ViewBag.CollectiblesList)
+                    {
+
+                        <div class="col-sm-6 col-md-3">
+                            <div class="thumbnail">
+                                    <a class="lightbox" href='~/Home/CollectibleDetail/@collectible.CollectibleId'>
+                                        <img src='@collectible.ThumbImage' class="image-responsive" />
+                                    </a>
+                                    <div class="caption">
+                                        <span class="text18">@collectible.Title</span>
+                                    </div>
+</div>
+                        </div>
+                    }
+                        
+            </div>
+        </div>
+    }
+            <div class="spacer40"></div>
+        </div>
+<script type="text/javascript">
+    function ChangeOrder(e) {
+        window.location.href = '/Home/ItemsGallery/@ViewBag.CategoryId?order=' + e.value;
+    }
+
+    $(document).ready(function () {
+        document.getElementById("selectOrder").value = '@ViewBag.Order';
+        $('#itemsTable').DataTable({
+            "order": [], "pageLength": 4, "dom": '<<t>p>'
+        });
+
+    });
+</script>

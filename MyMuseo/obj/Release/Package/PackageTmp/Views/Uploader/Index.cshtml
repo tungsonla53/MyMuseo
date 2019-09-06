@@ -1,0 +1,31 @@
+﻿
+@model MyMuseo.Models.ImagesModel
+
+@{
+    ViewBag.Title = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>List of images</h2>
+<p>
+    This page contains the list of all uploaded images.
+</p>
+@if (Model.Images.Count > 0)
+{
+    <div class="imageContainer">
+        @foreach (var src in Model.Images)
+        {
+            <div class="imageBox">
+                <a href="@Url.Content("~/Content/img/" + src)" target="_blank"><img src="@Url.Content("~/Content/img/" + src)" alt="Image" class="imagePreview" /></a>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="imageCenter">
+        No images have been uploaded so far. @Html.ActionLink("Click here", "UploadImage") to upload an image.
+    </div>
+}
+<div class="clear"></div>

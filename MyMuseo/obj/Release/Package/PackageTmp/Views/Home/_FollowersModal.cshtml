@@ -1,0 +1,39 @@
+﻿@using MyMuseo.Models;
+
+<div class="modal fade" id="modal_followers">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <table>
+                    <tr>
+                        <td>
+                        <img src="~/Content/images/icons/followers.png" width="44" height="40" style="padding: 4px;" />
+                        </td><td>
+                        <h3 class="modal-title">Followers</h3>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-body">
+                <div class="pre-scrollable" style="max-height: 420px;">
+                    <table width="100%">
+                        @{
+                            foreach (Collector collector in ViewBag.FollowerList)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="~/Home/CollectorDetail/@collector.CollectorId"><img src="@collector.ProfileImage" width="100" height="100" /></a>
+                                    </td>
+                                    <td>
+                                        <span class="text18">@collector.FirstName @collector.LastName</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

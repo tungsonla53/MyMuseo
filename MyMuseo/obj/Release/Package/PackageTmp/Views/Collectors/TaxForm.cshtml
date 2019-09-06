@@ -1,0 +1,100 @@
+﻿@using MyMuseo.Models
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="spacer20"></div>
+    <div>
+        <span class="text21bold">Register - Step 4 of 5</span>
+    </div>
+    <div class="spacer15"></div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="list-group">
+                <div class="list-group">
+                    <div class="list-group">
+                        <a href="~/Collectors/AccountInfo" type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold; font-size:21px;margin-bottom:20px;">Account Information</a>
+                        <a href="~/Collectors/ProfileInfo" type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold;font-size:21px;margin-bottom:20px;">Profile Information</a>
+                        <a href="~/Collectors/AddressInfo" type="button" class="col-md-12 list-group-item list-group-item-action " style="font-weight:bold;font-size:21px;margin-bottom:20px;">Address Information</a>
+                        <a href="~/Collectors/TaxForm" type="button" class="col-md-12 list-group-item list-group-item-action active" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Tax Form</a>
+                        <a href="~/Collectors/PrivacyPreferences" type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Privacy Preferences</a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()" type="button" class="col-md-12 list-group-item list-group-item-action" style="font-weight:bold;font-size:21px;margin-bottom:20px;">Logout</a>
+                    </div>
+                </div>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                }
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+            @using (Html.BeginForm("TaxForm", "Collectors", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+            {
+                <p class="text21bold">If you are selling on myMuseo, please upload your tax form.</p>
+                <p class="text18bold">Please note, you can always add this later.</p>
+                <p class="text18">You cannot request a payout until you have filled out the approprate tax forms.</p>
+                <p class="text18">U.S. Artists: please download and submit a <a href="https://www.irs.gov/pub/irs-pdf/fw9.pdf">W-9 tax form</a></p>
+                <p class="text18">Non-U.S. Artists: please download and submit a <a href="https://www.irs.gov/pub/irs-pdf/fw8ben.pdf">W8EBN-9 tax form</a></p>
+                <p class="text18">Not sure how to fill our your form? Go <a href="https://www.irs.gov/forms-pubs">here</a> to learn how.</p>
+
+
+                <p class="text18">File size must be less than 2MB.</p>
+
+                <input id="pdfFileUpload" name="files" type="file" class="form-control" />
+                <div class="spacer15"></div>
+                <div>
+                    <input type="submit" value="Upload" class="button1" />
+                </div>
+
+                <p class="text18">@ViewBag.FileStatus</p>
+
+
+
+                <p class="text18">For more information, please read our <a>Private Policy</a>. </p>
+
+                @Html.ValidationSummary(true)
+            }
+
+            <table class="table table-responsive text18">
+                <thead>
+                    <tr>
+                        <th>
+                            File Name
+                        </th>
+                        <th>
+                            Uploaded Date
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (FileDetails item in ViewBag.FileDetailsList)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UploadedDate)
+                            </td>
+                            <td>
+                                @Html.ActionLink("DownloadPDF", "DownloadPDF", new { id = item.FileId })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+

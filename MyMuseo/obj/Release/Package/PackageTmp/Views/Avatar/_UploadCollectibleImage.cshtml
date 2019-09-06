@@ -1,0 +1,221 @@
+﻿
+@model MyMuseo.Models.Collectible
+
+@Scripts.Render("~/bundles/jqueryform")
+@Scripts.Render("~/bundles/jcrop")
+@Scripts.Render("~/bundles/avatar")
+@Styles.Render("~/Content/jcrop")
+@Styles.Render("~/Content/avatar")
+
+<style>
+
+.btn-bs-file{
+    position:relative;
+}
+.btn-bs-file input[type="file"]{
+    position: absolute;
+    top: -9999999;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    width:0;
+    height:0;
+    outline: none;
+    cursor: inherit;
+}
+
+</style>
+
+<div class="row" align="center">
+    <span class="text21bold">Upload an Image</span>
+    <div class="spacer20"></div>
+    <section id="avatar-upload-box">
+        <div style="width: 300px; height:200px; background-color:#e3e5e4;"><img src="~/Content/images/icons/upload-icon.png" style="margin-left:0px;margin-top:70px;" /><span style="display:block; margin-top:20px;margin-left:0px;color:#444444; font-size: 11px; font-weight: bold;">Upload an Image</span></div>  
+        <div class="spacer10"></div>
+        @using (Ajax.BeginForm("_Upload", "Avatar",
+            new AjaxOptions() { HttpMethod = "POST" },
+            new { enctype = "multipart/form-data", id = "avatar-upload-form" }))
+        {
+            @Html.AntiForgeryToken()
+            <label class="btn-bs-file btn btn-primary">
+                Browse
+                <input type="file" name="files" />
+            </label>
+            <div class="upload-file-notice">Maximum Size: <span id="avatar-max-size"></span> MB</div>
+        }
+        <div class="upload-progress col-md-6 hidden">
+            <div class="upload-percent-value pull-left">0%</div>
+            <div class="upload-percent-bar pull-left"></div>
+        </div>
+        <div id="upload-status"></div>
+    </section>
+</div>
+
+    <section id="avatar-crop-box" class="hidden">
+    <table>
+        <tr>
+            <td>
+                <img src="" id="crop-avatar-target" alt="Uploaded image" />
+
+                <div id="preview-pane">
+                    <div class="preview-container">
+                        <img src="" class="jcrop-preview" alt="Preview" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="" id="crop-avatar-target2" alt="Uploaded image" />
+                <div id="preview-pane2">
+                    <div class="preview-container2">
+                        <img src="" class="jcrop-preview2" alt="Preview2" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <div class="spacer20"></div>
+                <div class="pull-right">
+                    <button class="button1" onclick="saveAvatar2()">Save Images</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+</section>
+
+    <div id="avatar-result" class="hidden">
+
+        <div class="row">
+
+
+            <div class="col-md-6">
+                <img src="" alt="Final Image" />
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+
+                @using (Html.BeginForm("_AddDetail2", "Avatar", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+                {
+                    @Html.HiddenFor(model => model.CollectionId)
+
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Title</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Title, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.Title)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Collection</label>
+                        <div class="col-md-9">
+                            @Html.DropDownList("CollectionId", null, "N/A", new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.CollectionId)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Category</label>
+                        <div class="col-md-9">
+                            @Html.DropDownList("CategoryId", null, String.Empty, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.CategoryId)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Artist</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.ArtistName, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.ArtistName)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Medium</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Medium, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.Medium)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Height</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Height, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.Height)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Width</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Width, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.Width)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Date</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.ItemDate, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.ItemDate)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Not For Sale</label>
+                        <div class="col-md-9">
+                            @Html.CheckBoxFor(model => model.NotForSale, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.NotForSale)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Allow Offers</label>
+                        <div class="col-md-9">
+                            @Html.CheckBoxFor(model => model.AllowOffers, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.AllowOffers)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Price</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Price, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.Price)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Offer</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.OfferPrice, new { @class = "textfield1" })
+                            @Html.ValidationMessageFor(model => model.OfferPrice)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 text18">Description</label>
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "textarea1" })
+                            @Html.ValidationMessageFor(model => model.Description)
+                        </div>
+                    </div>
+                    <div>
+                        @Html.ValidationSummary(true)
+                    </div>
+                    <div class="spacer20"></div>
+                    <div>
+                        <input type="submit" value="Save" class="button1" />
+                    </div>
+
+                }
+            </div>
+
+
+        </div>
+    </div>
+
+
