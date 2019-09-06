@@ -133,12 +133,12 @@ namespace MyMuseo.Controllers
 
         public void SendMail(MailMessage mailMessage)
         {
-            SmtpClient smtpClient = new SmtpClient("smtp.sendgrid.net");
+            SmtpClient smtpClient = new SmtpClient("smtp.sendgrid.###");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.UseDefaultCredentials = false;
-            string gmailUser = "mymuseodev";
-            string gmailPass = "Bellevue@80";
+            string gmailUser = "#######";
+            string gmailPass = "@@@@@@@@@@";
             smtpClient.Credentials = new NetworkCredential(gmailUser, gmailPass);
             smtpClient.Send(mailMessage);
         }
